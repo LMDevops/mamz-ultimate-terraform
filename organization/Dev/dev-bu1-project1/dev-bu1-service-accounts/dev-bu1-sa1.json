@@ -1,0 +1,26 @@
+{
+    "name": "first-sa-${environment}-bu1",
+    "owner_project_id": "${project_id}",
+    "display_name": "first service account",
+    "description": "used for monitoring",
+    "project_level_iam_bindings": [
+      {
+        "project_id": "${project_id}",
+        "project_level_roles": ["roles/compute.viewer"]
+      }
+    ],
+    "sa_level_self_iam_bindings": [
+      {
+        "role": "roles/iam.serviceAccountUser",
+        "members": [
+            "user:johng@sadasola.com"
+        ]
+      },
+      {
+        "role": "roles/iam.serviceAccountTokenCreator",
+        "members": [
+          "user:johng@sadasola.com"
+        ]
+      }
+    ]
+  }
