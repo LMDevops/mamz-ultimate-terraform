@@ -1,7 +1,7 @@
 locals {
   folders = [
     "Dev",
-    "NonProd",
+    "UAT",
     "Prod",
     "QA",
     "Shared",
