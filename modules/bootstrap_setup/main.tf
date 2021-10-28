@@ -13,16 +13,6 @@ module "bootstrap_seed" {
   services        = local.proj_services_to_enable
 }
 
-module "bootstrap_state" {
-  source          = "../projects"
-  name            = local.state_project_display_name
-  project_id      = local.state_project_name
-  billing_account = var.billing_account
-  folder_id       = google_folder.bootstrap.name
-  labels          = local.project_terraform_labels
-  services        = local.proj_services_to_enable
-}
-
 module "bootstrap_automation_service_account" {
   source       = "../service-accounts"
   account_id   = local.sa_name
@@ -41,7 +31,7 @@ resource "google_organization_iam_member" "tf_sa_org_perms" {
 
 module "bootstrap_automation_bucket" {
   source  = "../google-cloud-storage"
-  project = trimprefix(module.bootstrap_state.project_id, "projects/")
+  project = trimprefix(module.bootstrap_seed.project_id, "projects/")
   name    = local.bucket_name
   member  = module.bootstrap_automation_service_account.iam_email
   labels  = local.project_terraform_labels
