@@ -1,9 +1,10 @@
-resource "random_id" "main" {
-  byte_length = 2
+resource "random_integer" "main" {
+  min = 0001
+  max = 9999
 }
 
 locals {
-  project_id = "${var.project_id}-${random_id.main.hex}"
+  project_id = "${var.project_id}-${random_integer.main.result}"
 }
 
 resource "google_project" "main" {
@@ -25,7 +26,7 @@ resource "google_project_service" "main" {
 }
 
 resource "google_project_iam_audit_config" "main_cis_feature_1" {
-  count = var.enforce_cis_standards == true ? 1 : 0
+  count   = var.enforce_cis_standards == true ? 1 : 0
   project = google_project.main.id
   service = "allServices"
   audit_log_config {
