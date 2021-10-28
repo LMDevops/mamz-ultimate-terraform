@@ -1,9 +1,12 @@
-module "shared_billing_alerts" {
-  source                = "../modules/shared_billing_alerts"
+# module "shared_billing_alerts" {
+#   source                = "../modules/shared_billing_alerts"
+#   budget                = "500"
+# }
+#
+# module "shared_billing_export" {
+#   source                = "../modules/shared_billing_export"
+# }
 
-  billing_account       = data.terraform_remote_state.bootstrap.outputs.billing_account
-  budget                = "1000"
-}
 
 
 # locals {
