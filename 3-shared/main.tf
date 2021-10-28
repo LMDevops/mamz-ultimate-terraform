@@ -1,11 +1,11 @@
-module "shared_billing_alerts" {
-  source                = "../modules/shared_billing_alerts"
-  budget                = "500"
-}
-
-module "shared_billing_export" {
-  source                = "../modules/shared_billing_export"
-}
+# module "shared_billing_alerts" {
+#   source                = "../modules/shared_billing_alerts"
+#   budget                = "500"
+# }
+#
+# module "shared_billing_export" {
+#   source                = "../modules/shared_billing_export"
+# }
 
 
 

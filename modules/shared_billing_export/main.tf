@@ -7,7 +7,7 @@ resource "google_bigquery_dataset" "billing-exports" {
 
   access {
     role          = "OWNER"
-    user_by_email = "corbolj@corbo.me"
+    user_by_email = "Loui "
   }
   access {
     role          = "OWNER"
