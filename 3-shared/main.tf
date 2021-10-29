@@ -6,6 +6,16 @@ module "shared_vpc_host_project" {
   billing_account = var.billing_account
   folder_id       = data.terraform_remote_state.organization.outputs.folders.Shared.name
   labels          = local.project_terraform_labels
+  svpc_host       = true
+}
+
+module "svpc_network" {
+  source = "../modules/network"
+
+  project_id      = trimprefix(module.shared_vpc_host_project.project_id, "projects/")
+  prefix          = "sb"
+  environment     = "s"
+  network_configs = local.svpc__network_configs
 }
 
 module "logging_monitoring_project" {
