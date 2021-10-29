@@ -52,7 +52,12 @@ variable "disable_dependent_services" {
 }
 
 variable "enforce_cis_standards" {
-  type = bool
+  type        = bool
   description = "(optional) There will be additional features included that will conform to CIS standards - https://docs.bridgecrew.io/docs/google-cloud-policy-index"
-  default = true
+  default     = true
+}
+
+variable "svpc_host" {
+  type    = bool
+  default = false
 }
