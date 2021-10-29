@@ -43,4 +43,11 @@ locals {
   sec_scrt_mngr_base    = "scrt-mngr-01-shared"
   sec_scrt_mngr_project = "pr-${local.sec_scrt_mngr_base}"
   environment           = "s"
+
+  svpc__network_config_path = "./config/networking"
+  svpc__network_config_sets = fileset(local.svpc__network_config_path, "*.json")
+  svpc__network_configs = flatten([for networks in local.svpc__network_config_sets : [
+    for network in jsondecode(file("${local.svpc__network_config_path}/${networks}")) :
+    merge(network, { fileName = split(".", networks)[0] })
+  ]])
 }
