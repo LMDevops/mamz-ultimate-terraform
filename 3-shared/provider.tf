@@ -1,5 +1,6 @@
 terraform {
   backend "gcs" {
+    bucket = "bkt-b-zzzz-tfstate-tfstate"
     prefix = "tf_state_shared"
   }
 }
@@ -11,7 +12,7 @@ provider "google" {
 data "terraform_remote_state" "bootstrap" {
   backend = "gcs"
   config = {
-    bucket = var.bucket
+    bucket = "bkt-b-zzzz-tfstate-tfstate"
     prefix = "tf_state_bootstrap"
   }
 }
@@ -19,7 +20,7 @@ data "terraform_remote_state" "bootstrap" {
 data "terraform_remote_state" "organization" {
   backend = "gcs"
   config = {
-    bucket = data.terraform_remote_state.bootstrap.outputs.bucket
+    bucket = "bkt-b-zzzz-tfstate-tfstate"
     prefix = "tf_state_organization"
   }
 }
