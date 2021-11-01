@@ -2,7 +2,7 @@
   {
     "name": "prod",
     "cloud_nat": {
-      "subnetworks_to_nat": "DISABLED"
+      "subnetworks_to_nat": "ALL_PRIMARY_SUBNETWORKS_ALL_SECONDARY_SUBNETWORKS"
     },
     "subnetworks": [
       {
