@@ -33,7 +33,7 @@ resource "google_organization_iam_member" "security_admin_roles" {
   for_each = toset(var.security_admin_roles)
   org_id   = var.org_id
   role     = each.value
-  member   = "group:grp-gcp-zzzz-org-p-org-security-admin@${var.domain}"
+  member   = "group:grp-gcp-zzzz-org-p-security-admin@${var.domain}"
 }
 /*
 AUDITOR
