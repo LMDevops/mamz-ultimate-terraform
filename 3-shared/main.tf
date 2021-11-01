@@ -17,7 +17,6 @@ module "svpc_network" {
   environment     = "s"
   network_configs = local.svpc__network_configs
 }
-
 module "logging_monitoring_project" {
   source          = "../modules/projects"
   name            = local.log_mon_project_name
@@ -35,4 +34,21 @@ module "shared_billing_export" {
   billing_admin_group_email = var.billing_admin_group_email
   dataset_name              = "bqds-${local.environment}-zzzz-billing-data"
   dataset_id                = "bqds_${local.environment}_zzzz_billing_data"
+}
+
+module "org_vpc_flow_log_bucket" {
+  source                   = "../modules/logging/logs-storage/cloud-log-bucket"
+  project_id               = trimprefix(module.logging_monitoring_project.project_id, "projects/")
+  bucket_id                = "bkt-s-zzzz-log-mon-vpcflow"
+  log_sink_writer_identity = module.org_vpc_flow_log_sink.writer_identity
+  retention_days           = 30
+}
+
+module "org_vpc_flow_log_sink" {
+  source               = "../modules/logging/logs-router"
+  parent_resource_type = "organization"
+  log_sink_name        = "ls-s-zzzz-vpc-flow-sink"
+  parent_resource_id   = data.terraform_remote_state.bootstrap.outputs.organization_id
+  filter               = "logName:(\"projects/${trimprefix(module.logging_monitoring_project.project_id, "projects/")}/logs/compute.googleapis.com%2Fvpc_flows\")"
+  destination_uri      = module.org_vpc_flow_log_bucket.destination_uri
 }
