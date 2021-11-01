@@ -1,9 +1,9 @@
 variable "project_id" {
-  
+
 }
-variable "role_names" {
+variable "admin_roles" {
   type = list(string)
 }
 variable "group_name" {
-  
+
 }

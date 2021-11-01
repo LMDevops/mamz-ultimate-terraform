@@ -20,11 +20,11 @@ variable "network_admin_roles" {
     "roles/compute.orgFirewallPolicyUser",
     "roles/compute.instanceAdmin",
     "roles/compute.networkViewer",
-    "roles/storage.legacyBucketReader",
+    # "roles/storage.legacyBucketReader",
     "roles/compute.xpnAdmin",
     "roles/container.clusterViewer",
     "roles/dns.reader",
-    "roles/networkManagment.admin",
+    # "roles/networkManagment.admin",
     "roles/servicenetworking.networksAdmin"
   ]
 }
@@ -36,9 +36,9 @@ variable "organization_admin_roles" {
     "roles/billing.user",
     "roles/cloudsupport.admin",
     "roles/iam.organizationRoleAdmin",
-    "roles/iam.organizationPolicyAdmin",
-    "roles/resourceManager.folderAdmin",
-    "roles/resourceManager.projectCreator",
+    # "roles/iam.organizationPolicyAdmin",
+    # "roles/resourceManager.folderAdmin",
+    # "roles/resourceManager.projectCreator",
     "roles/securitycenter.admin",
     "roles/resourcemanager.organizationAdmin"
   ]
