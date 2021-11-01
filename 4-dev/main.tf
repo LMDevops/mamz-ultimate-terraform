@@ -7,3 +7,21 @@ module "app1_dev_project" {
   folder_id       = data.terraform_remote_state.organization.outputs.folders.Dev.name
   labels          = local.project_terraform_labels
 }
+
+module "app1_dev_admin_iam" {
+  source      = "../modules/iam/projects-iam"
+  project     = trimprefix(module.app1_dev_project.project_id, "projects/")
+  admin_roles = local.admin_roles
+}
+
+module "app1_dev_developer_iam" {
+  source      = "../modules/iam/projects-iam"
+  project     = trimprefix(module.app1_dev_project.project_id, "projects/")
+  admin_roles = local.developer_roles
+}
+
+module "app1_dev_devops_iam" {
+  source      = "../modules/iam/projects-iam"
+  project     = trimprefix(module.app1_dev_project.project_id, "projects/")
+  admin_roles = local.devops_roles
+}

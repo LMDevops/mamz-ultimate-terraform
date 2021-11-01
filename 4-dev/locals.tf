@@ -8,4 +8,11 @@ locals {
   project_terraform_labels = {
     "env" = "dev"
   }
+
+  admin_roles = [
+    "roles/editor",
+    "roles/resourcemanager.projectIamAdmin",
+    "roles/storage.objectAdmin",
+    "roles/compute.networkUser"
+  ]
 }
