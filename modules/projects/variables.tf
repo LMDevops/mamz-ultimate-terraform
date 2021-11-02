@@ -61,3 +61,12 @@ variable "svpc_host" {
   type    = bool
   default = false
 }
+
+variable "sa_account_id" {
+  type    = string
+  default = null
+}
+variable "has_sa" {
+  type    = bool
+  default = false
+}

@@ -40,3 +40,10 @@ resource "google_project_iam_audit_config" "main_cis_feature_1" {
     log_type = "DATA_READ"
   }
 }
+
+resource "google_service_account" "service_account" {
+  count        = var.has_sa ? 1 : 0
+  account_id   = "${var.sa_account_id}-sa"
+  display_name = "sa for ${var.sa_account_id}"
+  project      = google_project.main.project_id
+}
