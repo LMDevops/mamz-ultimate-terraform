@@ -12,7 +12,17 @@ locals {
   admin_roles = [
     "roles/editor",
     "roles/resourcemanager.projectIamAdmin",
-    "roles/storage.objectAdmin",
-    "roles/compute.networkUser"
+    "roles/storage.objectAdmin"
   ]
+
+  developer_roles = [
+    "roles/editor",
+    "roles/storage.objectAdmin"
+  ]
+
+  devops_roles = [
+    "roles/editor",
+    "roles/storage.objectAdmin"
+  ]
+
 }
