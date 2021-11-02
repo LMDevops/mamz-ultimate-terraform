@@ -52,3 +52,9 @@ module "org_vpc_flow_log_sink" {
   filter               = "logName:(\"projects/${trimprefix(module.logging_monitoring_project.project_id, "projects/")}/logs/compute.googleapis.com%2Fvpc_flows\")"
   destination_uri      = module.org_vpc_flow_log_bucket.destination_uri
 }
+
+module "shared_vpc_iam_bindings" {
+  source             = "../modules/iam/svpc-iam"
+  groups             = var.groups
+  network_project_id = module.shared_vpc_host_project.project_id
+}
