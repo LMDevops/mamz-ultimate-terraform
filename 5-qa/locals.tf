@@ -8,4 +8,20 @@ locals {
   project_terraform_labels = {
     "env" = "qa"
   }
+
+  admin_roles = [
+    "roles/editor",
+    "roles/resourcemanager.projectIamAdmin",
+    "roles/storage.objectAdmin"
+  ]
+
+  developer_roles = [
+    "roles/editor",
+    "roles/storage.objectAdmin"
+  ]
+
+  devops_roles = [
+    "roles/editor",
+    "roles/storage.objectAdmin"
+  ]
 }
