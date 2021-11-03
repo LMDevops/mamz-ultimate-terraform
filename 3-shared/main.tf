@@ -1,7 +1,7 @@
 module "shared_vpc_host_project" {
   source          = "../modules/projects"
-  name            = local.svpc_project_name
-  project_id      = local.svpc_project_name
+  name            = var.svpc_project_name
+  project_id      = var.svpc_project_name
   services        = local.svpc_service_apis
   billing_account = var.billing_account
   folder_id       = data.terraform_remote_state.organization.outputs.folders.Shared.name
@@ -17,10 +17,11 @@ module "svpc_network" {
   environment     = "s"
   network_configs = local.svpc__network_configs
 }
+
 module "logging_monitoring_project" {
   source          = "../modules/projects"
-  name            = local.log_mon_project_name
-  project_id      = local.log_mon_project_name
+  name            = var.log_mon_project_name
+  project_id      = var.log_mon_project_name
   services        = local.log_mon_service_apis
   billing_account = var.billing_account
   folder_id       = data.terraform_remote_state.organization.outputs.folders.Shared.name
