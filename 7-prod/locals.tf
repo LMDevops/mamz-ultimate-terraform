@@ -21,8 +21,7 @@ locals {
     "roles/bigquery.dataViewer",
     "roles/bigquery.resourceViewer",
     "roles/cloudfunctions.viewer",
-    "roles/monitoring.viewer",
-    "roles/storage.legacyBucketReader"
+    "roles/monitoring.viewer"
   ]
 
   devops_roles = [
@@ -33,7 +32,6 @@ locals {
     "roles/bigquery.dataViewer",
     "roles/bigquery.resourceViewer",
     "roles/cloudfunctions.viewer",
-    "roles/monitoring.viewer",
-    "roles/storage.legacyBucketReader"
+    "roles/monitoring.viewer"
   ]
 }
