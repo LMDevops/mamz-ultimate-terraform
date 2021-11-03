@@ -30,19 +30,7 @@ locals {
     "serviceusage.googleapis.com",
     "storage-api.googleapis.com",
   ]
-
-  sec_logs_base      = "sec-logs-01-shared"
-  sec_logs_project   = "pr-${local.sec_logs_base}"
-  sec_images_base    = "sec-images-01-shared"
-  sec_images_project = "pr-${local.sec_images_base}"
-  obsr_log_base      = "obsr-log-01-prod"
-  obsr_log_project   = "pr-${local.obsr_log_base}"
-
-  svpc_project_name     = "prj-zzzz-s-svpc"
-  log_mon_project_name  = "prj-zzzz-s-log-mon"
-  sec_scrt_mngr_base    = "scrt-mngr-01-shared"
-  sec_scrt_mngr_project = "pr-${local.sec_scrt_mngr_base}"
-  environment           = "s"
+  environment = "s"
 
   svpc__network_config_path = "./config/networking"
   svpc__network_config_sets = fileset(local.svpc__network_config_path, "*.json")
