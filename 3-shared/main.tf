@@ -59,9 +59,13 @@ module "org_vpc_flow_log_sink" {
   destination_uri      = module.org_vpc_flow_log_bucket.destination_uri
 
 }
-
+## This will make any groups added to the var.groups able to use networks on the shared vpc host ##
 module "shared_vpc_iam_bindings" {
   source             = "../modules/iam/svpc-iam"
   groups             = var.groups
   network_project_id = module.shared_vpc_host_project.project_id
 }
+
+/*
+TODO: Restrict the use of prod subnets via org policy. 
+*/
