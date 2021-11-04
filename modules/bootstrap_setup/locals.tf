@@ -2,7 +2,6 @@ locals {
   project_terraform_labels = var.labels
 
   proj_services_to_enable = [
-    "bigquery.googleapis.com",
     "admin.googleapis.com",
     "cloudbilling.googleapis.com",
     "cloudidentity.googleapis.com",
