@@ -30,8 +30,11 @@ locals {
     "serviceusage.googleapis.com",
     "storage-api.googleapis.com",
   ]
-  environment = "s"
-
+  vpc_type                  = "shared"
+  environment               = "s"
+  business_code             = "zzzz"
+  svpc_project_label        = "svpc"
+  log_mon_project_label     = "log-mon"
   svpc__network_config_path = "./config/networking"
   svpc__network_config_sets = fileset(local.svpc__network_config_path, "*.json")
   svpc__network_configs = flatten([for networks in local.svpc__network_config_sets : [
