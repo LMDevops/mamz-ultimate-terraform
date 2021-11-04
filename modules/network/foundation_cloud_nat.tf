@@ -38,7 +38,7 @@ locals {
   cloud_nat_groups = merge(distinct(flatten([
     for network in var.network_configs : {
       for nat_group in network.cloud_nat.nat_groups : "${var.prefix}-${var.environment}-vpc-${network.name}__${nat_group.nat_group_id}" => {
-        network                      = "${var.prefix}-${var.environment}-vpc-${network.name}"
+        network                      = "vpc-${var.environment}-${var.vpc_type}-${network.name}"
         nat_group_id                 = nat_group.nat_group_id
         log_config                   = try(nat_group.log_config, local.defaults_cloud_nat.log_config)
         min_ports_per_vm             = try(nat_group.min_ports_per_vm, local.defaults_cloud_nat.min_ports_per_vm)
@@ -55,7 +55,7 @@ locals {
       for primary_subnetwork in network.subnetworks : {
         region            = lower(primary_subnetwork.region)
         region_shortname  = module.gcp_utils.region_short_name_map[lower(primary_subnetwork.region)]
-        network           = "${var.prefix}-${var.environment}-vpc-${network.name}"
+        network           = "vpc-${var.environment}-${var.vpc_type}-${network.name}"
         network_shortname = network.name
 
         name   = "${network.name}-${module.gcp_utils.region_short_name_map[lower(primary_subnetwork.region)]}-router-nat"

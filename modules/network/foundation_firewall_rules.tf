@@ -5,14 +5,14 @@ locals {
   }
   _firewall_rules = flatten([for network in var.network_configs : [
     for firewall_rule in network.firewall_rules : {
-      id             = firewall_rule.id
-      network        = "${var.prefix}-${var.environment}-vpc-${network.name}"
+      id           = firewall_rule.id
+      network      = "vpc-${var.environment}-${var.vpc_type}-${network.name}"
       network_name = network.name
 
       priority       = try(firewall_rule.priority, 1000)
       rule_action    = lower(firewall_rule.action)
       rule_direction = upper(try(firewall_rule.direction, "ingress"))
-      disabled = try(firewall_rule.disabled,false)
+      disabled       = try(firewall_rule.disabled, false)
 
       source_service_accounts = [for x in firewall_rule.sources : x if length(split("@", x)) > 1 && !can(cidrnetmask(x))]
       source_tags             = [for x in firewall_rule.sources : x if length(split("@", x)) < 2 && !can(cidrnetmask(x))]
@@ -27,7 +27,7 @@ locals {
     }
   ] if can(network.firewall_rules)])
 
-  firewall_rules = { for firewall_rule in local._firewall_rules : "${firewall_rule.id}-${uuidv5("x500","PREFIX=${var.prefix},ENVIRONMENT=${var.environment},NETWORK=${firewall_rule.network_name},ID=${firewall_rule.id}")}" =>
+  firewall_rules = { for firewall_rule in local._firewall_rules : "${firewall_rule.id}-${uuidv5("x500", "PREFIX=${var.prefix},ENVIRONMENT=${var.environment},NETWORK=${firewall_rule.network_name},ID=${firewall_rule.id}")}" =>
     merge(firewall_rule, {
       source_ranges = length(concat(firewall_rule.source_service_accounts, firewall_rule.source_tags, firewall_rule.source_cidrs)) > 0 ? firewall_rule.source_cidrs : ["0.0.0.0/0"]
       target_ranges = length(concat(firewall_rule.target_service_accounts, firewall_rule.target_tags, firewall_rule.target_cidrs)) > 0 ? firewall_rule.target_cidrs : ["0.0.0.0/0"]

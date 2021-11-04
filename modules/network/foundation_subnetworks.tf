@@ -23,7 +23,7 @@ locals {
     for network in var.network_configs : {
       for primary_subnetwork in network.subnetworks : "${network.name}-${lower(primary_subnetwork.region)}-${try(primary_subnetwork.name, primary_subnetwork.ip_cidr_range)}" => {
         name    = try(primary_subnetwork._name, "${network.name}-${module.gcp_utils.region_short_name_map[lower(primary_subnetwork.region)]}-primary-${replace(primary_subnetwork.ip_cidr_range, "//|\\./", "-")}")
-        network = "${var.prefix}-${var.environment}-vpc-${network.name}"
+        network = "vpc-${var.environment}-${var.vpc_type}-${network.name}"
 
         purpose = try(primary_subnetwork.purpose, "PRIVATE")
 

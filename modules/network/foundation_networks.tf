@@ -16,8 +16,8 @@ locals {
     peers        = []
   }
 
-  networks = { for network in var.network_configs : "${var.prefix}-${var.environment}-vpc-${network.name}" => {
-    id                      = "projects/${var.project_id}/global/networks/${var.prefix}-${var.environment}-vpc-${network.name}"
+  networks = { for network in var.network_configs : "vpc-${var.environment}-${var.vpc_type}-${network.name}" => {
+    id                      = "projects/${var.project_id}/global/networks/vpc-${var.environment}-${network.name}"
     routing_mode            = try(network.routing_mode, local.defaults_network.routing_mode)
     mtu                     = try(network.mtu, local.defaults_network.mtu)
     auto_create_subnetworks = false

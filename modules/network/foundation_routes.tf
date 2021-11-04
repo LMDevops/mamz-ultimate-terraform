@@ -5,8 +5,8 @@
 
 locals {
   defaults_route = {
-    priority         = 1000,
-    tags             = [],
+    priority = 1000,
+    tags     = [],
     # next_hop_gateway = "global/gateways/default-internet-gateway",
     next_hop_gateway = "default-internet-gateway",
     next_hop_type    = "UNKNOWN"
@@ -27,7 +27,7 @@ locals {
     for network in var.network_configs : [
       for route in network.routes : {
         name             = local.defaults_route.name
-        network          = "${var.prefix}-${var.environment}-vpc-${network.name}"
+        network          = "vpc-${var.environment}-${var.vpc_type}-${network.name}"
         network_name     = network.name
         dest_range       = route.destination
         next_hop_type    = lookup(local.lookups_next_hop_type, route.next_hop_type, local.defaults_route.next_hop_type)
