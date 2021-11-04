@@ -25,4 +25,6 @@ locals {
     "roles/storage.objectAdmin"
   ]
 
+  has_sa = true
+
 }
