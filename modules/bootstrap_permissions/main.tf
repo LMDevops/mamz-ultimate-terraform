@@ -48,9 +48,9 @@ resource "google_organization_iam_member" "sa-user" {
   ]
 }
 
-resource "google_organization_iam_binding" "folderCreator" {
+resource "google_organization_iam_binding" "folderAdmin" {
   org_id  = var.organization_id
-  role    = "roles/resourcemanager.folderCreator"
+  role    = "roles/resourcemanager.folderAdmin"
   members = var.users
 
   depends_on = [
