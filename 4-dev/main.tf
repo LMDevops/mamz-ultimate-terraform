@@ -7,7 +7,7 @@ module "app1_dev_project" {
   folder_id       = data.terraform_remote_state.organization.outputs.folders.Dev.name
   labels          = local.project_terraform_labels
   sa_account_id   = local.app1_project_name
-  has_sa          = true
+  has_sa          = local.has_sa
 }
 
 module "app1_dev_admin_iam" {
