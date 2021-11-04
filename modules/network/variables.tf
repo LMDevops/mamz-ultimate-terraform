@@ -19,3 +19,5 @@ variable "environment" {
 variable "project_id" {}
 
 variable "network_configs" {}
+
+variable "vpc_type" {}
