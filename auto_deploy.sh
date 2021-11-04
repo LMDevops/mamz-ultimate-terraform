@@ -109,159 +109,159 @@ else
   echo "Shared resources deployed. "
 fi
 
-# # Tier 4 dev
-# echo "terraform {
-#   backend \"gcs\" {
-#     $BUCKET
-#     prefix = \"tf_state_dev\"
-#   }
+# Tier 4 dev
+echo "terraform {
+  backend \"gcs\" {
+    $BUCKET
+    prefix = \"tf_state_dev\"
+  }
+}
+
+###Uncomment the lines below to use the TF service account. Will require that the account have billing user privileges by step 3.###
+# provider \"google\" {
+#   impersonate_service_account = data.terraform_remote_state.bootstrap.outputs.bootstrap_automation_service_account
 # }
 
-# ###Uncomment the lines below to use the TF service account. Will require that the account have billing user privileges by step 3.###
-# # provider \"google\" {
-# #   impersonate_service_account = data.terraform_remote_state.bootstrap.outputs.bootstrap_automation_service_account
-# # }
+data \"terraform_remote_state\" \"bootstrap\" {
+  backend = \"gcs\"
+  config = {
+    $BUCKET
+    prefix = \"tf_state_bootstrap\"
+  }
+}
 
-# data \"terraform_remote_state\" \"bootstrap\" {
-#   backend = \"gcs\"
-#   config = {
-#     $BUCKET
-#     prefix = \"tf_state_bootstrap\"
-#   }
+data \"terraform_remote_state\" \"organization\" {
+  backend = \"gcs\"
+  config = {
+    $BUCKET
+    prefix = \"tf_state_organization\"
+  }
+}" > ./4-dev/provider.tf
+
+
+terraform -chdir=4-dev init
+terraform -chdir=4-dev apply --auto-approve -var-file=terraform.tfvars
+
+if [ $? != 0 ]; then
+  echo "Error on Step 4"
+  exit 1
+else
+  echo "Dev resources deployed. "
+fi
+
+#Tier 5 qa
+
+echo "terraform {
+  backend \"gcs\" {
+    $BUCKET
+    prefix = \"tf_state_qa\"
+  }
+}
+
+###Uncomment the lines below to use the TF service account. Will require that the account have billing user privileges by step 3.###
+# provider \"google\" {
+#   impersonate_service_account = data.terraform_remote_state.bootstrap.outputs.bootstrap_automation_service_account
 # }
 
-# data \"terraform_remote_state\" \"organization\" {
-#   backend = \"gcs\"
-#   config = {
-#     $BUCKET
-#     prefix = \"tf_state_organization\"
-#   }
-# }" > ./4-dev/provider.tf
+data \"terraform_remote_state\" \"bootstrap\" {
+  backend = \"gcs\"
+  config = {
+    $BUCKET
+    prefix = \"tf_state_bootstrap\"
+  }
+}
 
+data \"terraform_remote_state\" \"organization\" {
+  backend = \"gcs\"
+  config = {
+    $BUCKET
+    prefix = \"tf_state_organization\"
+  }
+}" > ./5-qa/provider.tf
 
-# terraform -chdir=4-dev init
-# terraform -chdir=4-dev apply --auto-approve -var-file=terraform.tfvars
+terraform -chdir=5-qa init
+terraform -chdir=5-qa apply --auto-approve -var-file=terraform.tfvars
 
-# if [ $? != 0 ]; then
-#   echo "Error on Step 4"
-#   exit 1
-# else
-#   echo "Dev resources deployed. "
-# fi
+if [ $? != 0 ]; then
+  echo "Error on Step 5"
+  exit 1
+else
+  echo "QA resources deployed. "
+fi
 
-# #Tier 5 qa
+echo "terraform {
+  backend \"gcs\" {
+    $BUCKET
+    prefix = \"tf_state_uat\"
+  }
+}
 
-# echo "terraform {
-#   backend \"gcs\" {
-#     $BUCKET
-#     prefix = \"tf_state_qa\"
-#   }
+###Uncomment the lines below to use the TF service account. Will require that the account have billing user privileges by step 3.###
+# provider \"google\" {
+#   impersonate_service_account = data.terraform_remote_state.bootstrap.outputs.bootstrap_automation_service_account
 # }
 
-# ###Uncomment the lines below to use the TF service account. Will require that the account have billing user privileges by step 3.###
-# # provider \"google\" {
-# #   impersonate_service_account = data.terraform_remote_state.bootstrap.outputs.bootstrap_automation_service_account
-# # }
+data \"terraform_remote_state\" \"bootstrap\" {
+  backend = \"gcs\"
+  config = {
+    $BUCKET
+    prefix = \"tf_state_bootstrap\"
+  }
+}
 
-# data \"terraform_remote_state\" \"bootstrap\" {
-#   backend = \"gcs\"
-#   config = {
-#     $BUCKET
-#     prefix = \"tf_state_bootstrap\"
-#   }
+data \"terraform_remote_state\" \"organization\" {
+  backend = \"gcs\"
+  config = {
+    $BUCKET
+    prefix = \"tf_state_organization\"
+  }
+}" > ./6-uat/provider.tf
+
+terraform -chdir=6-uat init
+terraform -chdir=6-uat apply --auto-approve -var-file=terraform.tfvars
+
+if [ $? != 0 ]; then
+  echo "Error on Step 6"
+  exit 1
+else
+  echo "UAT resources deployed. "
+fi
+
+echo "terraform {
+  backend \"gcs\" {
+    $BUCKET
+    prefix = \"tf_state_shared\"
+  }
+}
+
+###Uncomment the lines below to use the TF service account. Will require that the account have billing user privileges by step 3.###
+# provider \"google\" {
+#   impersonate_service_account = data.terraform_remote_state.bootstrap.outputs.bootstrap_automation_service_account
 # }
 
-# data \"terraform_remote_state\" \"organization\" {
-#   backend = \"gcs\"
-#   config = {
-#     $BUCKET
-#     prefix = \"tf_state_organization\"
-#   }
-# }" > ./5-qa/provider.tf
+data \"terraform_remote_state\" \"bootstrap\" {
+  backend = \"gcs\"
+  config = {
+    $BUCKET
+    prefix = \"tf_state_bootstrap\"
+  }
+}
 
-# terraform -chdir=5-qa init
-# terraform -chdir=5-qa apply --auto-approve -var-file=terraform.tfvars
+data \"terraform_remote_state\" \"organization\" {
+  backend = \"gcs\"
+  config = {
+    $BUCKET
+    prefix = \"tf_state_organization\"
+  }
+}" > ./7-prod/provider.tf
 
-# if [ $? != 0 ]; then
-#   echo "Error on Step 5"
-#   exit 1
-# else
-#   echo "QA resources deployed. "
-# fi
+terraform -chdir=7-prod init
+terraform -chdir=7-prod apply --auto-approve -var-file=terraform.tfvars
 
-# echo "terraform {
-#   backend \"gcs\" {
-#     $BUCKET
-#     prefix = \"tf_state_uat\"
-#   }
-# }
-
-# ###Uncomment the lines below to use the TF service account. Will require that the account have billing user privileges by step 3.###
-# # provider \"google\" {
-# #   impersonate_service_account = data.terraform_remote_state.bootstrap.outputs.bootstrap_automation_service_account
-# # }
-
-# data \"terraform_remote_state\" \"bootstrap\" {
-#   backend = \"gcs\"
-#   config = {
-#     $BUCKET
-#     prefix = \"tf_state_bootstrap\"
-#   }
-# }
-
-# data \"terraform_remote_state\" \"organization\" {
-#   backend = \"gcs\"
-#   config = {
-#     $BUCKET
-#     prefix = \"tf_state_organization\"
-#   }
-# }" > ./6-uat/provider.tf
-
-# terraform -chdir=6-uat init
-# terraform -chdir=6-uat apply --auto-approve -var-file=terraform.tfvars
-
-# if [ $? != 0 ]; then
-#   echo "Error on Step 6"
-#   exit 1
-# else
-#   echo "UAT resources deployed. "
-# fi
-
-# echo "terraform {
-#   backend \"gcs\" {
-#     $BUCKET
-#     prefix = \"tf_state_shared\"
-#   }
-# }
-
-# ###Uncomment the lines below to use the TF service account. Will require that the account have billing user privileges by step 3.###
-# # provider \"google\" {
-# #   impersonate_service_account = data.terraform_remote_state.bootstrap.outputs.bootstrap_automation_service_account
-# # }
-
-# data \"terraform_remote_state\" \"bootstrap\" {
-#   backend = \"gcs\"
-#   config = {
-#     $BUCKET
-#     prefix = \"tf_state_bootstrap\"
-#   }
-# }
-
-# data \"terraform_remote_state\" \"organization\" {
-#   backend = \"gcs\"
-#   config = {
-#     $BUCKET
-#     prefix = \"tf_state_organization\"
-#   }
-# }" > ./7-prod/provider.tf
-
-# terraform -chdir=7-prod init
-# terraform -chdir=7-prod apply --auto-approve -var-file=terraform.tfvars
-
-# if [ $? != 0 ]; then
-#   echo "Error on Step 7"
-#   exit 1
-# else
-#   echo "Prod resources deployed. "
-#   exit 0
-# fi
+if [ $? != 0 ]; then
+  echo "Error on Step 7"
+  exit 1
+else
+  echo "Prod resources deployed. "
+  exit 0
+fi

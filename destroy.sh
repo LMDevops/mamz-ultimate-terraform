@@ -67,7 +67,7 @@ fi
 echo "" > ./2-organization/provider.tf
 
 echo "" > ./1-bootstrap/provider.tf
-# terraform -chdir=1-bootstrap init -migrate-state
+
 terraform -chdir=1-bootstrap init -force-copy
 
 if [ $? != 0 ]; then
@@ -77,8 +77,7 @@ else
   echo "Bootstrap state migrated. Destroying resources... "
 fi
 
-terraform -chdir=1-bootstrap destroy -var-file=terraform.tfvars --auto-approve 
-
+terraform -chdir=1-bootstrap destroy -var-file=terraform.tfvars --auto-approve;
 
 if [ $? != 0 ]; then
   echo "Error on step 1"
