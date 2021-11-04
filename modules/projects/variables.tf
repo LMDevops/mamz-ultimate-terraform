@@ -48,7 +48,7 @@ variable "services" {
 variable "disable_dependent_services" {
   type        = bool
   description = "Whether to disable services that are dependent when a service is destroyed"
-  default     = false
+  default     = true
 }
 
 variable "enforce_cis_standards" {
