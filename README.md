@@ -19,225 +19,103 @@ The bootstrap step includes:
   - Terraform state bucket
   - Custom Service Account used by Terraform to create new resources in GCP
 
-To further separate the concerns at the IAM level as well, the service account of the CI/CD tool is given different permissions than the Terraform account.
-The CI/CD tool account (`@cloudbuild.gserviceaccount.com` is granted access to generate tokens over the Terraform custom service account.
-In this configuration, the baseline permissions of the CI/CD tool are limited, and the Terraform custom Service Account is granted the IAM permissions required to build the foundation.
-
 After executing this step, you will have the following structure:
 
 ```
 example-organization/
 └── fldr-bootstrap
-    ├── prj-b-cicd
-    └── prj-b-seed
+    └── prj-zzzz-b-tfseed
 ```
 
-When this step executes, it sets up Cloud Build and Cloud Source Repositories for each of the stages below.
-Triggers are configured to run a `terraform plan` for any non environment branch and `terraform apply` when changes are merged to an environment branch (`development`, `non-production` & `production`).
-Usage instructions are available in the 0-bootstrap [README](./bootstrap/README.md).
+### [2. Organization](./2-organization/)
 
-### [1. Organization](./organization/)
+The purpose of this stage is to set up Org policies, Org level IAM and folder hierarchy.
+After executing this step you will have additional folders underneath the organization:
 
-The purpose of this stage is to set up Org policies, Org level IAM, secrets and Org level logging.
+```
+example-organization/
+├── fldr-bootstrap
+├── fldr-dev
+├── fldr-prod
+├── fldr-qa
+├── fldr-shared
+└── fldr-uat
+```
 
-### [2. Shared](./organization/shared/)
+### [3. Shared](./3-shared/)
 
-This will create the following folder & project structure:
+This will create two projects underneath the shared folder:
 
 ```
 example-organization
 └── fldr-shared
-    ├── prj-c-logging
-    ├── prj-c-base-net-hub
-    ├── prj-c-billing-logs
-    ├── prj-c-dns-hub
-    ├── prj-c-interconnect
-    ├── prj-c-restricted-net-hub
-    ├── prj-c-scc
-    └── prj-c-secrets
+    ├── prj-zzzz-s-log-mon
+    └── prj-zzzz-s-svpc
+
 ```
-
-#### Logs
-
-Among the eight projects created under the shared folder, two projects (`prj-c-logging`, `prj-c-billing-logs`) are used for logging.
-The first one for organization wide audit logs, and the latter for billing logs.
-In both cases the logs are collected into BigQuery datasets which can then be used general querying, dashboarding & reporting. Logs are also exported to Pub/Sub and GCS bucket.
 
 **Notes**:
 
-- Log export to GCS bucket has optional object versioning support via `log_export_storage_versioning`.
-- The various audit log types being captured in BigQuery are retained for 30 days.
 - For billing data, a BigQuery dataset is created with permissions attached, however you will need to configure a billing export [manually](https://cloud.google.com/billing/docs/how-to/export-data-bigquery), as there is no easy way to automate this at the moment.
 
-#### DNS Hub
+### [4. dev](./4-dev/)
 
-Another project created under the common folder. This project will host the DNS Hub for the organization.
+The purpose of this stage is to set up the environment projects which contain the resources for individual business units.
 
-#### Interconnect
-
-Another project created under the common folder. This project will host the Dedicated Interconnect [Interconnect connection](https://cloud.google.com/network-connectivity/docs/interconnect/concepts/terminology#elements) for the organization. In case of the Partner Interconnect this project is unused and the [VLAN attachments](https://cloud.google.com/network-connectivity/docs/interconnect/concepts/terminology#for-partner-interconnect) will be placed directly into the corresponding Hub projects.
-
-#### SCC Notification
-
-Another project created under the common folder. This project will host the SCC Notification resources at the organization level.
-This project will contain a Pub/Sub topic and subscription, a [SCC Notification](https://cloud.google.com/security-command-center/docs/how-to-notifications) configured to send all new Findings to the topic created.
-You can adjust the filter when deploying this step.
-
-#### Secrets
-
-Another project created under the common folder. This project is allocated for [GCP Secret Manager](https://cloud.google.com/secret-manager) for secrets shared by the organization.
-
-Usage instructions are available for the org step in the [README](./1-org/README.md).
-
-### [3. Environments](./organization/Dev/)
-
-The purpose of this stage is to set up the environment folders and projects which contain the projects for individual business units. Each environment folder has a CI/CD pipeline that watches for changes in the folder and automatically deploys from the master branch.
-
-This will create the following folder & project structure:
+This will create the following project structure:
 
 ```
 example-organization
-└── fldr-development
-    ├── prj-d-monitoring
-    ├── prj-d-secrets
-    ├── prj-d-shared-base
-    ├── prj-d-bu1-project1
-    └── prj-d-shared-restricted
-└── fldr-non-production
-    ├── prj-n-monitoring
-    ├── prj-n-secrets
-    ├── prj-n-shared-base
-    ├── prj-n-bu1-project1
-    └── prj-n-shared-restricted
-└── fldr-production
-    ├── prj-p-monitoring
-    ├── prj-p-secrets
-    ├── prj-p-shared-base
-    ├── prj-p-bu1-project1
-    └── prj-p-shared-restricted
+└── fldr-dev
+    └── prj-zzzz-d-app1
+└── fldr-prod
+    └── prj-zzzz-p-app1
+└── fldr-qa
+    └── prj-zzzz-q-app1
+└── fldr-uat
+    └── prj-zzzz-u-app1
 ```
 
 #### Monitoring
 
-Under each environment folder, a project is created per environment (`development`, `non-production` & `production`), which is intended to be used as a [Cloud Monitoring workspace](https://cloud.google.com/monitoring/workspaces) for all projects in that environment.
+Under each environment folder, a project is created per environment (`dev`, `prod`, `uat` & `qa`).
 Please note that creating the [workspace and linking projects](https://cloud.google.com/monitoring/workspaces/create) can currently only be completed through the Cloud Console.
 
 If you have strong IAM requirements for these monitoring workspaces, it is worth considering creating these at a more granular level, such as per business unit or per application.
 
 #### Networking
 
-Under the environment folder, two projects, one for base and another for restricted network, are created per environment (`development`, `non-production` & `production`) which is intended to be used as a [Shared VPC Host project](https://cloud.google.com/vpc/docs/shared-vpc) for all projects in that environment.
-This stage only creates the projects and enables the correct APIs, the following [networks stage](./3-networks/) creates the actual Shared VPC networks.
-
-#### Secrets
-
-Under the environment folder, a project is created per environment (`development`, `non-production` & `production`), which is intended to be used by [GCP Secret Manager](https://cloud.google.com/secret-manager) for secrets shared by the environment.
-
-Usage instructions are available for the environments step in the [README](./2-environments/README.md).
+Under the shared folder one project is created which contains 4 vpc networks, one per environment (`dev`, `prod`, `qa` & `uat`) which is intended to be used as a [Shared VPC Host project](https://cloud.google.com/vpc/docs/shared-vpc) for all projects in the foundation. The underlying TF modules for creating the networking are complex and thus configuration should be done using the json schema's provided in the "config" folder under shared/networking.
 
 ### Networks
 
-This step focuses on creating a Shared VPC per environment (`development`, `non-production` & `production`) in a standard configuration with a reasonable security baseline. Currently, this includes:
-
-- Optional - Example subnets for `development`, `non-production` & `production` inclusive of secondary ranges for those that want to use GKE.
-- Optional - Default firewall rules created to allow remote access to [VMs through IAP](https://cloud.google.com/iap/docs/using-tcp-forwarding), without needing public IPs.
-  - `allow-iap-ssh` and `allow-iap-rdp` network tags respectively.
-- Optional - Default firewall rule created to allow for [load balancing health checks](https://cloud.google.com/load-balancing/docs/health-checks#firewall_rules) using `allow-lb` tag.
-- Optional - Default firewall rule created to allow [Windows KMS activation](https://cloud.google.com/compute/docs/instances/windows/creating-managing-windows-instances#kms-server) using `allow-win-activation` tag.
-- [Private service networking](https://cloud.google.com/vpc/docs/configure-private-services-access) configured to enable workload dependant resources like Cloud SQL.
-- Base Shared VPC with [private.googleapis.com](https://cloud.google.com/vpc/docs/configure-private-google-access#private-domains) configured for base access to googleapis.com and gcr.io. Route added for VIP so no internet access is required to access APIs.
-- Restricted Shared VPC with [restricted.googleapis.com](https://cloud.google.com/vpc-service-controls/docs/supported-products) configured for restricted access to googleapis.com and gcr.io. Route added for VIP so no internet access is required to access APIs.
-- Default routes to internet removed, with tag based route `egress-internet` required on VMs in order to reach the internet.
-- Optional - Cloud NAT configured for all subnets with logging and static outbound IPs.
-- Default Cloud DNS policy applied, with DNS logging and [inbound query forwarding](https://cloud.google.com/dns/docs/overview#dns-server-policy-in) turned on.
-
-Usage instructions are available for the networks step in the [README](./3-networks/README.md).
+VPC networks are deployed per environment with baseline firewall rules and cloud NAT'ing in place. Each network has it's configuration stored in a json schema which can be updated and the terraform re-deployed to customize the network attributes.
 
 ### Final View
 
 Once all steps above have been executed your GCP organization should represent the structure shown below, with projects being the lowest nodes in the tree.
 
 ```
-example-organization
-└── fldr-common
-    ├── prj-c-logging
-    ├── prj-c-base-net-hub
-    ├── prj-c-billing-logs
-    ├── prj-c-dns-hub
-    ├── prj-c-interconnect
-    ├── prj-c-restricted-net-hub
-    ├── prj-c-scc
-    ├── prj-c-secrets
-    ├── prj-bu1-c-infra-pipeline
-    └── prj-bu2-c-infra-pipeline
-└── fldr-development
-    ├── prj-bu1-d-env-secrets
-    ├── prj-bu1-d-sample-floating
-    ├── prj-bu1-d-sample-base
-    ├── prj-bu1-d-sample-restrict
-    ├── prj-bu1-d-sample-peering
-    ├── prj-bu2-d-env-secrets
-    ├── prj-bu2-d-sample-floating
-    ├── prj-bu2-d-sample-base
-    ├── prj-bu2-d-sample-restrict
-    ├── prj-bu2-d-sample-peering
-    ├── prj-d-monitoring
-    ├── prj-d-secrets
-    ├── prj-d-shared-base
-    └── prj-d-shared-restricted
-└── fldr-non-production
-    ├── prj-bu1-n-env-secrets
-    ├── prj-bu1-n-sample-floating
-    ├── prj-bu1-n-sample-base
-    ├── prj-bu1-n-sample-restrict
-    ├── prj-bu1-n-sample-peering
-    ├── prj-bu2-n-env-secrets
-    ├── prj-bu2-n-sample-floating
-    ├── prj-bu2-n-sample-base
-    ├── prj-bu2-n-sample-restrict
-    ├── prj-bu2-n-sample-peering
-    ├── prj-n-monitoring
-    ├── prj-n-secrets
-    ├── prj-n-shared-base
-    └── prj-n-shared-restricted
-└── fldr-production
-    ├── prj-bu1-p-env-secrets
-    ├── prj-bu1-p-sample-floating
-    ├── prj-bu1-p-sample-base
-    ├── prj-bu1-p-sample-restrict
-    ├── prj-bu1-p-sample-peering
-    ├── prj-bu2-p-env-secrets
-    ├── prj-bu2-p-sample-floating
-    ├── prj-bu2-p-sample-base
-    ├── prj-bu2-p-sample-restrict
-    ├── prj-bu2-p-sample-peering
-    ├── prj-p-monitoring
-    ├── prj-p-secrets
-    ├── prj-p-shared-base
-    └── prj-p-shared-restricted
+example-organization/
 └── fldr-bootstrap
-    ├── prj-b-cicd
-    └── prj-b-seed
+    └── prj-zzzz-b-tfseed
+└── fldr-dev
+    └── prj-zzzz-d-app1
+└── fldr-prod
+    └── prj-zzzz-p-app1
+└── fldr-qa
+    └── prj-zzzz-q-app1
+└── fldr-uat
+    └── prj-zzzz-u-app1
+└── fldr-shared
+    ├── prj-zzzz-s-log-mon
+    └── prj-zzzz-s-svpc
 ```
 
 ### Branching strategy
 
-There are three main named branches - `development`, `non-production` and `production` that reflect the corresponding environments. These branches should be [protected](https://docs.github.com/en/github/administering-a-repository/about-protected-branches). When the CI/CD pipeline (Jenkins/CloudBuild) runs on a particular named branch (say for instance `development`), only the corresponding environment (`development`) is applied. An exception is the `shared` environment which is only applied when triggered on the `production` branch. This is because any changes in the `shared` environment may affect resources in other environments and can have adverse effects if not validated correctly.
+The foundations repo was meant to be built upon, cut a branch, make an improvement and create a pull request or fork for a different type of foudation entirely using this repo as a starting point.
 
-Development happens on feature/bugfix branches (which can be named `feature/new-foo`, `bugfix/fix-bar`, etc.) and when complete, a [pull request (PR)](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests) or [merge request (MR)](https://docs.gitlab.com/ee/user/project/merge_requests/) can be opened targeting the `development` branch. This will trigger the CI pipeline to perform a plan and validate against all environments (`development`, `non-production`, `shared` and `production`). Once code review is complete and changes are validated, this branch can be merged into `development`. This will trigger a CI pipeline that applies the latest changes in the `development` branch on the `development` environment.
+### Locals vs. tfvars
 
-Once validated in `development`, changes can be promoted to `non-production` by opening a PR/MR targeting the `non-production` branch and merging them. Similarly, changes can be promoted from `non-production` to `production`.
-
-### Terraform-validator
-
-This repo uses [terraform-validator](https://github.com/GoogleCloudPlatform/terraform-validator) to validate the terraform plans against Forseti Security Config Validator [Policy Library](https://github.com/forseti-security/policy-library).
-
-The [Scorecard bundle](https://github.com/forseti-security/policy-library/blob/master/docs/bundles/scorecard-v1.md) was used to create the [policy-library folder](./policy-library) with [one extra constraint](https://github.com/forseti-security/policy-library/blob/master/samples/serviceusage_allow_basic_apis.yaml) added.
-
-See the [policy-library documentation](https://github.com/forseti-security/policy-library/blob/master/docs/index.md) if you need to add more constraints from the [samples folder](https://github.com/forseti-security/policy-library/tree/master/samples) in your configuration based in your type of workload.
-
-Step 1-org has instructions on the creation of the shared repository to host these policies.
-
-### Optional Variables
-
-Some variables used to deploy the steps have default values, check those **before deployment** to ensure they match your requirements. For more information, there are tables of inputs and outputs for the Terraform modules, each with a detailed description of their variables. Look for variables marked as **not required** in the section **Inputs** of the READMEs
+locals used to deploy the steps have default values, whereas tfvars files do not. Check tfvars files **before deployment** and ensure that it aligns with your needs.
