@@ -10,7 +10,7 @@ module "bootstrap_setup" {
   folder_display_name = local.folder_display_name
   organization_id     = var.organization_id
   billing_account     = var.billing_account
-  labels              = var.labels
+  labels              = local.labels
 
   depends_on = [
     module.bootstrap_permissions
