@@ -1,5 +1,5 @@
 resource "google_folder" "bootstrap" {
-  display_name = "Bootstrap"
+  display_name = var.folder_display_name
   parent       = "organizations/${var.organization_id}"
 }
 
