@@ -1,29 +1,23 @@
 # terraform-sada-foundation
+
 This is an example repo showing how SADA can use Terraform modules to build a secure GCP foundation, based on the [Google Cloud security foundations guide](https://services.google.com/fh/files/misc/google-cloud-security-foundations-guide.pdf) and combined with SADA best practice.
 
-The supplied structure and code is intended to form a starting point for building your own foundation with pragmatic defaults you can customize to meet your own requirements. Currently, the step 0 is manually executed.
-
-From step 1 onwards, the Terraform code is deployed by leveraging Google Cloud Build.
-Cloud Build has been chosen by default to allow teams to quickly get started without needing to deploy a CI/CD tool, although it is worth noting the code can easily be executed by your preferred tool.
+The supplied structure and code is intended to form a starting point for building your own foundation with pragmatic defaults you can customize to meet your own requirements.
 
 ## Overview
+
 This repo contains several distinct Terraform projects each within their own directory that must be applied separately, but in sequence.
 Each of these Terraform projects are to be layered on top of each other, running in the following order.
 
-### [0. bootstrap](./bootstrap/)
+### [1. bootstrap](./1-bootstrap/)
 
-This stage executes the Bootstrap module which bootstraps an existing GCP organization, creating all the required GCP resources & permissions to start using the Cloud Foundation Toolkit (CFT).
+This stage executes the Bootstrap module which bootstraps an existing GCP organization.
 
 The bootstrap step includes:
-- The `prj-b-seed` project, which contains:
+
+- The `prj-zzzz-b-seed` project, which contains:
   - Terraform state bucket
   - Custom Service Account used by Terraform to create new resources in GCP
-- The `prj-b-cicd` project, which contains:
-  - A CI/CD pipeline implemented with Cloud Build
-
-It is a best practice to separate concerns by having two projects here: one for the CFT resources and one for the CI/CD tool.
-The `prj-b-seed` project stores Terraform state and has the Service Account able to create / modify infrastructure.
-On the other hand, the deployment of that infrastructure is coordinated by the CloudBuild CI/CD tool allocated in a second project named `prj-b-cicd`.
 
 To further separate the concerns at the IAM level as well, the service account of the CI/CD tool is given different permissions than the Terraform account.
 The CI/CD tool account (`@cloudbuild.gserviceaccount.com` is granted access to generate tokens over the Terraform custom service account.
@@ -97,7 +91,7 @@ Usage instructions are available for the org step in the [README](./1-org/README
 
 ### [3. Environments](./organization/Dev/)
 
-The purpose of this stage is to set up the environment folders and projects which contain the projects for individual business units. Each environment folder has a CI/CD pipeline that watches for changes in the folder and automatically deploys from the master branch. 
+The purpose of this stage is to set up the environment folders and projects which contain the projects for individual business units. Each environment folder has a CI/CD pipeline that watches for changes in the folder and automatically deploys from the master branch.
 
 This will create the following folder & project structure:
 
