@@ -62,6 +62,16 @@ variable "svpc_host" {
   default = false
 }
 
+variable "is_service_project" {
+  type    = bool
+  default = false
+}
+
+variable "host_project_id" {
+  type    = string
+  default = null
+}
+
 variable "sa_account_id" {
   type    = string
   default = null
