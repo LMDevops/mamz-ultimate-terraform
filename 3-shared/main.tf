@@ -4,7 +4,7 @@ module "shared_vpc_host_project" {
   project_id      = "prj-${local.business_code}-${local.environment}-${local.svpc_project_label}"
   services        = local.svpc_service_apis
   billing_account = var.billing_account
-  folder_id       = data.terraform_remote_state.organization.outputs.folders.Shared.name
+  folder_id       = data.terraform_remote_state.organization.outputs.folders.fldr-shared.name
   labels          = local.project_terraform_labels
   svpc_host       = true
 }
@@ -28,7 +28,7 @@ module "logging_monitoring_project" {
   project_id      = "prj-${local.business_code}-${local.environment}-${local.log_mon_project_label}"
   services        = local.log_mon_service_apis
   billing_account = var.billing_account
-  folder_id       = data.terraform_remote_state.organization.outputs.folders.Shared.name
+  folder_id       = data.terraform_remote_state.organization.outputs.folders.fldr-shared.name
   labels          = local.project_terraform_labels
 }
 
