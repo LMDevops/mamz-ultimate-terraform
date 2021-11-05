@@ -48,14 +48,21 @@ resource "google_organization_iam_member" "sa-user" {
   ]
 }
 
-resource "google_organization_iam_binding" "folderAdmin" {
-  org_id  = var.organization_id
-  role    = "roles/resourcemanager.folderAdmin"
-  members = var.users
-
-  depends_on = [
-    google_organization_iam_member.projectCreator
-  ]
+resource "google_organization_iam_member" "folderAdmin" {
+  for_each = toset(var.users)
+  org_id   = var.organization_id
+  role     = "roles/resourcemanager.folderAdmin"
+  member   = each.value
 }
+
+# resource "google_organization_iam_binding" "folderAdmin" {
+#   org_id  = var.organization_id
+#   role    = "roles/resourcemanager.folderAdmin"
+#   members = var.users
+
+#   depends_on = [
+#     google_organization_iam_member.projectCreator
+#   ]
+# }
 
 
