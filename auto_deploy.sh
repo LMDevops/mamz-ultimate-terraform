@@ -3,17 +3,19 @@
 
 # Tier 1 Bootstrap
 terraform -chdir=1-bootstrap init
-terraform -chdir=1-bootstrap plan --var-file=./terraform.tfvars
-# for V2, have the terminal ask if you want to apply the plan
-terraform -chdir=1-bootstrap apply --var-file=./terraform.tfvars --auto-approve;
-
-# Check that command ran successfully.
-if [ $? != 0 ]; then
-  echo "####Error on Step 1####"
-  exit 1
+if terraform -chdir=1-bootstrap plan --var-file=./terraform.tfvars | grep "No changes"; then
+  echo "###Bootstrap is already deployed###";
 else
-  echo "####Bootstrap deployed...migrating state...####"
+  terraform -chdir=1-bootstrap apply --var-file=./terraform.tfvars --auto-approve
+  # Check that command ran successfully.
+  if [ $? != 0 ]; then
+    echo "####Error on Step 1####"
+    exit 1
+  else
+    echo "####Bootstrap deployed...migrating state...####"
+  fi
 fi
+
 # Grab bucket output to use for future state checks
 export BUCKET=$(terraform -chdir=1-bootstrap output | grep bucket)
 echo "terraform {
@@ -24,7 +26,7 @@ echo "terraform {
 }" > ./1-bootstrap/provider.tf
 
 # Migrate the backend to the GCS bucket
-terraform -chdir=1-bootstrap init -force-copy
+terraform -chdir=1-bootstrap init -force-copy;
 
 if [ $? != 0 ]; then
   echo "####Error on migrating bootstrap state####"
@@ -55,15 +57,16 @@ data \"terraform_remote_state\" \"bootstrap\" {
 }" > ./2-organization/provider.tf
 
 terraform -chdir=2-organization init
-terraform -chdir=2-organization plan
-# for V2 ask if you want to apply changes
-terraform -chdir=2-organization apply -var-file=terraform.tfvars --auto-approve 
-
-if [ $? != 0 ]; then
-  echo "####Error on Step 2####"
-  exit 1
+if terraform -chdir=2-organization plan -var-file=terraform.tfvars | grep "No changes."; then
+  echo "###Organization resources already deployed###"
 else
-  echo "####Organization resources deployed.####"
+  terraform -chdir=2-organization apply -var-file=terraform.tfvars --auto-approve;
+  if [ $? != 0 ]; then
+    echo "####Error on Step 2####"
+    exit 1
+  else
+    echo "####Organization resources deployed.####"
+  fi
 fi
 
 # Setup tier 3 provider.tf
@@ -100,13 +103,16 @@ terraform -chdir=3-shared init
 
 ####STOP HERE AND ADD THE TF SA TO THE BILLING ACCOUNT AS A BILLING USER IF USING THE TF SA.######
 
-terraform -chdir=3-shared apply --auto-approve -var-file=terraform.tfvars
-
-if [ $? != 0 ]; then
-  echo "####Error on Step 3#####"
-  exit 1
+if terraform -chdir=3-shared plan -var-file=terraform.tfvars | grep "No changes."; then
+  echo "###Shared resources already deployed###";
 else
-  echo "######Shared resources deployed.######"
+  terraform -chdir=3-shared apply --auto-approve -var-file=terraform.tfvars
+  if [ $? != 0 ]; then
+    echo "####Error on Step 3#####"
+    exit 1
+  else
+    echo "######Shared resources deployed.######"
+  fi
 fi
 
 # Tier 4 dev
@@ -148,13 +154,16 @@ data \"terraform_remote_state\" \"shared\" {
 
 
 terraform -chdir=4-dev init
-terraform -chdir=4-dev apply --auto-approve -var-file=terraform.tfvars
-
-if [ $? != 0 ]; then
-  echo "Error on Step 4"
-  exit 1
+if terraform -chdir=4-dev plan -var-file=terraform.tfvars | grep "No changes."; then
+  echo "###Dev resources already deployed###"
 else
-  echo "Dev resources deployed. "
+  terraform -chdir=4-dev apply --auto-approve -var-file=terraform.tfvars
+  if [ $? != 0 ]; then
+    echo "###Error on Step 4###"
+    exit 1
+  else
+    echo "###Dev resources deployed.###"
+  fi
 fi
 
 # #Tier 5 qa
