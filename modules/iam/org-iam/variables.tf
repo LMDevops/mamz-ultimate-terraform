@@ -48,6 +48,7 @@ variable "auditor_roles" {
   description = "A list of roles to give org auditors"
   type        = list(string)
   default = [
+    "roles/browser",
     "roles/iam.organizationRoleViewer",
     "roles/logging.viewer",
     "roles/resourcemanager.organizationViewer",
