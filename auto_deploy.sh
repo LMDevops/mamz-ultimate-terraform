@@ -256,7 +256,7 @@ data \"terraform_remote_state\" \"shared\" {
 
 terraform -chdir=6-uat init
 
-if terraform -chdir=6-uat plan -var-file=terraform.tfvars; then
+if terraform -chdir=6-uat plan -var-file=terraform.tfvars | grep "No changes."; then
   echo "###UAT resources already deployed###"
 else
   terraform -chdir=6-uat apply --auto-approve -var-file=terraform.tfvars
@@ -271,7 +271,7 @@ fi
 echo "terraform {
   backend \"gcs\" {
     $BUCKET
-    prefix = \"tf_state_shared\"
+    prefix = \"tf_state_prod\"
   }
 }
 
@@ -304,8 +304,8 @@ data \"terraform_remote_state\" \"shared\" {
   }
 }" > ./7-prod/provider.tf
 
-terraform -chdir=7-prod init
-if terraform -chdir=prod plan -var-file=terraform.tfvars | grep "No changes."; then
+terraform -chdir=7-prod init;
+if terraform -chdir=7-prod plan -var-file=terraform.tfvars | grep "No changes."; then
   echo "###Prod resources already deployed###"
   exit 0
 else
