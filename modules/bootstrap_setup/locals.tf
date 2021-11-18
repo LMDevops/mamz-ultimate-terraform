@@ -24,16 +24,13 @@ locals {
     "roles/compute.xpnAdmin",
     "roles/iam.securityAdmin",
     "roles/storage.admin",
-    "roles/iam.serviceAccountAdmin",
     "roles/logging.configWriter",
     "roles/orgpolicy.policyAdmin",
     "roles/resourcemanager.folderAdmin",
     "roles/resourcemanager.projectCreator",
-    "roles/resourcemanager.projectIamAdmin",
     "roles/resourcemanager.organizationViewer",
     "roles/browser",
-    "roles/orgpolicy.policyAdmin",
-    "roles/iam.serviceAccountTokenCreator"
+    "roles/orgpolicy.policyAdmin"
   ]
 
   resource_base_name         = "zzzz"
