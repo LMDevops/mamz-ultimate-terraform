@@ -12,7 +12,13 @@ module "organization_policies" {
 }
 
 module "org_level_iam_group_bindings" {
-  source = "../modules/iam/org-iam"
-  domain = var.domain
-  org_id = var.organization_id
+  source               = "../modules/iam/org-iam"
+  domain               = var.domain
+  org_id               = var.organization_id
+  billing_admin_group  = var.billing_admin_group
+  org_admin_group      = var.org_admin_group
+  network_admin_group  = var.network_admin_group
+  support_admin_group  = var.support_admin_group
+  auditor_group        = var.auditor_group
+  security_admin_group = var.security_admin_group
 }
