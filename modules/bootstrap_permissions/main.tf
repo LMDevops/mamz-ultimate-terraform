@@ -12,7 +12,7 @@ resource "google_organization_iam_member" "projectCreator" {
   member   = each.value
 
   depends_on = [
-    google_organization_iam_binding.organizationAdmin
+    google_organization_iam_member.organizationAdmin
   ]
 }
 
@@ -23,7 +23,7 @@ resource "google_organization_iam_member" "owner" {
   member   = each.value
 
   depends_on = [
-    google_organization_iam_binding.organizationAdmin
+    google_organization_iam_member.organizationAdmin
   ]
 }
 
@@ -34,7 +34,7 @@ resource "google_organization_iam_member" "sa-token-creator" {
   member   = each.value
 
   depends_on = [
-    google_organization_iam_binding.organizationAdmin
+    google_organization_iam_member.organizationAdmin
   ]
 }
 
@@ -45,7 +45,7 @@ resource "google_organization_iam_member" "sa-user" {
   member   = each.value
 
   depends_on = [
-    google_organization_iam_binding.organizationAdmin
+    google_organization_iam_member.organizationAdmin
   ]
 }
 
