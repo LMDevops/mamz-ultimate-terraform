@@ -1,7 +1,8 @@
-resource "google_organization_iam_binding" "organizationAdmin" {
-  org_id  = var.organization_id
-  role    = "roles/resourcemanager.organizationAdmin"
-  members = var.users
+resource "google_organization_iam_member" "organizationAdmin" {
+  for_each = toset(var.users)
+  org_id   = var.organization_id
+  role     = "roles/resourcemanager.organizationAdmin"
+  member   = each.value
 }
 
 resource "google_organization_iam_member" "projectCreator" {
