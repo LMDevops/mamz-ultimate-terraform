@@ -1,99 +1,81 @@
-# module "shared_billing_alerts" {
-#   source                = "../modules/shared_billing_alerts"
-#   budget                = "500"
-# }
-#
-# module "shared_billing_export" {
-#   source                = "../modules/shared_billing_export"
+module "shared_vpc_host_project" {
+  source          = "../modules/projects"
+  name            = "prj-${local.business_code}-${local.environment}-${local.svpc_project_label}"
+  project_id      = "prj-${local.business_code}-${local.environment}-${local.svpc_project_label}"
+  services        = local.svpc_service_apis
+  billing_account = var.billing_account
+  folder_id       = data.terraform_remote_state.organization.outputs.folders.fldr-shared.name
+  labels          = local.project_terraform_labels
+  svpc_host       = true
+}
+
+module "svpc_network" {
+  source = "../modules/network"
+
+  project_id      = trimprefix(module.shared_vpc_host_project.project_id, "projects/")
+  prefix          = "sb"
+  environment     = local.environment
+  vpc_type        = local.vpc_type
+  network_configs = local.svpc__network_configs
+  depends_on = [
+    module.shared_vpc_host_project
+  ]
+}
+
+module "logging_monitoring_project" {
+  source          = "../modules/projects"
+  name            = "prj-${local.business_code}-${local.environment}-${local.log_mon_project_label}"
+  project_id      = "prj-${local.business_code}-${local.environment}-${local.log_mon_project_label}"
+  services        = local.log_mon_service_apis
+  billing_account = var.billing_account
+  folder_id       = data.terraform_remote_state.organization.outputs.folders.fldr-shared.name
+  labels          = local.project_terraform_labels
+}
+
+module "shared_billing_export" {
+  source                    = "../modules/shared_billing_export"
+  domain                    = "example.com"
+  log_mon_prj_id            = trimprefix(module.logging_monitoring_project.project_id, "projects/")
+  billing_admin_group_email = var.billing_admin_group_email
+  dataset_name              = "bqds-${local.environment}-zzzz-billing-data"
+  dataset_id                = "bqds_${local.environment}_zzzz_billing_data"
+}
+
+module "org_vpc_flow_log_bucket" {
+  source                   = "../modules/logging/logs-storage/cloud-log-bucket"
+  project_id               = trimprefix(module.logging_monitoring_project.project_id, "projects/")
+  bucket_id                = "bkt-s-zzzz-log-mon-vpcflow"
+  log_sink_writer_identity = module.org_vpc_flow_log_sink.writer_identity
+  retention_days           = 30
+
+}
+
+module "org_vpc_flow_log_sink" {
+  source               = "../modules/logging/logs-router"
+  parent_resource_type = "organization"
+  log_sink_name        = "ls-s-zzzz-vpc-flow-sink"
+  parent_resource_id   = data.terraform_remote_state.bootstrap.outputs.organization_id
+  filter               = "logName:(\"projects/${trimprefix(module.logging_monitoring_project.project_id, "projects/")}/logs/compute.googleapis.com%2Fvpc_flows\")"
+  destination_uri      = module.org_vpc_flow_log_bucket.destination_uri
+
+}
+## This will make any groups added to the var.groups able to use networks on the shared vpc host ##
+module "shared_vpc_iam_bindings" {
+  source             = "../modules/iam/svpc-iam"
+  groups             = var.network_user_groups
+  network_project_id = module.shared_vpc_host_project.project_id
+}
+
+/*
+TODO: Automate billing alerts?
+*/
+# module "billing_alerts" {
+#   source = "../modules/shared_billing_alerts"
+
+#   billing_account = var.billing_account
+#   budget          = var.budget
 # }
 
-
-
-# locals {
-#   project_terraform_labels = {
-#     user                   = var.user
-#     owner                  = var.owner
-#   }
-#
-#   service_apis = [
-#     "admin.googleapis.com",
-#     "cloudbilling.googleapis.com",
-#     "cloudidentity.googleapis.com",
-#     "cloudresourcemanager.googleapis.com",
-#     "compute.googleapis.com",
-#     "iam.googleapis.com",
-#     "logging.googleapis.com",
-#     "monitoring.googleapis.com",
-#     "orgpolicy.googleapis.com",
-#     "secretmanager.googleapis.com",
-#     "servicenetworking.googleapis.com",
-#     "serviceusage.googleapis.com",
-#     "storage-api.googleapis.com",
-#   ]
-#
-#   sec_logs_base      = "sec-logs-01-shared"
-#   sec_logs_project   = "pr-${local.sec_logs_base}"
-#   sec_images_base    = "sec-images-01-shared"
-#   sec_images_project = "pr-${local.sec_images_base}"
-#   obsr_log_base      = "obsr-log-01-prod"
-#   obsr_log_project   = "pr-${local.obsr_log_base}"
-#   net_shrd_base      = "net-shrd-01-hub"
-#   net_shrd_project   = "pr-${local.net_shrd_base}"
-#   sec_scrt_mngr_base = "scrt-mngr-01-shared"
-#   sec_scrt_mngr_project   = "pr-${local.sec_scrt_mngr_base}"
-# }
-#
-# resource "google_folder" "shared" {
-#   display_name = "Shared"
-#   parent       = "organizations/${var.organization_id}"
-# }
-#
-# module "security_logs" {
-#   source                = "../modules/projects"
-#   name                  = local.sec_logs_project
-#   project_id            = local.sec_logs_project
-#   services              = local.service_apis
-#   billing_account       = var.billing_account
-#   folder_id             = google_folder.shared.name
-#   labels                = local.project_terraform_labels
-# }
-#
-# module "security_trusted_images" {
-#   source                = "../modules/projects"
-#   name                  = local.sec_images_project
-#   project_id            = local.sec_images_project
-#   services              = local.service_apis
-#   billing_account       = var.billing_account
-#   folder_id             = google_folder.shared.name
-#   labels                = local.project_terraform_labels
-# }
-#
-# module "security_secrets_manager" {
-#   source                = "../modules/projects"
-#   name                  = local.sec_scrt_mngr_project
-#   project_id            = local.sec_scrt_mngr_project
-#   services              = local.service_apis
-#   billing_account       = var.billing_account
-#   folder_id             = google_folder.shared.name
-#   labels                = local.project_terraform_labels
-# }
-#
-# module "observability_logs" {
-#   source                = "../modules/projects"
-#   name                  = local.obsr_log_project
-#   project_id            = local.obsr_log_project
-#   services              = local.service_apis
-#   billing_account       = var.billing_account
-#   folder_id             = google_folder.shared.name
-#   labels                = local.project_terraform_labels
-# }
-#
-# module "network_shared_hub" {
-#   source                = "../modules/projects"
-#   name                  = local.net_shrd_project
-#   project_id            = local.net_shrd_project
-#   services              = local.service_apis
-#   billing_account       = var.billing_account
-#   folder_id             = google_folder.shared.name
-#   labels                = local.project_terraform_labels
-# }
+/*
+TODO: Restrict the use of prod subnets via org policy.
+*/

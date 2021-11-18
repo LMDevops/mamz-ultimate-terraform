@@ -1,9 +1,29 @@
 variable "project_id" {
-  
+
 }
-variable "role_names" {
-  type = list(string)
+variable "admin_roles" {
+  type    = list(string)
+  default = []
 }
-variable "group_name" {
-  
+
+variable "developer_roles" {
+  type    = list(string)
+  default = []
+}
+variable "devops_roles" {
+  type    = list(string)
+  default = []
+}
+variable "admin_group_name" {
+  type    = string
+  default = ""
+}
+
+variable "developer_group_name" {
+  type    = string
+  default = ""
+}
+variable "devops_group_name" {
+  type    = string
+  default = ""
 }

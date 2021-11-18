@@ -1,0 +1,5 @@
+billing_account = "xxxxxx-xxxxxx-xxxxxx"
+##Groups are created in Google admin and must exist prior to deploying this step.###
+admin_group_name     = "grp-gcp-it-prj-app1-admins@example.com"
+developer_group_name = "grp-gcp-it-prj-app1-developers@example.com"
+devops_group_name    = "grp-gcp-it-prj-app1-devops@example.com"

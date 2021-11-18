@@ -48,11 +48,35 @@ variable "services" {
 variable "disable_dependent_services" {
   type        = bool
   description = "Whether to disable services that are dependent when a service is destroyed"
-  default     = false
+  default     = true
 }
 
 variable "enforce_cis_standards" {
-  type = bool
+  type        = bool
   description = "(optional) There will be additional features included that will conform to CIS standards - https://docs.bridgecrew.io/docs/google-cloud-policy-index"
-  default = true
+  default     = true
+}
+
+variable "svpc_host" {
+  type    = bool
+  default = false
+}
+
+variable "is_service_project" {
+  type    = bool
+  default = false
+}
+
+variable "host_project_id" {
+  type    = string
+  default = null
+}
+
+variable "sa_account_id" {
+  type    = string
+  default = null
+}
+variable "has_sa" {
+  type    = bool
+  default = false
 }

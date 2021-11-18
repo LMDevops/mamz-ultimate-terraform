@@ -14,7 +14,7 @@ resource "google_organization_policy" "disable_service_account_creation" {
   constraint = "iam.disableServiceAccountCreation"
 
   boolean_policy {
-    enforced = true
+    enforced = false
   }
 }
 

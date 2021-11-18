@@ -1,9 +1,9 @@
 locals {
   folders = [
-    "Dev",
-    "NonProd",
-    "Prod",
-    "QA",
-    "Shared",
+    "fldr-dev",
+    "fldr-uat",
+    "fldr-prod",
+    "fldr-qa",
+    "fldr-shared",
   ]
 }

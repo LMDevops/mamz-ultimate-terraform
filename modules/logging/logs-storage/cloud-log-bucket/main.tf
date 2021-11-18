@@ -15,8 +15,8 @@
  */
 
 locals {
-  location = var.location != "" ? var.location : "global"
-  destination_uri     = "logging.googleapis.com/projects/${var.project_id}/locations/${local.location}/buckets/${var.bucket_id}"
+  location        = var.location != "" ? var.location : "global"
+  destination_uri = "logging.googleapis.com/projects/${var.project_id}/locations/${local.location}/buckets/${var.bucket_id}"
 }
 
 #----------------#
@@ -32,19 +32,28 @@ locals {
 # Project cloud logging bucket #
 #----------------#
 resource "google_logging_project_bucket_config" "cloud_log_bucket" {
-    project    = var.project_id
-    location  = local.location
-    retention_days = var.retention_days > 0 ? var.retention_days : 30
-    bucket_id = var.bucket_id
+  # count          = var.is_project_level ? 1 : 0
+  project        = var.project_id
+  location       = local.location
+  retention_days = var.retention_days > 0 ? var.retention_days : 30
+  bucket_id      = var.bucket_id
 }
+
+# resource "google_logging_organization_bucket_config" "basic" {
+#   count          = var.is_org_level ? 1 : 0
+#   organization   = var.organization
+#   location       = local.location
+#   retention_days = var.retention_days > 0 ? var.retention_days : 30
+#   bucket_id      = var.bucket_id
+# }
 
 
 #--------------------------------#
 # Service account IAM membership #
 #--------------------------------#
-resource "google_project_iam_binding" "storage_sink_member" {
-  project = var.project_id
-  #bucket = local.storage_bucket_name
-  role   = "roles/logging.bucketWriter"
-  members = [ var.log_sink_writer_identity ]
-}
+# resource "google_project_iam_binding" "storage_sink_member" {
+#   project = var.project_id
+#   #bucket = local.storage_bucket_name
+#   role    = "roles/logging.bucketWriter"
+#   members = [var.log_sink_writer_identity]
+# }
