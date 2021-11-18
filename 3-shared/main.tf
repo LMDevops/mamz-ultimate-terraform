@@ -68,7 +68,7 @@ module "shared_vpc_iam_bindings" {
 
 
 module "billing_alerts" {
-  source = "./modules/shared_billing_alerts"
+  source = "../modules/shared_billing_alerts"
 
   billing_account = var.billing_account
   budget          = var.budget
