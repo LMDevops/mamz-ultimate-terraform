@@ -66,13 +66,15 @@ module "shared_vpc_iam_bindings" {
   network_project_id = module.shared_vpc_host_project.project_id
 }
 
+/*
+TODO: Automate billing alerts?
+*/
+# module "billing_alerts" {
+#   source = "../modules/shared_billing_alerts"
 
-module "billing_alerts" {
-  source = "../modules/shared_billing_alerts"
-
-  billing_account = var.billing_account
-  budget          = var.budget
-}
+#   billing_account = var.billing_account
+#   budget          = var.budget
+# }
 
 /*
 TODO: Restrict the use of prod subnets via org policy.
