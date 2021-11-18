@@ -62,16 +62,16 @@ module "org_vpc_flow_log_sink" {
 ## This will make any groups added to the var.groups able to use networks on the shared vpc host ##
 module "shared_vpc_iam_bindings" {
   source             = "../modules/iam/svpc-iam"
-  groups             = var.groups
+  groups             = var.network_user_groups
   network_project_id = module.shared_vpc_host_project.project_id
 }
 
 
 module "billing_alerts" {
-  source          = "./modules/shared_billing_alerts"
+  source = "./modules/shared_billing_alerts"
 
-  billing_account =  var.billing_account
-  budget          =  var.budget 
+  billing_account = var.billing_account
+  budget          = var.budget
 }
 
 /*

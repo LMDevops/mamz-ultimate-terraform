@@ -1,7 +1,7 @@
 billing_account = "xxxxxx-xxxxxx-xxxxxx"
 ##Groups are created in Google admin and must exist prior to deploying this step.###
 billing_admin_group_email = "grp-gcp-zzzz-org-p-billing-admin@example.com"
-groups = [
+network_user_groups = [
   "grp-gcp-zzzz-org-p-network-admin@example.com",
   "grp-gcp-it-prj-app1-admins@example.com",
   "grp-gcp-it-prj-app1-developers@example.com",
