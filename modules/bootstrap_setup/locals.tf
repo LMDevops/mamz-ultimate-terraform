@@ -18,7 +18,6 @@ locals {
   ]
 
   tf_svc_acc_org_iam_roles = [
-    "roles/billing.admin",
     "roles/billing.user",
     "roles/compute.networkAdmin",
     "roles/compute.xpnAdmin",
