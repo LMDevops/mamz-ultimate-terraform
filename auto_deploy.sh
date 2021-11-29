@@ -147,7 +147,7 @@ data \"terraform_remote_state\" \"organization\" {
 data \"terraform_remote_state\" \"shared\" {
   backend = \"gcs\"
   config = {
-    bucket = \"bkt-b-zzzz-tfstate-tfstate\"
+    $BUCKET
     prefix = \"tf_state_shared\"
   }
 }" > ./4-dev/provider.tf
@@ -199,7 +199,7 @@ data \"terraform_remote_state\" \"organization\" {
 data \"terraform_remote_state\" \"shared\" {
   backend = \"gcs\"
   config = {
-    bucket = \"bkt-b-zzzz-tfstate-tfstate\"
+    $BUCKET
     prefix = \"tf_state_shared\"
   }
 }" > ./5-qa/provider.tf
@@ -249,7 +249,7 @@ data \"terraform_remote_state\" \"organization\" {
 data \"terraform_remote_state\" \"shared\" {
   backend = \"gcs\"
   config = {
-    bucket = \"bkt-b-zzzz-tfstate-tfstate\"
+    $BUCKET
     prefix = \"tf_state_shared\"
   }
 }" > ./6-uat/provider.tf
@@ -299,7 +299,7 @@ data \"terraform_remote_state\" \"organization\" {
 data \"terraform_remote_state\" \"shared\" {
   backend = \"gcs\"
   config = {
-    bucket = \"bkt-b-zzzz-tfstate-tfstate\"
+    $BUCKET
     prefix = \"tf_state_shared\"
   }
 }" > ./7-prod/provider.tf
