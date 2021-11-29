@@ -1,3 +1,8 @@
+resource "random_integer" "main" {
+  min = 0001
+  max = 9999
+}
+
 locals {
   project_terraform_labels = var.labels
 
@@ -40,6 +45,6 @@ locals {
   state_project_label        = "tfstate"
   state_project_display_name = "prj-${local.resource_base_name}-${local.environment}-${local.state_project_label}"
   state_project_name         = "prj-${local.resource_base_name}-${local.environment}-${local.state_project_label}"
-  bucket_name                = "bkt-${local.environment}-${local.resource_base_name}-${local.state_project_label}-tfstate"
+  bucket_name                = "bkt-${local.environment}-${local.resource_base_name}-${local.state_project_label}-${random_integer.main.result}"
   sa_name                    = "sa-${local.environment}-${local.resource_base_name}-${local.seed_project_label}-tf"
 }

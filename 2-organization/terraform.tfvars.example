@@ -1,2 +1,8 @@
 domain = "example.com"
 organization_id = "000000000000"
+billing_admin_group  = "billing_admin_group@example.com"
+org_admin_group      = "org_admin_group@example.com"
+network_admin_group  = "network_admin_group@example.com"
+support_admin_group  = "support_admin_group@example.com"
+auditor_group        = "auditor_group@example.com"
+security_admin_group = "security_group@example.com"
