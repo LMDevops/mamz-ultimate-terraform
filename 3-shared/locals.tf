@@ -30,6 +30,7 @@ locals {
     "serviceusage.googleapis.com",
     "storage-api.googleapis.com",
   ]
+  flow_log_bucket_id        = "bkt-s-zzzz-log-mon-vpcflow"
   vpc_type                  = "shared"
   environment               = "s"
   business_code             = "zzzz"
