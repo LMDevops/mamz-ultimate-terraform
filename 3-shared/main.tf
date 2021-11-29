@@ -44,7 +44,7 @@ module "shared_billing_export" {
 module "org_vpc_flow_log_bucket" {
   source                   = "../modules/logging/logs-storage/cloud-log-bucket"
   project_id               = trimprefix(module.logging_monitoring_project.project_id, "projects/")
-  bucket_id                = "bkt-s-zzzz-log-mon-vpcflow"
+  bucket_id                = local.flow_log_bucket_id
   log_sink_writer_identity = module.org_vpc_flow_log_sink.writer_identity
   retention_days           = 30
 
@@ -53,7 +53,7 @@ module "org_vpc_flow_log_bucket" {
 module "org_vpc_flow_log_sink" {
   source               = "../modules/logging/logs-router"
   parent_resource_type = "organization"
-  log_sink_name        = "ls-s-zzzz-vpc-flow-sink"
+  log_sink_name        = "ls-${local.environment}-${local.business_code}-vpc-flow-sink"
   parent_resource_id   = data.terraform_remote_state.bootstrap.outputs.organization_id
   filter               = "logName:(\"projects/${trimprefix(module.logging_monitoring_project.project_id, "projects/")}/logs/compute.googleapis.com%2Fvpc_flows\")"
   destination_uri      = module.org_vpc_flow_log_bucket.destination_uri
@@ -77,5 +77,5 @@ TODO: Automate billing alerts?
 # }
 
 /*
-TODO: Restrict the use of prod subnets via org policy.
+TODO: Restrict the use of prod subnets 
 */
