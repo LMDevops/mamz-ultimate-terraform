@@ -7,6 +7,7 @@ if [ $? != 0 ]; then
   exit 1
 else
   echo "Prod resources destroyed. "
+  rm -rf ./7-prod/.terraform*
 fi
 
 echo "" > ./7-prod/provider.tf
@@ -18,6 +19,7 @@ if [ $? != 0 ]; then
   exit 1
 else
   echo "UAT resources destroyed. "
+  rm -rf ./6-uat/.terraform*
 fi
 
 echo "" > ./6-uat/provider.tf
@@ -29,6 +31,7 @@ if [ $? != 0 ]; then
   exit 1
 else
   echo "QA resources destroyed. "
+  rm -rf ./5-qa/.terraform*
 fi
 
 echo "" > ./5-qa/provider.tf
@@ -40,6 +43,7 @@ if [ $? != 0 ]; then
   exit 1
 else
   echo "Dev resources destroyed. "
+  rm -rf ./4-dev/.terraform*
 fi
 
 echo "" > ./4-dev/provider.tf
@@ -51,6 +55,7 @@ if [ $? != 0 ]; then
   exit 1
 else
   echo "Shared resources destroyed. "
+  rm -rf ./3-shared/.terraform*
 fi
 
 echo "" > ./3-shared/provider.tf
@@ -62,6 +67,7 @@ if [ $? != 0 ]; then
   exit 1
 else
   echo "Organization resources destroyed. "
+  rm -rf ./2-organization/.terraform*
 fi
 
 echo "" > ./2-organization/provider.tf
@@ -84,5 +90,6 @@ if [ $? != 0 ]; then
   exit 1
 else
   echo "Bootstrap resources destroyed. "
+  rm -rf ./1-bootstrap/.terraform*
   exit 0
 fi
