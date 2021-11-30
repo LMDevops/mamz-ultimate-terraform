@@ -33,14 +33,17 @@ locals {
   bigquery_options = var.bigquery_options == null ? [] : var.unique_writer_identity == true ? tolist([var.bigquery_options]) : []
 }
 
-
+resource "random_integer" "main" {
+  min = 0001
+  max = 9999
+}
 #-----------#
 # Log sinks #
 #-----------#
 # Project-level
 resource "google_logging_project_sink" "sink" {
   count                  = local.is_project_level ? 1 : 0
-  name                   = var.log_sink_name
+  name                   = "${var.log_sink_name}-${random_integer.main.result}"
   project                = var.parent_resource_id
   filter                 = var.filter
   destination            = var.destination_uri
@@ -51,11 +54,6 @@ resource "google_logging_project_sink" "sink" {
       use_partitioned_tables = bigquery_options.value.use_partitioned_tables
     }
   }
-}
-
-resource "random_integer" "main" {
-  min = 0001
-  max = 9999
 }
 
 # Folder-level
@@ -77,7 +75,7 @@ resource "google_logging_folder_sink" "sink" {
 # Org-level
 resource "google_logging_organization_sink" "sink" {
   count            = local.is_org_level ? 1 : 0
-  name             = var.log_sink_name
+  name             = "${var.log_sink_name}-${random_integer.main.result}"
   org_id           = var.parent_resource_id
   filter           = var.filter
   include_children = var.include_children
