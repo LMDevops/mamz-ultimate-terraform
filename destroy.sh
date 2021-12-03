@@ -119,7 +119,7 @@ destroy_step_1() {
 }
 
 # Determine which step to destroy from
-if [ $1 == 7 ] || [ $# == 0 ]; then
+if [ $# == 0 ] || [ $1 == 7 ]; then
   destroy_step_7
 fi
 
