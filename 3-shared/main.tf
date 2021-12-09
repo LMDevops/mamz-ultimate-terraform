@@ -39,6 +39,9 @@ module "shared_billing_export" {
   billing_admin_group_email = var.billing_admin_group_email
   dataset_name              = "bqds-${local.environment}-zzzz-billing-data"
   dataset_id                = "bqds_${local.environment}_zzzz_billing_data"
+  depends_on = [
+    module.logging_monitoring_project.google_project_service.main
+  ]
 }
 
 module "org_vpc_flow_log_bucket" {
