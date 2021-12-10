@@ -15,6 +15,20 @@ locals {
     "monitoring.googleapis.com",
   ]
 
+  secrets_kms_apis = [
+    "bigquery.googleapis.com",
+    "admin.googleapis.com",
+    "cloudbilling.googleapis.com",
+    "cloudidentity.googleapis.com",
+    "cloudresourcemanager.googleapis.com",
+    "compute.googleapis.com",
+    "iam.googleapis.com",
+    "logging.googleapis.com",
+    "monitoring.googleapis.com",
+    "secretmanager.googleapis.com",
+    "cloudkms.googleapis.com",
+  ]
+
   svpc_service_apis = [
     "admin.googleapis.com",
     "cloudbilling.googleapis.com",
@@ -36,6 +50,7 @@ locals {
   business_code             = "zzzz"
   svpc_project_label        = "svpc"
   log_mon_project_label     = "log-mon"
+  secrets_kms_project_label = "secrets-kms"
   svpc__network_config_path = "./config/networking"
   svpc__network_config_sets = fileset(local.svpc__network_config_path, "*.json")
   svpc__network_configs = flatten([for networks in local.svpc__network_config_sets : [
