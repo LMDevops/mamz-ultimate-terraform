@@ -1,6 +1,8 @@
 locals {
   env               = "q"
-  app1_project_name = "prj-zzzz-${local.env}-app1"
+  app_name          = "CHANGE_ME"
+  business_code     = "CHANGE_ME" # Limit to 4-6 characters
+  app1_project_name = "prj-${local.business_code}-${local.env}-${local.app_name}"
 
   app1_service_apis = [
     "compute.googleapis.com"

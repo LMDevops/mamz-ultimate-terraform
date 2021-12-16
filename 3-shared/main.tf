@@ -47,8 +47,8 @@ module "shared_billing_export" {
   domain                    = "example.com"
   log_mon_prj_id            = trimprefix(module.logging_monitoring_project.project_id, "projects/")
   billing_admin_group_email = var.billing_admin_group_email
-  dataset_name              = "bqds-${local.environment}-zzzz-billing-data"
-  dataset_id                = "bqds_${local.environment}_zzzz_billing_data"
+  dataset_name              = "bqds-${local.environment}-${local.business_code}-billing-data"
+  dataset_id                = "bqds_${local.environment}_${local.business_code}_billing_data"
   depends_on = [
     module.logging_monitoring_project
   ]

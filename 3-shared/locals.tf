@@ -16,7 +16,6 @@ locals {
   ]
 
   secrets_kms_apis = [
-    "bigquery.googleapis.com",
     "admin.googleapis.com",
     "cloudbilling.googleapis.com",
     "cloudidentity.googleapis.com",
@@ -44,10 +43,10 @@ locals {
     "serviceusage.googleapis.com",
     "storage-api.googleapis.com",
   ]
-  flow_log_bucket_id        = "bkt-s-zzzz-log-mon-vpcflow"
+  flow_log_bucket_id        = "bkt-s-${local.business_code}-log-mon-vpcflow"
   vpc_type                  = "shared"
   environment               = "s"
-  business_code             = "zzzz"
+  business_code             = "CHANGE_ME" # Limit to 4-6 characters
   svpc_project_label        = "svpc"
   log_mon_project_label     = "log-mon"
   secrets_kms_project_label = "secrets-kms"
