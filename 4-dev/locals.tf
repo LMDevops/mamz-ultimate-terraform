@@ -1,7 +1,7 @@
 locals {
   env               = "d"
-  app_name          = "CHANGE_ME"
-  business_code     = "CHANGE_ME" # Limit to 4-6 characters
+  app_name          = "APP_CHANGE_ME" # Limit to 6 characters
+  business_code     = "BC_CHANGE_ME" # Limit to 4-6 characters
   app1_project_name = "prj-${local.business_code}-${local.env}-${local.app_name}"
 
   app1_service_apis = [
