@@ -44,13 +44,14 @@ example-organization/
 
 ### [3. Shared](./3-shared/)
 
-This will create two projects underneath the shared folder:
+This will create tree projects underneath the shared folder:
 
 ```
 example-organization
 └── fldr-shared
     ├── prj-zzzz-s-log-mon
     └── prj-zzzz-s-svpc
+    └── prj-zzzz-s-secrets-kms
 
 ```
 

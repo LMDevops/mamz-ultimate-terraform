@@ -32,13 +32,23 @@ module "logging_monitoring_project" {
   labels          = local.project_terraform_labels
 }
 
+module "secrets_kms_project" {
+  source          = "../modules/projects"
+  name            = "prj-${local.business_code}-${local.environment}-${local.secrets_kms_project_label}"
+  project_id      = "prj-${local.business_code}-${local.environment}-${local.secrets_kms_project_label}"
+  services        = local.secrets_kms_apis
+  billing_account = var.billing_account
+  folder_id       = data.terraform_remote_state.organization.outputs.folders.fldr-shared.name
+  labels          = local.project_terraform_labels
+}
+
 module "shared_billing_export" {
   source                    = "../modules/shared_billing_export"
   domain                    = "example.com"
   log_mon_prj_id            = trimprefix(module.logging_monitoring_project.project_id, "projects/")
   billing_admin_group_email = var.billing_admin_group_email
-  dataset_name              = "bqds-${local.environment}-zzzz-billing-data"
-  dataset_id                = "bqds_${local.environment}_zzzz_billing_data"
+  dataset_name              = "bqds-${local.environment}-${local.business_code}-billing-data"
+  dataset_id                = "bqds_${local.environment}_${local.business_code}_billing_data"
   depends_on = [
     module.logging_monitoring_project
   ]

@@ -15,6 +15,19 @@ locals {
     "monitoring.googleapis.com",
   ]
 
+  secrets_kms_apis = [
+    "admin.googleapis.com",
+    "cloudbilling.googleapis.com",
+    "cloudidentity.googleapis.com",
+    "cloudresourcemanager.googleapis.com",
+    "compute.googleapis.com",
+    "iam.googleapis.com",
+    "logging.googleapis.com",
+    "monitoring.googleapis.com",
+    "secretmanager.googleapis.com",
+    "cloudkms.googleapis.com",
+  ]
+
   svpc_service_apis = [
     "admin.googleapis.com",
     "cloudbilling.googleapis.com",
@@ -30,12 +43,13 @@ locals {
     "serviceusage.googleapis.com",
     "storage-api.googleapis.com",
   ]
-  flow_log_bucket_id        = "bkt-s-zzzz-log-mon-vpcflow"
+  flow_log_bucket_id        = "bkt-s-${local.business_code}-log-mon-vpcflow"
   vpc_type                  = "shared"
   environment               = "s"
-  business_code             = "zzzz"
+  business_code             = "zzzz" # BC_CHANGE_ME - Limit to 4-6 caracters
   svpc_project_label        = "svpc"
   log_mon_project_label     = "log-mon"
+  secrets_kms_project_label = "secrets-kms"
   svpc__network_config_path = "./config/networking"
   svpc__network_config_sets = fileset(local.svpc__network_config_path, "*.json")
   svpc__network_configs = flatten([for networks in local.svpc__network_config_sets : [
