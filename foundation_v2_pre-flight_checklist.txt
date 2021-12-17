@@ -21,8 +21,8 @@ modules/bootstrap_setup/locals.tf:  resource_base_name  = "zzzz" # BC_CHANGE_ME 
 
 Quick Search and Replace Example:
 ---------------------------------
-egrep -lRZ 'BC_CHANGE_ME' . --exclude=*.txt | xargs -0 -l sed -i -e "s/BC_CHANGE_ME/_YOUR_NEW_VALUE_/g"
-egrep -lRZ 'APP_CHANGE_ME' . --exclude=*.txt | xargs -0 -l sed -i -e "s/APP_CHANGE_ME/_YOUR_NEW_VALUE_/g"
+egrep -lRZ 'zzzz' . --exclude=*.txt | xargs -0 -l sed -i -e "s/zzzz/***YOUR_NEW_VALUE***/g"
+egrep -lRZ 'app1' . --exclude=*.txt | xargs -0 -l sed -i -e "s/app1/***YOUR_NEW_VALUE***/g"
 
 
 NETWORKING REGION (Optional)
@@ -48,8 +48,8 @@ uat.json:        "region": "US-WEST1",
 
 Quick Search and Replace Example:
 ---------------------------------
-egrep -lRZ 'US-WEST1' . --exclude=*.txt | xargs -0 -l sed -i -e "s/US-WEST1/_YOUR_NAEW_VALUE_/g"
-egrep -lRZ 'us-west1' . --exclude=*.txt | xargs -0 -l sed -i -e "s/us-west1/_YOUR_NEW_VALUE_/g"
+egrep -lRZ 'US-WEST1' . --exclude=*.txt | xargs -0 -l sed -i -e "s/US-WEST1/***YOUR_NAEW_VALUE***/g"
+egrep -lRZ 'us-west1' . --exclude=*.txt | xargs -0 -l sed -i -e "s/us-west1/***YOUR_NEW_VALUE***/g"
 
 
 Required credentials to execute auto_deploy.sh
