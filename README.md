@@ -110,7 +110,8 @@ example-organization/
     └── prj-zzzz-u-app1
 └── fldr-shared
     ├── prj-zzzz-s-log-mon
-    └── prj-zzzz-s-svpc
+    ├── prj-zzzz-s-svpc
+    └── prj-zzzz-s-secrets-kms
 ```
 
 ### Branching strategy
