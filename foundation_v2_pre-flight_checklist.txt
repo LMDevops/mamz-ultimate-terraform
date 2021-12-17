@@ -7,8 +7,9 @@ ProServ catalog - Foundation delivery: https://drive.google.com/drive/folders/1_
 
 Things to change before starting
 ================================
-business_code = numeric ID (i.e.: 90210)
-app_name = The name of the app we are creating this structure for. (i.e.: app1)
+1- Make sure the person who runs the script is BILLING ADMIN
+2- business_code = numeric ID (i.e.: 90210)
+3- app_name = The name of the app we are creating this structure for. (i.e.: app1)
 
 3-shared/locals.tf:  business_code  = "zzzz" # BC_CHANGE_ME - Limit to 4-6 caracters
 4-dev/locals.tf:  app_name          = "app1" # APP_CHANGE_ME - Limit to 6 characters
