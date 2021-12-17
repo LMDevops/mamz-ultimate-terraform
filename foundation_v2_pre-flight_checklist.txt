@@ -19,6 +19,12 @@ app_name = The name of the app we are creating this structure for. (i.e.: app1)
 7-prod/locals.tf:  business_code    = "zzzz" # BC_CHANGE_ME  - Limit to 4-6 caracters
 modules/bootstrap_setup/locals.tf:  resource_base_name  = "zzzz" # BC_CHANGE_ME - Limit to 4-6 caracters
 
+Quick Search and Replace Example:
+---------------------------------
+egrep -lRZ 'BC_CHANGE_ME' . --exclude=*.txt | xargs -0 -l sed -i -e "s/BC_CHANGE_ME/_YOUR_NEW_VALUE_/g"
+egrep -lRZ 'APP_CHANGE_ME' . --exclude=*.txt | xargs -0 -l sed -i -e "s/APP_CHANGE_ME/_YOUR_NEW_VALUE_/g"
+
+
 NETWORKING REGION (Optional)
 ============================
 If you need to change the default REGION for the Shared VPC.  It's all inthe JSON files.
@@ -39,6 +45,11 @@ qa.json:        "region": "US-WEST1",
 uat.json:        "name" : "sb-p-shared-base-us-west1-net1",
 uat.json:        "region": "US-WEST1",
 uat.json:        "region": "US-WEST1",
+
+Quick Search and Replace Example:
+---------------------------------
+egrep -lRZ 'US-WEST1' . --exclude=*.txt | xargs -0 -l sed -i -e "s/US-WEST1/_YOUR_NAEW_VALUE_/g"
+egrep -lRZ 'us-west1' . --exclude=*.txt | xargs -0 -l sed -i -e "s/us-west1/_YOUR_NEW_VALUE_/g"
 
 
 Required credentials to execute auto_deploy.sh
