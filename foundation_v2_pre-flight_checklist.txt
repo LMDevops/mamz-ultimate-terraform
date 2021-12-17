@@ -23,6 +23,7 @@ Quick Search and Replace Example:
 ---------------------------------
 egrep -lRZ 'zzzz' . --exclude=*.txt | xargs -0 -l sed -i -e "s/zzzz/***YOUR_NEW_VALUE***/g"
 egrep -lRZ 'app1' . --exclude=*.txt | xargs -0 -l sed -i -e "s/app1/***YOUR_NEW_VALUE***/g"
+*** Make sure the app name (i.e. app1) is also in your GCP Groups like, i.e.: grp-gcp-it-prj-app1-devops@domain.com
 
 
 NETWORKING REGION (Optional)
