@@ -6,32 +6,23 @@ https://drive.google.com/drive/folders/1_wvltngtAzICIa6nhrZBMgXYX5I7XDcD?usp=sha
 Things to change before starting
 ================================
 business_code = numeric ID (i.e.: 90210)
-app_name = The name of the app we are creating this structure for. (i.e.: )
+app_name = The name of the app we are creating this structure for. (i.e.: app1)
 
-3-shared/locals.tf: business_code     = "BC_CHANGE_ME" # Limit to 4-6 characters
-4-dev/locals.tf:  	app_name          = "APP_CHANGE_ME" # Limit to 6 characters
-4-dev/locals.tf:  	business_code     = "BC_CHANGE_ME" # Limit to 4-6 characters
-5-qa/locals.tf:  	app_name          = "APP_CHANGE_ME" # Limit to 6 characters
-5-qa/locals.tf:  	business_code     = "BC_CHANGE_ME" # Limit to 4-6 characters
-6-uat/locals.tf:  	app_name          = "APP_CHANGE_ME" # Limit to 6 characters
-6-uat/locals.tf:  	business_code     = "BC_CHANGE_ME" # Limit to 4-6 characters
-7-prod/locals.tf:  	app_name          = "APP_CHANGE_ME" # Limit to 6 characters
-7-prod/locals.tf:  	business_code     = "BC_CHANGE_ME" # Limit to 4-6 characters
-modules/bootstrap_setup/locals.tf:  resource_base_name = "BC_CHANGE_ME" # limit to 4-6 caracters
-
-Quick Search and Replace Example:
----------------------------------
-egrep -lRZ 'BC_CHANGE_ME' . --exclude=*.txt | xargs -0 -l sed -i -e "s/BC_CHANGE_ME/90210/g"
-egrep -lRZ 'APP_CHANGE_ME' . --exclude=*.txt | xargs -0 -l sed -i -e "s/APP_CHANGE_ME/app0/g"
-------
-Revert
-------
-egrep -lRZ '90210' . --exclude=*.txt | xargs -0 -l sed -i -e "s/90210/BC_CHANGE_ME/g"
-egrep -lRZ 'app0' . --exclude=*.txt | xargs -0 -l sed -i -e "s/app0/APP_CHANGE_ME/g"
-
+3-shared/locals.tf:  business_code  = "zzzz" # BC_CHANGE_ME - Limit to 4-6 caracters
+4-dev/locals.tf:  app_name          = "app1" # APP_CHANGE_ME - Limit to 6 characters
+4-dev/locals.tf:  business_code     = "zzzz" # BC_CHANGE_ME  - Limit to 4-6 caracters
+5-qa/locals.tf:  app_name           = "app1" # APP_CHANGE_ME - Limit to 6 characters
+5-qa/locals.tf:  business_code      = "zzzz" # BC_CHANGE_ME  - Limit to 4-6 caracters
+6-uat/locals.tf:  app_name          = "app1" # APP_CHANGE_ME - Limit to 6 characters
+6-uat/locals.tf:  business_code     = "zzzz" # BC_CHANGE_ME  - Limit to 4-6 caracters
+7-prod/locals.tf:  app_name         = "app1" # APP_CHANGE_ME - Limit to 6 characters
+7-prod/locals.tf:  business_code    = "zzzz" # BC_CHANGE_ME  - Limit to 4-6 caracters
+modules/bootstrap_setup/locals.tf:  resource_base_name  = "zzzz" # BC_CHANGE_ME - Limit to 4-6 caracters
 
 NETWORKING REGION (Optional)
 ============================
+If you need to change the default REGION for the Shared VPC.  It's all inthe JSON files.
+
 3-shared/config/networking/*.json
 
 dev.json:        "name" : "sb-p-shared-base-us-west1-net1",
@@ -48,16 +39,6 @@ qa.json:        "region": "US-WEST1",
 uat.json:        "name" : "sb-p-shared-base-us-west1-net1",
 uat.json:        "region": "US-WEST1",
 uat.json:        "region": "US-WEST1",
-
-Quick Search and Replace Example:
----------------------------------
-egrep -lRZ 'US-WEST1' . --exclude=*.txt | xargs -0 -l sed -i -e "s/US-WEST1/NORTHAMERICA-NORTHEAST1/g"
-egrep -lRZ 'us-west1' . --exclude=*.txt | xargs -0 -l sed -i -e "s/us-west1/nane1/g"
-------
-Revert
-------
-egrep -lRZ 'NORTHAMERICA-NORTHEAST1' . --exclude=*.txt | xargs -0 -l sed -i -e "s/NORTHAMERICA-NORTHEAST1/US-WEST1/g"
-egrep -lRZ 'nane1' . --exclude=*.txt | xargs -0 -l sed -i -e "s/nane1/us-west1/g"
 
 
 Required credentials to execute auto_deploy.sh
