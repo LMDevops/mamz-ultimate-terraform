@@ -7,7 +7,7 @@ ProServ catalog - Foundation delivery: https://drive.google.com/drive/folders/1_
 
 Things to change before starting
 ================================
-1- Make sure the person who runs the script is BILLING ADMIN
+1- Make sure the person who runs the script has BILLING ADMIN, ORG ADMIN and ORG POLICY ADMIN roles.
 2- business_code = numeric ID (i.e.: 90210)
 3- app_name = The name of the app we are creating this structure for. (i.e.: app1)
 
