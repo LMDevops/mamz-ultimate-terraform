@@ -7,7 +7,7 @@
 
 # Pre-Requisites
 
-- Make sure the **GCP User** who runs the script has **BILLING ADMIN**, **ORG ADMIN** and **ORG POLICY ADMIN** roles.
+- Make sure the **GCP User** who runs the script has **BILLING ACCOUNT ADMIN**, **ORG ADMIN** and **ORG POLICY ADMIN** roles.
 
 # Customize Business Code, App Name and Networking
 
