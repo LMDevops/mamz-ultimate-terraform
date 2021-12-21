@@ -113,6 +113,7 @@ destroy_step_1() {
   else
     echo "Bootstrap resources destroyed. ";
     rm -rf ./1-bootstrap/.terraform*;
+    rm -f ./1-bootstrap/terraform.tfstate*
     exit 0
   fi
 
