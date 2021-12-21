@@ -66,7 +66,7 @@ or
   - git clone git@github.com:sadasystems/proserv-foundations.git
   - rm -rf ./proserv-foundations/.git
   - mv proserv-foundations sada-foundation
-  - tar czvf proserv-foundations.tgz proserv-foundations
+  - tar czvf sada-foundation.tgz sada-foundation
   - Put in your SADA Google Drive
 - Send link to customer (viewer)
 - Customer can now extract it where the code will be executed.
