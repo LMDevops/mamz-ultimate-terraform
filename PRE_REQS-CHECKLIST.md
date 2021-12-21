@@ -27,8 +27,8 @@
   - modules/bootstrap_setup/locals.tf:  resource_base_name  = "zzzz" # BC_CHANGE_ME - Limit to 4-6 caracters
 
 - **Quick Search and Replace Example:**
-  - egrep -lRZ 'zzzz' . --exclude=*.txt | xargs -0 -l sed -i -e "s/zzzz/***YOUR_NEW_VALUE***/g"
-  - egrep -lRZ 'app1' . --exclude=*.txt | xargs -0 -l sed -i -e "s/app1/***YOUR_NEW_VALUE***/g"
+  - egrep -lRZ 'zzzz' . --exclude=*.md | xargs -0 -l sed -i -e "s/zzzz/***YOUR_NEW_VALUE***/g"
+  - egrep -lRZ 'app1' . --exclude=*.md | xargs -0 -l sed -i -e "s/app1/***YOUR_NEW_VALUE***/g"
   - Make sure the **app name (i.e. app1)** is also in your GCP Groups like, i.e.: grp-gcp-it-prj-**app1**-devops@domain.com
 
 
@@ -50,8 +50,8 @@ If you need to change the default REGION for the Shared VPC.  It's all inthe JSO
   - uat.json:  "region": "**US-WEST1**",
 
 - **Quick Search and Replace Example:**
-  - egrep -lRZ 'US-WEST1' . --exclude=*.txt | xargs -0 -l sed -i -e "s/US-WEST1/***YOUR_NAEW_VALUE***/g"
-  - egrep -lRZ 'us-west1' . --exclude=*.txt | xargs -0 -l sed -i -e "s/us-west1/***YOUR_NEW_VALUE***/g"
+  - egrep -lRZ 'US-WEST1' . --exclude=*.md | xargs -0 -l sed -i -e "s/US-WEST1/***YOUR_NAEW_VALUE***/g"
+  - egrep -lRZ 'us-west1' . --exclude=*.md | xargs -0 -l sed -i -e "s/us-west1/***YOUR_NEW_VALUE***/g"
 
 ## Required credentials to execute auto_deploy.sh
 This will set the app credentials required to execute
