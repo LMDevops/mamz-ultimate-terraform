@@ -124,4 +124,4 @@ locals used to deploy the steps have default values, whereas tfvars files do not
 
 ## Pre-Requisites
 
-The TL;DR Pre-Requisites and customization instructions can be found [here](PRE_REQS-CHECKLISTS.md).
+The TL;DR Pre-Requisites and customization instructions can be found [here](PRE_REQS-CHECKLIST.md).
