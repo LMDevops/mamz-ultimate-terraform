@@ -43,7 +43,7 @@ variable "organization_admin_roles" {
     "roles/billing.user",
     "roles/cloudsupport.admin",
     "roles/iam.organizationRoleAdmin",
-    "roles/iam.organizationPolicyAdmin",
+    # "roles/iam.organizationPolicyAdmin",
     # "roles/resourceManager.folderAdmin",
     # "roles/resourceManager.projectCreator",
     "roles/securitycenter.admin",
