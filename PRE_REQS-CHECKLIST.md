@@ -50,7 +50,7 @@ If you need to change the default REGION for the Shared VPC.  It's all inthe JSO
   - uat.json:  "region": "**US-WEST1**",
 
 - **Quick Search and Replace Example:**
-  - egrep -lRZ 'US-WEST1' . --exclude=*.md | xargs -0 -l sed -i -e "s/US-WEST1/***YOUR_NAEW_VALUE***/g"
+  - egrep -lRZ 'US-WEST1' . --exclude=*.md | xargs -0 -l sed -i -e "s/US-WEST1/***YOUR_NEW_VALUE***/g"
   - egrep -lRZ 'us-west1' . --exclude=*.md | xargs -0 -l sed -i -e "s/us-west1/***YOUR_NEW_VALUE***/g"
 
 ## Required credentials to execute auto_deploy.sh
