@@ -79,7 +79,7 @@ If you need to change the default REGION for the Shared VPC.  It's all inthe JSO
 
 # Execution
 
-Once you've made all the required changes in the terraform.tfvars of each sections (1-7) and customized the local.tf, you can now execute the deployment.
+Once you've made all the required changes in the terraform.tfvars of each sections (1-7) and customized the locals.tf, you can now execute the deployment.
 
 ## Authenticate to Google
 This will set the app credentials required to execute:
