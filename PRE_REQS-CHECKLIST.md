@@ -4,12 +4,24 @@
 - IAM Workseet: https://docs.google.com/spreadsheets/d/1Ghv9MGBZHAgFZfXE5BVQTO8RuBnZIZyZ_H8jb3MFsLo/edit#gid=0
 - ProServ catalog - Foundation delivery: https://drive.google.com/drive/folders/1_wvltngtAzICIa6nhrZBMgXYX5I7XDcD?usp=sharing
 
-
 # Pre-Requisites
 
 - Make sure the **GCP User** who runs the script has **BILLING ACCOUNT ADMIN**, **ORG ADMIN** and **ORG POLICY ADMIN** roles and put in alll the **Billing**, **Org** and **Network** admins groups.
 
+# Getting the Foundation V2 Repo to the customer
+- Prep:
+  - git clone git@github.com:sadasystems/proserv-foundations.git
+  - rm -rf ./proserv-foundations/.git
+  - mv proserv-foundations sada-foundation
+  - tar czvf sada-foundation.tgz sada-foundation
+  - Put in your SADA Google Drive
+- Send link to customer (viewer)
+- Customer can now extract it where the code will be executed.
+  - Make sure the customer commits the changes to a Git Repo to keep their configuration.
+
 # Customize Business Code, App Name and Networking
+
+## Business Code and App Name
 
 - business_code = numeric ID (i.e.: 90210)
 - app_name = The name of the app we are creating this structure for. (i.e.: app1)
@@ -32,42 +44,40 @@
   - Make sure the **app name (i.e. app1)** is also in your GCP Groups like, i.e.: grp-gcp-it-prj-**app1**-devops@domain.com
 
 
-## NETWORKING REGION
+## Networking Region
 
 If you need to change the default REGION for the Shared VPC.  It's all inthe JSON files.
 
 - 3-shared/config/networking/*.json
   - dev.json:  "name" : "sb-p-shared-base-**us-west1**-net1",
-  - dev.json:  "region": "**US-WEST1**",
-  - dev.json:  "region": "**US-WEST1**",
-  - prod.json: "region": "**US-WEST1**",
-  - prod.json: "region": "**US-WEST1**",
+  - dev.json:  "region": "**NORTHAMERICA-NORTHEAST2**",
+  - dev.json:  "region": "**NORTHAMERICA-NORTHEAST2**",
+  - prod.json: "region": "**NORTHAMERICA-NORTHEAST2**",
+  - prod.json: "region": "**NORTHAMERICA-NORTHEAST2**",
   - qa.json:   "name" : "sb-p-shared-base-**us-west1**-net1",
-  - qa.json:   "region": "**US-WEST1**",
-  - qa.json:   "region": "**US-WEST1**",
+  - qa.json:   "region": "**NORTHAMERICA-NORTHEAST2**",
+  - qa.json:   "region": "**NORTHAMERICA-NORTHEAST2**",
   - uat.json:  "name" : "sb-p-shared-base-**us-west1**-net1",
-  - uat.json:  "region": "**US-WEST1**",
-  - uat.json:  "region": "**US-WEST1**",
+  - uat.json:  "region": "**NORTHAMERICA-NORTHEAST2**",
+  - uat.json:  "region": "**NORTHAMERICA-NORTHEAST2**",
 
 - **Quick Search and Replace Example:**
-  - egrep -lRZ 'US-WEST1' . --exclude=*.md | xargs -0 -l sed -i -e "s/US-WEST1/***YOUR_NEW_VALUE***/g"
+  - egrep -lRZ 'NORTHAMERICA-NORTHEAST2' . --exclude=*.md | xargs -0 -l sed -i -e "s/NORTHAMERICA-NORTHEAST2/***YOUR_NAEW_VALUE***/g"
   - egrep -lRZ 'us-west1' . --exclude=*.md | xargs -0 -l sed -i -e "s/us-west1/***YOUR_NEW_VALUE***/g"
 
-## Required credentials to execute auto_deploy.sh
-This will set the app credentials required to execute
-- gcloud auth application-default login 
+# Execution
 
-or
+## Authenticate to Google
+This will set the app credentials required to execute:
+- gcloud auth application-default login
 
-- gcloud auth application-default login --no-launch-browser
+## Deploy
+To start the deployment:
+- ./auto_deploy.sh
 
-## Getting the Foundation V2 Repo to the customer
-- Prep
-  - git clone git@github.com:sadasystems/proserv-foundations.git
-  - rm -rf ./proserv-foundations/.git
-  - mv proserv-foundations sada-foundation
-  - tar czvf sada-foundation.tgz sada-foundation
-  - Put in your SADA Google Drive
-- Send link to customer (viewer)
-- Customer can now extract it where the code will be executed.
-  - Make sure the customer commits the changes to a Git Repo to keep their configuration.
+## Destroy
+To destroy everything that was deployed.
+- ./destroy.sh
+
+To destroy from a specific step
+- ./destroy [Step Number]
