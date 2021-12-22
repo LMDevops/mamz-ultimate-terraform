@@ -57,19 +57,19 @@ If you need to change the default REGION for the Shared VPC.  It's all inthe JSO
 
 - 3-shared/config/networking/*.json
   - dev.json:  "name" : "sb-p-shared-base-**us-west1**-net1",
-  - dev.json:  "region": "**NORTHAMERICA-NORTHEAST2**",
-  - dev.json:  "region": "**NORTHAMERICA-NORTHEAST2**",
-  - prod.json: "region": "**NORTHAMERICA-NORTHEAST2**",
-  - prod.json: "region": "**NORTHAMERICA-NORTHEAST2**",
+  - dev.json:  "region": "**US-WEST1**",
+  - dev.json:  "region": "**US-WEST1**",
+  - prod.json: "region": "**US-WEST1**",
+  - prod.json: "region": "**US-WEST1**",
   - qa.json:   "name" : "sb-p-shared-base-**us-west1**-net1",
-  - qa.json:   "region": "**NORTHAMERICA-NORTHEAST2**",
-  - qa.json:   "region": "**NORTHAMERICA-NORTHEAST2**",
+  - qa.json:   "region": "**US-WEST1**",
+  - qa.json:   "region": "**US-WEST1**",
   - uat.json:  "name" : "sb-p-shared-base-**us-west1**-net1",
-  - uat.json:  "region": "**NORTHAMERICA-NORTHEAST2**",
-  - uat.json:  "region": "**NORTHAMERICA-NORTHEAST2**",
+  - uat.json:  "region": "**US-WEST1**",
+  - uat.json:  "region": "**US-WEST1**",
 
 - **Quick Search and Replace Example:**
-  - egrep -lRZ 'NORTHAMERICA-NORTHEAST2' . --exclude=*.md | xargs -0 -l sed -i -e "s/NORTHAMERICA-NORTHEAST2/***YOUR_NAEW_VALUE***/g"
+  - egrep -lRZ 'US-WEST1' . --exclude=*.md | xargs -0 -l sed -i -e "s/US-WEST1/***YOUR_NAEW_VALUE***/g"
   - egrep -lRZ 'us-west1' . --exclude=*.md | xargs -0 -l sed -i -e "s/us-west1/***YOUR_NEW_VALUE***/g"
 
 # Execution
@@ -87,4 +87,4 @@ To destroy everything that was deployed.
 - ./destroy.sh
 
 To destroy from a specific step
-- ./destroy [Step Number]
+- ./destroy.sh [Step Number]
