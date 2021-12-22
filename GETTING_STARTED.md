@@ -1,8 +1,8 @@
 # Table of Contents
-1. [Material](#foundation)
+1. [Material](#Foundation-V2-Material)
 2. [Pre-Reqs](#Pre-Requisites)
-3. [Repo](#GettingtheFoundationV2Repotothecustomer)
-4. [Customization](#Customize)
+3. [Repo](#Getting-the-Foundation-V2-Repo-to-the-customer)
+4. [Customization](#Customize-Business-Code,-App-Name-and-Networking)
 5. [Execution](#Execution)
 
 # Foundation V2 Material
