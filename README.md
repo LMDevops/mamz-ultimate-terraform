@@ -122,6 +122,6 @@ The foundations repo was meant to be built upon, cut a branch, make an improveme
 
 locals used to deploy the steps have default values, whereas tfvars files do not. Check tfvars files **before deployment** and ensure that it aligns with your needs.
 
-## Pre-Requisites
+# Getting Started
 
-The TL;DR Pre-Requisites and customization instructions can be found [here](PRE_REQS-CHECKLIST.md).
+The TL;DR Pre-Requisites, customization and execution instructions can be found [here](PRE_REQS-CHECKLIST.md).
