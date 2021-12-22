@@ -2,8 +2,9 @@
 1. [Material](#Foundation-V2-Material)
 2. [Pre-Reqs](#Pre-Requisites)
 3. [Repo](#Getting-the-Foundation-V2-Repo-to-the-customer)
-4. [Customization](#Customize-Business-Code-App-Name-and-Networking)
-5. [Execution](#Execution)
+4. [Terraform Variables](#Terraform.tfvars)
+5. [Customization](#Customize-Business-Code-App-Name-and-Networking)
+6. [Execution](#Execution)
 
 # Foundation V2 Material
 
@@ -25,6 +26,10 @@
 - Send link to customer (viewer)
 - Customer can now extract it where the code will be executed.
   - Make sure the customer commits the changes to a Git Repo to keep their configuration.
+
+# Terraform.tfvars
+
+In each section (1-7) there is a **terraform.tfvars.example** file that needs to be copied to **terraform.tfvars** and filled-in with all the required information.
 
 # Customize Business Code, App Name and Networking
 
@@ -73,6 +78,8 @@ If you need to change the default REGION for the Shared VPC.  It's all inthe JSO
   - egrep -lRZ 'us-west1' . --exclude=*.md | xargs -0 -l sed -i -e "s/us-west1/***YOUR_NEW_VALUE***/g"
 
 # Execution
+
+Once you've made all the required changes in the terraform.tfvars of each sections (1-7) and customized the local.tf, you can now execute the deployment.
 
 ## Authenticate to Google
 This will set the app credentials required to execute:
