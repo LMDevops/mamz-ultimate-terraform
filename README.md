@@ -4,6 +4,10 @@ This is an example repo showing how SADA can use Terraform modules to build a se
 
 The supplied structure and code is intended to form a starting point for building your own foundation with pragmatic defaults you can customize to meet your own requirements.
 
+# Getting Started
+
+The TL;DR Pre-Requisites, customization and execution instructions can be found [here](faqs/GETTING_STARTED.md).
+
 ## Overview
 
 This repo contains several distinct Terraform projects each within their own directory that must be applied separately, but in sequence.
@@ -122,6 +126,3 @@ The foundations repo was meant to be built upon, cut a branch, make an improveme
 
 locals used to deploy the steps have default values, whereas tfvars files do not. Check tfvars files **before deployment** and ensure that it aligns with your needs.
 
-# Getting Started
-
-The TL;DR Pre-Requisites, customization and execution instructions can be found [here](faqs/GETTING_STARTED.md).
