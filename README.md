@@ -124,4 +124,4 @@ locals used to deploy the steps have default values, whereas tfvars files do not
 
 # Getting Started
 
-The TL;DR Pre-Requisites, customization and execution instructions can be found [here](GETTING_STARTED.md).
+The TL;DR Pre-Requisites, customization and execution instructions can be found [here](faqs/GETTING_STARTED.md).
