@@ -4,7 +4,7 @@ This is an example repo showing how SADA can use Terraform modules to build a se
 
 The supplied structure and code is intended to form a starting point for building your own foundation with pragmatic defaults you can customize to meet your own requirements.
 
-# Getting Started
+## Getting Started Fast
 
 The TL;DR Pre-Requisites, customization and execution instructions can be found [here](faqs/GETTING_STARTED.md).
 
