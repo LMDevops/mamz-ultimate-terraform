@@ -11,7 +11,12 @@
 - Run book: https://docs.google.com/document/d/12t9TsbVwGFIUc0D0I263NqgT3m_pch1PiproqfWCo0M/edit#
 - IAM Workseet: https://docs.google.com/spreadsheets/d/1Ghv9MGBZHAgFZfXE5BVQTO8RuBnZIZyZ_H8jb3MFsLo/edit#gid=0
 - ProServ catalog - Foundation delivery: https://drive.google.com/drive/folders/1_wvltngtAzICIa6nhrZBMgXYX5I7XDcD?usp=sharing
+<<<<<<< HEAD
 - Walkthrough video: https://www.loom.com/team-videos/Foundation 
+=======
+- Walkthrough video: https://www.loom.com/team-videos/Foundation
+
+>>>>>>> master
 # Pre-Requisites
 
 - Make sure the **GCP User** who runs the script has **BILLING ACCOUNT ADMIN**, **ORG ADMIN** and **ORG POLICY ADMIN** roles and put in alll the **Billing**, **Org** and **Network** admins groups.
