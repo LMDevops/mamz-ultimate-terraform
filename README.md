@@ -8,6 +8,10 @@ The supplied structure and code is intended to form a starting point for buildin
 
 The TL;DR Pre-Requisites, customization and execution instructions can be found [here](faqs/GETTING_STARTED.md).
 
+## Frequently encountered scenarios and questions
+
+Frequently encountered scenarios and questions can be found [here](faqs/README.md).
+
 ## Overview
 
 This repo contains several distinct Terraform projects each within their own directory that must be applied separately, but in sequence.
