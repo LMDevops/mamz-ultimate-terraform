@@ -14,7 +14,24 @@
 
 ## TL;DR steps
 
-- For each steps, open the file containing the location of the Sate file and add the new CLOUD section with the ORG IF and Workspace from the Terraform Cloud account.
+- For each Foundation steps, open the file containing the location of the Sate File and change GCS for the new CLOUD section (*see code snippet*) with the ORG ID and Workspace from the Terraform Cloud account.
+```
+terraform {
+  required_version = ">= 1.1.0"
+  required_providers {
+    random = {
+      source  = "hashicorp/random"
+      version = "3.0.1"
+    }
+  }
+  cloud {
+    organization = "<ORG_NAME>"
+    workspaces {
+      name = "Example-Workspace"
+    }
+  }
+}
+```
 - Login to Terraform cloud from CLI
   - terraform login
 - Re-initialize Terraform
