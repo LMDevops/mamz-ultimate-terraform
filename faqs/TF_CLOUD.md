@@ -14,4 +14,10 @@
 
 ## TL;DR steps
 
-- 
+- For each steps, open the file containing the location of the Sate file and add the new CLOUD section with the ORG IF and Workspace from the Terraform Cloud account.
+- Login to Terraform cloud from CLI
+  - terraform login
+- Re-initialize Terraform
+  - terraform init
+- Answer YES to state file migration question
+- Go into the Terraform Cloud console and see your State file in your workspace om STATE-MIGRATION 

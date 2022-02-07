@@ -2,7 +2,7 @@
 
 ## Getting started with the CE-Led fondation
 
-- [Getting started](faqs/GETTING_STARTED.md).
+- [Getting started](GETTING_STARTED.md)
 
 ## Foundation checklist from Google
 
@@ -18,4 +18,4 @@
 
 ## How to integrate our Foundation with Terraform Cloud
 
-- [Migrating State file into Terraform Cloud](faqs/TF_CLOUD.md).
+- [Migrating State file into Terraform Cloud](TF_CLOUD.md)
