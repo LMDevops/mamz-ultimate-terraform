@@ -16,6 +16,10 @@
 
 - https://docs.google.com/document/d/1JozGlSWxfNOVYivqCCalTkpNYuO2woBHZdusWIcq-0Q/edit#
 
-## How to integrate our Foundation with Terraform Cloud
+## Network Foundation JSON Generator
 
-- [Migrating State file into Terraform Cloud](TF_CLOUD.md)
+- https://r-teller.github.io/terraform-google-foundation-network/
+
+## IAM roles per group name in Foudnation
+
+- https://docs.google.com/spreadsheets/d/1Ghv9MGBZHAgFZfXE5BVQTO8RuBnZIZyZ_H8jb3MFsLo/edit#gid=0
