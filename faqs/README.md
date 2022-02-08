@@ -23,3 +23,7 @@
 ## IAM roles per group name in Foudnation
 
 - https://docs.google.com/spreadsheets/d/1Ghv9MGBZHAgFZfXE5BVQTO8RuBnZIZyZ_H8jb3MFsLo/edit#gid=0
+
+## Adding the Foundation code to Cloud Source Repository
+
+- [Adding foundation code to CSR](../csr/README.md)
