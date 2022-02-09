@@ -6,8 +6,8 @@
     },
     "subnetworks": [
       {
-        "name" : "sb-p-shared-base-us-west1-net1",
-        "region": "US-WEST1",
+        "name" : "sb-p-shared-base-northamerica-northeast2-net1",
+        "region": "NORTHAMERICA-NORTHEAST2",
         "ip_cidr_range": "10.0.8.0/24",
         "log_config": {
           "enabled": true,
@@ -18,7 +18,7 @@
         }
       },
       {
-        "region": "US-WEST1",
+        "region": "NORTHAMERICA-NORTHEAST2",
         "ip_cidr_range": "10.0.9.0/24",
         "log_config": {
           "enabled": true,

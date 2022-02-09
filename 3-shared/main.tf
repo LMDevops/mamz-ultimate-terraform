@@ -44,7 +44,7 @@ module "secrets_kms_project" {
 
 module "shared_billing_export" {
   source                    = "../modules/shared_billing_export"
-  domain                    = "example.com"
+  domain                    = "techjunkie4hire.com"
   log_mon_prj_id            = trimprefix(module.logging_monitoring_project.project_id, "projects/")
   billing_admin_group_email = var.billing_admin_group_email
   dataset_name              = "bqds-${local.environment}-${local.business_code}-billing-data"

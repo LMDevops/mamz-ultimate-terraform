@@ -5,10 +5,10 @@
 ######
 
 # Update these variables per your environment
-export DOMAIN="example.com"
-export BILLING_ACCT="111111-222222-333333"
-export ORGANIZATION="12345678901"
-export REGION=US-CENTRAL1
+export DOMAIN="techjunkie4hire.com"
+export BILLING_ACCT="0104BF-0E14A9-484586"
+export ORGANIZATION="907565456311"
+export REGION=NORTHAMERICA-NORTHEAST2
 
 export BUS_CODE=zzz
 export APP_NAME=app1
@@ -68,16 +68,16 @@ read  -n 1
 echo "Replacing Business Code and App Name"
 echo 'An "illegal byte sequence" error can be ignored.'
 
-egrep -lRZ 'zzzz' --exclude="*.md" --exclude="*.sh" --exclude="*.example" .         | xargs sed -i "" "s/zzzz/$BUS_CODE_L/g"
-egrep -lRZ 'app1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" .         | xargs sed -i "" "s/app1/$APP_NAME_L/g"
+egrep -lRZ 'zzzz' --exclude="*.md" --exclude="*.sh" --exclude="*.example" .         | xargs -0 -l sed -i -e "s/zzzz/$BUS_CODE_L/g"
+egrep -lRZ 'app1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" .         | xargs -0 -l sed -i -e "s/app1/$APP_NAME_L/g"
 
 echo "Replacing Domain and Org"
-egrep -lRZ 'example.com' --exclude="*.md" --exclude="*.sh" --exclude="*.example" .  | xargs sed -i "" "s/example\.com/$DOMAIN/g"
-egrep -lRZ '000000000000' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs sed -i "" "s/000000000000/$ORGANIZATION/g"
+egrep -lRZ 'example.com' --exclude="*.md" --exclude="*.sh" --exclude="*.example" .  | xargs -0 -l sed -i -e "s/example\.com/$DOMAIN/g"
+egrep -lRZ '000000000000' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -0 -l sed -i -e "s/000000000000/$ORGANIZATION/g"
 
 echo "Replacing Region"
-egrep -lRZ 'US-WEST1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" .     | xargs sed -i "" "s/US-WEST1/$REGION/g"
-egrep -lRZ 'us-west1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" .     | xargs sed -i "" "s/us-west1/$REGION_L/g"
+egrep -lRZ 'US-WEST1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" .     | xargs -0 -l sed -i -e "s/US-WEST1/$REGION/g"
+egrep -lRZ 'us-west1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" .     | xargs -0 -l sed -i -e "s/us-west1/$REGION_L/g"
 
 
 echo "Building .tfvars files"
