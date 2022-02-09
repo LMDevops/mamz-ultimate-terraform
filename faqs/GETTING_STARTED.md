@@ -11,7 +11,7 @@
 - Run book: https://docs.google.com/document/d/12t9TsbVwGFIUc0D0I263NqgT3m_pch1PiproqfWCo0M/edit#
 - IAM Workseet: https://docs.google.com/spreadsheets/d/1Ghv9MGBZHAgFZfXE5BVQTO8RuBnZIZyZ_H8jb3MFsLo/edit#gid=0
 - ProServ catalog - Foundation delivery: https://drive.google.com/drive/folders/1_wvltngtAzICIa6nhrZBMgXYX5I7XDcD?usp=sharing
-- Walkthrough video: https://www.loom.com/team-videos/Foundation
+- Walkthrough video: https://www.loom.com/team-videos/Foundation 
 
 # Pre-Requisites
 
