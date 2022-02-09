@@ -104,7 +104,7 @@ Choose an option:  "
 
         echo "Running prod"
         run_X_env "7-prod"
-        excho "Completed prod"
+        echo "Completed prod"
         mainmenu
         ;;
     c)
