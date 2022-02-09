@@ -1,27 +1,30 @@
 #!/bin/bash
 
 ESC=$(printf '\033') RESET="${ESC}[0m" BLACK="${ESC}[30m" RED="${ESC}[31m"
-GREEN="${ESC}[32m" BLUE="${ESC}[34m"
+GREEN="${ESC}[32m" BLUE="${ESC}[34m" YELLOW="${ESC}[33m"
 
 greenprint() { printf "${GREEN}%s${RESET}\n" "$1"; }
 blueprint() { printf "${BLUE}%s${RESET}\n" "$1"; }
 redprint() { printf "${RED}%s${RESET}\n" "$1"; }
+yellowprint() { printf "${YELLOW}%s${RESET}\n" "$1"; }
 
 
 mainmenu() {
     echo -ne "
 MAIN MENU
-$(greenprint '1)') Run 1-bootstrap
-$(greenprint '2)') Run 2-organization
-$(greenprint '3)') Run 3-shared
-$(greenprint '4)') Run 4-dev
-$(greenprint '5)') Run 5-qa
-$(greenprint '6)') Run 6-uat
-$(greenprint '7)') Run 7-prod
-
-$(greenprint 's)') Run 1,2,3
 $(greenprint 'all)') Run all
+$(greenprint 's)') Run 1,2,3
+
+$(yellowprint '1)') Run 1-bootstrap
+$(yellowprint '2)') Run 2-organization
+$(yellowprint '3)') Run 3-shared
+$(yellowprint '4)') Run 4-dev
+$(yellowprint '5)') Run 5-qa
+$(yellowprint '6)') Run 6-uat
+$(yellowprint '7)') Run 7-prod
+
 $(blueprint 'c)') Clean 
+
 $(redprint '0)') Exit
 Choose an option:  "
     read -r ans
