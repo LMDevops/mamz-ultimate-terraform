@@ -1,7 +1,7 @@
 #!/bin/bash
 
 destroy_step_7 () {
-
+  terraform -chdir=7-prod init
   terraform -chdir=7-prod destroy --auto-approve -var-file=terraform.tfvars
 
   if [ $? != 0 ]; then
@@ -17,7 +17,7 @@ destroy_step_7 () {
 }
 
 destroy_step_6 () {
-
+  terraform -chdir=6-uat init
   terraform -chdir=6-uat destroy --auto-approve -var-file=terraform.tfvars
 
   if [ $? != 0 ]; then
@@ -33,6 +33,7 @@ destroy_step_6 () {
 }
 
 destroy_step_5 () {
+  terraform -chdir=5-qa init
   terraform -chdir=5-qa destroy --auto-approve -var-file=terraform.tfvars
 
   if [ $? != 0 ]; then
@@ -48,6 +49,7 @@ destroy_step_5 () {
 }
 
 destroy_step_4 () {
+  terraform -chdir=4-dev init
   terraform -chdir=4-dev destroy --auto-approve -var-file=terraform.tfvars
 
   if [ $? != 0 ]; then
@@ -63,6 +65,7 @@ destroy_step_4 () {
 }
 
 destroy_step_3 () {
+  terraform -chdir=3-shared init
   terraform -chdir=3-shared destroy --auto-approve -var-file=terraform.tfvars
 
   if [ $? != 0 ]; then
@@ -78,6 +81,7 @@ destroy_step_3 () {
 }
 
 destroy_step_2() {
+  terraform -chdir=2-organization init
   terraform -chdir=2-organization destroy --auto-approve -var-file=terraform.tfvars;
 
   if [ $? != 0 ]; then
