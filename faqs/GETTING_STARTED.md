@@ -36,6 +36,8 @@ In each section (1-7) there is a **terraform.tfvars.example** file that needs to
 
 The `0-prep.sh` script consolidates all the changes needed into one script. Open this `0-prep.sh` script and edit the top section. **NOTE**: It is recommended to commit the changes after editing this file and **before** executing the `auto_deploy.sh` script below. This allows for easy rollback if needed. 
 
+The Domain, BILLING and ORG informations can get gathered on screen for you if you run the `get-gcp-infos.sh` script.
+
 ```bash
 export DOMAIN="example.com"
 export BILLING_ACCT="111111-222222-333333"
