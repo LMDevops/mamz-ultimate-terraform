@@ -5,10 +5,10 @@
 ######
 
 # Update these variables per your environment
-export DOMAIN="techjunkie4hire.com"
-export BILLING_ACCT="0104BF-0E14A9-484586"
-export ORGANIZATION="907565456311"
-export REGION=NORTHAMERICA-NORTHEAST2
+export DOMAIN="CHANGE_ME"
+export BILLING_ACCT="CHANGE_ME"
+export ORGANIZATION="CHANGE_ME"
+export REGION=US-WEST1
 
 export BUS_CODE=zzz
 export APP_NAME=app1
