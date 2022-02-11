@@ -10,7 +10,7 @@ export BILLING_ACCT="CHANGE_ME"
 export ORGANIZATION="CHANGE_ME"
 export REGION=US-WEST1
 
-export BUS_CODE=zzz
+export BUS_CODE=zzzz
 export APP_NAME=app1
 
 ###
