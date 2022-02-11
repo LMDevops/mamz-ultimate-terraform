@@ -3,7 +3,7 @@ clear
 #
 # Get SEED project ID
 echo "*** Get SEED Project ID"
-export PROJECT_ID=$(gcloud projects list | grep tfseed | awk '{print $1}')
+export PROJECT_ID=$(gcloud projects list | grep tfseed | awk ''NR==1' {print $2}')
 echo "SEED Project ID:" $PROJECT_ID
 #
 # Remove repo
