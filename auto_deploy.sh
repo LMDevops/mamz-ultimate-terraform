@@ -286,11 +286,11 @@ case $THE_ENV in
   4-dev)
     PREFIX="tf_state_dev"
     ;;
-  5-uat)
-    PREFIX="tf_state_uat"
-    ;;  
-  6-qa)
+  5-qa)
     PREFIX="tf_state_qa"
+    ;;  
+  6-uat)
+    PREFIX="tf_state_uat"
     ;;
   7-prod)
     PREFIX="tf_state_prod"
