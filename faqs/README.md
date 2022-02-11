@@ -1,5 +1,9 @@
 # Frequently encountered scenarios and questions
 
+## Walkthrough videos
+  - [Part 1 - Structure](https://www.loom.com/share/405a2965229543f2a974e039a2a5f312?sharedAppSource=team_library) 
+  - [Part 2 - Deployment](https://www.loom.com/share/cfb5055693b740d4a227adf54a857bc8?sharedAppSource=team_library)
+
 ## Getting started with the CE-Led fondation
 
 - [Getting started](GETTING_STARTED.md)
