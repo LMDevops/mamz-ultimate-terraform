@@ -37,7 +37,7 @@ locals {
     "roles/orgpolicy.policyAdmin"
   ]
 
-  resource_base_name         = "zzz" # BC_CHANGE_ME - Limit to 4-6 caracters
+  resource_base_name         = "bc-change_me" # BC_CHANGE_ME - Limit to 4-6 caracters
   environment                = "b"
   seed_project_label         = "tfseed"
   seed_project_display_name  = "prj-${local.resource_base_name}-${local.environment}-${local.seed_project_label}"

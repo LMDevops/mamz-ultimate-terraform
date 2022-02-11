@@ -46,7 +46,7 @@ locals {
   flow_log_bucket_id        = "bkt-s-${local.business_code}-log-mon-vpcflow"
   vpc_type                  = "shared"
   environment               = "s"
-  business_code             = "zzzz" # BC_CHANGE_ME - Limit to 4-6 caracters
+  business_code             = "bc-change_me" # BC_CHANGE_ME - Limit to 4-6 caracters
   svpc_project_label        = "svpc"
   log_mon_project_label     = "log-mon"
   secrets_kms_project_label = "secrets-kms"

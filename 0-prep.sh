@@ -65,22 +65,22 @@ read  -n 1
 ###
 # Replace default values
 ###
-echo "Replacing Business Code and App Name"
-echo 'An "illegal byte sequence" error can be ignored.'
+echo "*** Replacing Business Code and App Name"
+echo '*** An "illegal byte sequence" error can be ignored.'
 
-egrep -lRZ 'zzzz' --exclude="*.md" --exclude="*.sh" --exclude="*.example" .         | xargs -0 -l sed -i -e "s/zzzz/$BUS_CODE_L/g"
-egrep -lRZ 'app1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" .         | xargs -0 -l sed -i -e "s/app1/$APP_NAME_L/g"
+egrep -lRZ 'bc-change_me' --exclude="*.md" --exclude="*.sh" --exclude="*.example" .         | xargs -0 -l sed -i -e "s/bc-change_me/$BUS_CODE_L/g"
+egrep -lRZ 'app-change_me' --exclude="*.md" --exclude="*.sh" --exclude="*.example" .         | xargs -0 -l sed -i -e "s/app-change_me/$APP_NAME_L/g"
 
-echo "Replacing Domain and Org"
+echo "*** Replacing Domain and Org"
 egrep -lRZ 'example.com' --exclude="*.md" --exclude="*.sh" --exclude="*.example" .  | xargs -0 -l sed -i -e "s/example\.com/$DOMAIN/g"
 egrep -lRZ '000000000000' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -0 -l sed -i -e "s/000000000000/$ORGANIZATION/g"
 
-echo "Replacing Region"
+echo "*** Replacing Region"
 egrep -lRZ 'US-WEST1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" .     | xargs -0 -l sed -i -e "s/US-WEST1/$REGION/g"
 egrep -lRZ 'us-west1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" .     | xargs -0 -l sed -i -e "s/us-west1/$REGION_L/g"
 
 
-echo "Building .tfvars files"
+echo "*** Building .tfvars files"
 ######
 ## 1-bootstrap
 ######
