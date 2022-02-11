@@ -11,9 +11,6 @@
 - Run book: https://docs.google.com/document/d/12t9TsbVwGFIUc0D0I263NqgT3m_pch1PiproqfWCo0M/edit#
 - IAM Workseet: https://docs.google.com/spreadsheets/d/1Ghv9MGBZHAgFZfXE5BVQTO8RuBnZIZyZ_H8jb3MFsLo/edit#gid=0
 - ProServ catalog - Foundation delivery: https://drive.google.com/drive/folders/1_wvltngtAzICIa6nhrZBMgXYX5I7XDcD?usp=sharing
-- Walkthrough videos:
-  - [Part 1 - Structure](https://www.loom.com/share/405a2965229543f2a974e039a2a5f312?sharedAppSource=team_library) 
-  - [Part 2 - Deployment](https://www.loom.com/share/cfb5055693b740d4a227adf54a857bc8?sharedAppSource=team_library)
 
 # Pre-Requisites
 
