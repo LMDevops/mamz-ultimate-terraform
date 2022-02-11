@@ -3,13 +3,14 @@ clear
 #
 # Get SEED project ID
 echo "*** Get SEED Project ID"
-export PROJECT_ID=$(gcloud projects list | grep tfseed | awk '{print $1}')
+export PROJECT_ID=$(gcloud projects list | grep tfseed | awk ''NR==1' {print $2}')
 echo "SEED Project ID:" $PROJECT_ID
 #
 # Create Enable API and Repo
 echo "*** Enabling CSR API and creating SADA Foundation repo"
 gcloud services enable sourcerepo.googleapis.com --project $PROJECT_ID
 gcloud source repos create sada-foundation --project $PROJECT_ID
+git init
 #
 # Set CSR credentials
 echo "*** Set CSR credentials"
@@ -18,5 +19,7 @@ git config --global credential.https://source.developers.google.com.helper gclou
 # Push to CSR sada-foundation Repo
 echo "*** Push local foudnation code to CSR repo"
 git remote add google https://source.developers.google.com/p/$PROJECT_ID/r/sada-foundation
+git add .
+git commit -m 'initial commit'
 git push --all google
 #
