@@ -2,9 +2,11 @@
 clear
 #
 # Get SEED project ID
-echo "*** Get SEED Project ID"
-export PROJECT_ID=$(gcloud projects list | grep tfseed | awk ''NR==1' {print $2}')
-echo "SEED Project ID:" $PROJECT_ID
+echo "*** YOUR PROJECTS"
+gcloud projects list
+echo -n "Enter your SEED Project ID: "
+read PROJECT_ID
+clear
 #
 # Remove repo
 echo "*** Remove SADA Foundation repo"
