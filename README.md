@@ -6,11 +6,7 @@ The supplied structure and code is intended to form a starting point for buildin
 
 ## Getting Started Fast
 
-The TL;DR Pre-Requisites, customization and execution instructions can be found [here](faqs/GETTING_STARTED.md).
-
-## Frequently encountered scenarios and questions
-
-Frequently encountered scenarios and questions can be found [here](faqs/README.md).
+The TL;DR Pre-Requisites, customization and execution instructions can be found [here](docs/getting_started_fast.md).
 
 ## Overview
 
