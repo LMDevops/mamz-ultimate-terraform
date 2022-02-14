@@ -9,13 +9,11 @@
 - [Getting started](GETTING_STARTED.md)
 
 ## Getting the Foundation V2 Repo to the customer
-- Prep:
+- Create the TGZ to send to customer and cleanup the repo:
 ```bash
-git clone git@github.com:sadasystems/proserv-foundations.git
-rm -rf ./proserv-foundations/.git
-rm -f ./proserv-foundations/docs/faqs.md
-mv proserv-foundations sada-foundation
-tar czvf sada-foundation.tgz sada-foundation
+./package_for_customer.sh
+mv sada-foundation.tgz ..
+rm -rf sada-foundation
 ```
 - Copy the .tgz file to your SADA Google Drive
 - Send link to customer (viewer)
