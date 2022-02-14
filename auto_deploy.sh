@@ -23,8 +23,6 @@ $(yellowprint '5)') Run 5-qa
 $(yellowprint '6)') Run 6-uat
 $(yellowprint '7)') Run 7-prod
 
-$(blueprint 'c)') Clean 
-
 $(redprint '0)') Exit
 Choose an option:  "
     read -r ans
@@ -105,10 +103,6 @@ Choose an option:  "
         echo "Running prod"
         run_X_env "7-prod"
         echo "Completed prod"
-        mainmenu
-        ;;
-    c)
-        echo "TODO..."
         mainmenu
         ;;
     0)
