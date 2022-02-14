@@ -1,4 +1,4 @@
-# Frequently encountered scenarios and questions
+# Frequently encountered scenarios and questions (SADA ONLY)
 
 ## Walkthrough videos
   - [Part 1 - Structure](https://www.loom.com/share/405a2965229543f2a974e039a2a5f312?sharedAppSource=team_library) 
@@ -7,6 +7,28 @@
 ## Getting started with the CE-Led fondation
 
 - [Getting started](GETTING_STARTED.md)
+
+## Getting the Foundation V2 Repo to the customer
+- Prep:
+```bash
+git clone git@github.com:sadasystems/proserv-foundations.git
+rm -rf ./proserv-foundations/.git
+rm -f ./proserv-foundations/docs/faqs.md
+mv proserv-foundations sada-foundation
+tar czvf sada-foundation.tgz sada-foundation
+```
+- Copy the .tgz file to your SADA Google Drive
+- Send link to customer (viewer)
+- Customer can now extract it where the code will be executed.
+  - Strongly suggest this is done in CloudShell
+- Make sure the customer commits the changes to a Git Repo to keep their configuration.
+  - use CSR script in CSR fodler
+
+## Foundation V2 Material
+
+- Run book: https://docs.google.com/document/d/12t9TsbVwGFIUc0D0I263NqgT3m_pch1PiproqfWCo0M/edit#
+- IAM Workseet: https://docs.google.com/spreadsheets/d/1Ghv9MGBZHAgFZfXE5BVQTO8RuBnZIZyZ_H8jb3MFsLo/edit#gid=0
+- ProServ catalog - Foundation delivery: https://drive.google.com/drive/folders/1_wvltngtAzICIa6nhrZBMgXYX5I7XDcD?usp=sharing
 
 ## Foundation checklist from Google
 
