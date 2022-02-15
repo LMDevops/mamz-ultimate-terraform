@@ -1,10 +1,11 @@
 # Frequently encountered scenarios and questions (SADA ONLY)
 
 ## Walkthrough videos
-  - [Part 1 - Structure](https://www.loom.com/share/405a2965229543f2a974e039a2a5f312?sharedAppSource=team_library) 
-  - [Part 2 - Deployment](https://www.loom.com/share/cfb5055693b740d4a227adf54a857bc8?sharedAppSource=team_library)
+  - [Part 1 - Structure](https://www.loom.com/share/420c593ef980487295ae9dd0541d57ab?sharedAppSource=team_library) 
+  - [Part 2 - Customization](https://www.loom.com/share/2dd697f57bbe4696934c5a8bdbad6fa3?sharedAppSource=team_library)
+  - [Part 3 - Deployment](https://www.loom.com/share/8f0207d71ec54473b4c9c4e7cba37fee?sharedAppSource=team_library)
 
-## Getting started with the CE-Led foundation
+## Getting started with this Foundation
 
 - [Getting started](getting_started_fast.md)
 
