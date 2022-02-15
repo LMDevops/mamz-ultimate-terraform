@@ -4,13 +4,15 @@
   - [Part 1 - Structure](https://www.loom.com/share/405a2965229543f2a974e039a2a5f312?sharedAppSource=team_library) 
   - [Part 2 - Deployment](https://www.loom.com/share/cfb5055693b740d4a227adf54a857bc8?sharedAppSource=team_library)
 
-## Getting started with the CE-Led fondation
+## Getting started with the CE-Led foundation
 
-- [Getting started](GETTING_STARTED.md)
+- [Getting started](getting_started_fast.md)
 
 ## Getting the Foundation V2 Repo to the customer
 - Create the TGZ to send to customer and cleanup the repo:
 ```bash
+git clone git@github.com:sadasystems/proserv-foundations.git
+cd proserv-foundation
 ./package_for_customer.sh
 mv sada-foundation.tgz ..
 rm -rf sada-foundation
