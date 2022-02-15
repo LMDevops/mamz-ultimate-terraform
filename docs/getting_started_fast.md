@@ -73,6 +73,12 @@ To start the deployment:
 
 The menu will allow for selection of what to deploy.  
 
+## Add code to Cloud Source Repository
+```bash
+gcloud config set project PROJECT_ID
+csr/add_to_csr.sh
+```
+
 ## Destroy
 To destroy everything that was deployed.
 ```bash
