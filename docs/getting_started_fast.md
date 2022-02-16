@@ -1,8 +1,8 @@
 # Table of Contents
 1. [Pre-Reqs](#Pre-Requisites)
 2. [Terraform Variables](#Terraformtfvars)
-3. [Customization](#Customize-Business-Code-App-Name-and-Networking)
-4. [Execution](#Execution)
+3. [Execution](#Execution)
+4. [Customize Parameters](#Customize-Parameters)
 5. [Post-Deployment](#Post-Deployment)
 
 # Pre-Requisites
