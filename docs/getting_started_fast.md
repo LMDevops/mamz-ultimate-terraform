@@ -181,3 +181,8 @@ egrep -lRZ 'us-west1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . 
     - In Select Scoping Project, select *Use this project as the scoping project*
     Click Add Projects then click Confirm
 - The **prj-xxxx-s-log-mon** projects is now your Monitoring hub for all selected projects.  You can now start setting up Dashboards and Alerts.
+
+## Security Command Center
+- From Security / Security Command Center menu
+  - Enable the Free version of SCC for the Organization
+
