@@ -1,9 +1,9 @@
 # Table of Contents
 1. [Pre-Reqs](#Pre-Requisites)
-2. [Repo](#Getting-the-Foundation-V2-Repo-to-the-customer)
-3. [Terraform Variables](#Terraformtfvars)
-4. [Customization](#Customize-Business-Code-App-Name-and-Networking)
-5. [Execution](#Execution)
+2. [Terraform Variables](#Terraformtfvars)
+3. [Execution](#Execution)
+4. [Customize Parameters](#Customize-Parameters)
+5. [Post-Deployment](#Post-Deployment)
 
 # Pre-Requisites
 
@@ -71,7 +71,7 @@ To start the deployment:
 ./auto_deploy.sh
 ```
 
-The menu will allow for selection of what to deploy.  
+The menu will allow for selection of what to deploy.  The runtime is around 20 minutes if you select ALL.
 
 ## Add code to Cloud Source Repository
 ```bash
@@ -111,10 +111,12 @@ To destroy from a specific step
 
 - **Quick Search and Replace Example (Recursive):** (The `0-prep.sh` script does this replaces.
 ```bash
-export BUS_CODE=T100
+export BUS_CODE=t100
 export APP_NAME=term
-egrep -lRZ 'bc-change_me' --exclude="*.md" . | xargs sed -i "s/bc-change_me/$BUS_CODE/g"
-egrep -lRZ 'app-change_me' --exclude="*.md" . | xargs sed -i "s/aapp-change_mepp1/$APP_NAME/g"
+export BUS_CODE_L=$(echo "$BUS_CODE" | tr '[:upper:]' '[:lower:]')
+export APP_NAME_L=$(echo "$APP_NAME" | tr '[:upper:]' '[:lower:]')
+egrep -lRZ 'bc-change_me' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/bc-change_me/$BUS_CODE_L/g"
+egrep -lRZ 'app-change_me' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/app-change_me/$APP_NAME_L/g"
 ```
 
 ## Networking Region
@@ -137,8 +139,50 @@ If you need to change the default REGION for the Shared VPC.  It's all inthe JSO
 
 - **Quick Search and Replace Example:**
 ```bash
-export REGION=us-central1
-egrep -lRZ 'US-WEST1' --exclude="*.md" . | xargs -0 -l sed -i -e "s/US-WEST1/$REGION/g"
-egrep -lRZ 'us-west1' --exclude="*.md" . | xargs -0 -l sed -i -e "s/us-west1/$REGION/g"
+export REGION=US-CENTRAL1
+export REGION_L=$(echo "$REGION" | tr '[:upper:]' '[:lower:]')
+egrep -lRZ 'US-WEST1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/US-WEST1/$REGION/g"
+egrep -lRZ 'us-west1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/us-west1/$REGION_L/g"
 ```
+
+# Post-Deployment
+
+## Billing Export
+- From the Billing / Billing export menu
+  - For **Standard usage cost**, **Detailed usage cost** and **Pricing**
+    - Select the bqds_s_xxxx_billing_data Dataset from the prj-xxxx-s-log-mon project as the target
+- With this in place, you can create a Datastudio dashboard to visualize your spent over time.
+  - https://cloud.google.com/billing/docs/how-to/visualize-data
+
+## Budgets & Alerts
+- From Billing / Budgets & alerts
+  - Set a basic Budget for all Projects and Services
+    - i.e.: Target amount = 1000$
+  - Let de Actions values by default and revisit to adjust and by more granular in the future.
+  - Hit Finish
+
+## Logging
+- Centralized VPC Flow Logs:
+  - From the **prj-xxxx-s-log-mon** project, go to Logging / Logs Storage
+    - You can see the VPC Flow Logs Storage bucket there
+- Viewing the VPC Flow Logs:
+  - From the **prj-xxxx-s-svpc** project, go to Logging / Logs Explorer
+    - From the Query Window 
+      ```bash
+      resource.type="gce_subnetwork"
+      logName="projects/prj-xxxx-s-svpc/logs/compute.googleapis.com%2Fvpc_flows"
+      ```
+    - You won't see any logs unless you have flow logs turned on for a subnet and actually have traffic traversing said subnet.
+
+## Monitoring
+- From the **prj-xxxx-s-log-mon** project, go to Monitoring / Settings
+  - Click **Add GCP Projects**
+    - Select all the Foudation Projects
+    - In Select Scoping Project, select *Use this project as the scoping project*
+    Click Add Projects then click Confirm
+- The **prj-xxxx-s-log-mon** projects is now your Monitoring hub for all selected projects.  You can now start setting up Dashboards and Alerts.
+
+## Security Command Center
+- From Security / Security Command Center menu
+  - Enable the Free version of SCC for the Organization
 
