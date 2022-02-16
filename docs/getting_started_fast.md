@@ -111,10 +111,12 @@ To destroy from a specific step
 
 - **Quick Search and Replace Example (Recursive):** (The `0-prep.sh` script does this replaces.
 ```bash
-export BUS_CODE=T100
+export BUS_CODE=t100
 export APP_NAME=term
-egrep -lRZ 'bc-change_me' --exclude="*.md" . | xargs sed -i "s/bc-change_me/$BUS_CODE/g"
-egrep -lRZ 'app-change_me' --exclude="*.md" . | xargs sed -i "s/aapp-change_mepp1/$APP_NAME/g"
+export BUS_CODE_L=$(echo "$BUS_CODE" | tr '[:upper:]' '[:lower:]')
+export APP_NAME_L=$(echo "$APP_NAME" | tr '[:upper:]' '[:lower:]')
+egrep -lRZ 'bc-change_me' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/bc-change_me/$BUS_CODE_L/g"
+egrep -lRZ 'app-change_me' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/app-change_me/$APP_NAME_L/g"
 ```
 
 ## Networking Region
@@ -137,9 +139,10 @@ If you need to change the default REGION for the Shared VPC.  It's all inthe JSO
 
 - **Quick Search and Replace Example:**
 ```bash
-export REGION=us-central1
-egrep -lRZ 'US-WEST1' --exclude="*.md" . | xargs -0 -l sed -i -e "s/US-WEST1/$REGION/g"
-egrep -lRZ 'us-west1' --exclude="*.md" . | xargs -0 -l sed -i -e "s/us-west1/$REGION/g"
+export REGION=US-CENTRAL1
+export REGION_L=$(echo "$REGION" | tr '[:upper:]' '[:lower:]')
+egrep -lRZ 'US-WEST1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/US-WEST1/$REGION/g"
+egrep -lRZ 'us-west1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/us-west1/$REGION_L/g"
 ```
 
 # Post-Deployment
