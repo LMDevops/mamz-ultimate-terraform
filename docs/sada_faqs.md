@@ -4,7 +4,7 @@
   - [Part 1 - Structure](https://www.loom.com/share/420c593ef980487295ae9dd0541d57ab?sharedAppSource=team_library) 
   - [Part 2 - Customization](https://www.loom.com/share/2dd697f57bbe4696934c5a8bdbad6fa3?sharedAppSource=team_library)
   - [Part 3 - Deployment](https://www.loom.com/share/8f0207d71ec54473b4c9c4e7cba37fee?sharedAppSource=team_library)
-  - [Part 4 - Post-Deployment]()
+  - [Part 4 - Post-Deployment](https://www.loom.com/share/6b14f576a79a42dba2eadf4cbf619fb5?sharedAppSource=team_library)
 
 ## Getting started with this Foundation
 
