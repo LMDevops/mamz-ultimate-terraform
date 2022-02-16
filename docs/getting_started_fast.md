@@ -1,10 +1,9 @@
 # Table of Contents
 1. [Pre-Reqs](#Pre-Requisites)
-2. [Repo](#Getting-the-Foundation-V2-Repo-to-the-customer)
-3. [Terraform Variables](#Terraformtfvars)
-4. [Customization](#Customize-Business-Code-App-Name-and-Networking)
-5. [Execution](#Execution)
-6. [Post-Deployment](#Post-Deployment)
+2. [Terraform Variables](#Terraformtfvars)
+3. [Customization](#Customize-Business-Code-App-Name-and-Networking)
+4. [Execution](#Execution)
+5. [Post-Deployment](#Post-Deployment)
 
 # Pre-Requisites
 
