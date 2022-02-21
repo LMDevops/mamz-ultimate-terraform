@@ -10,7 +10,8 @@ export BILLING_ACCT="CHANGE_ME"
 export ORGANIZATION="CHANGE_ME"
 export REGION=US-WEST1
 
-export BUS_CODE=zzzz
+export USE_BUS_CODE="TRUE" # Set to FALSE to remove the Business Code requirement
+export BUS_CODE=zzzz # Leave like this if USE_BUS_CODE is set to FALSE.
 export APP_NAME=app1
 
 ###
@@ -64,8 +65,24 @@ read  -n 1
 ###
 # Replace default values
 ###
-echo "*** Replacing Business Code and App Name"
-egrep -lRZ 'bc-change_me' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/bc-change_me/$BUS_CODE_L/g"
+echo "*** Replacing Business Code"
+if [[ $USE_BUS_CODE == "TRUE" ]]
+then
+  egrep -lRZ 'bc-change_me' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/bc-change_me/$BUS_CODE_L/g"
+elif [[ $USE_BUS_CODE == "FALSE" ]]
+then
+  egrep -lRZ '\$\{local.business_code}-' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . |  xargs -r -0 -l sed -i -e 's/${local.business_code}-//g'
+  egrep -lRZ '\$\{local.business_code}_' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . |  xargs -r -0 -l sed -i -e 's/${local.business_code}_//g'
+  sed -i -e 's/${local.resource_base_name}-//g' modules/bootstrap_setup/locals.tf
+else
+  echo
+  echo ":( Invalid Business Code Usage value, exiting."
+  echo
+  exit 0;
+fi
+
+
+echo "*** App Name"
 egrep -lRZ 'app-change_me' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/app-change_me/$APP_NAME_L/g"
 
 echo "*** Replacing Domain and Org"

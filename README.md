@@ -1,6 +1,6 @@
 # terraform-sada-foundation
 
-Thiss is an example repo showing how SADA can use Terraform modules to build a secure GCP foundation, based on the [Google Cloud security foundations guide](https://services.google.com/fh/files/misc/google-cloud-security-foundations-guide.pdf) and combined with SADA best practice.
+This is an example repo showing how SADA can use Terraform modules to build a secure GCP foundation, based on the [Google Cloud security foundations guide](https://services.google.com/fh/files/misc/google-cloud-security-foundations-guide.pdf) and combined with SADA best practice.
 
 The supplied structure and code is intended to form a starting point for building your own foundation with pragmatic defaults you can customize to meet your own requirements.
 
