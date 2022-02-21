@@ -8,10 +8,10 @@
 export DOMAIN="CHANGE_ME"
 export BILLING_ACCT="CHANGE_ME"
 export ORGANIZATION="CHANGE_ME"
-export REGION=US-WEST1
+export REGION=US-WEST1     # Region to deploy the initial subnets
 
 export USE_BUS_CODE="TRUE" # Set to FALSE to remove the Business Code requirement
-export BUS_CODE=zzzz # Leave like this if USE_BUS_CODE is set to FALSE.
+export BUS_CODE=zzzz       # Leave like this if USE_BUS_CODE is set to FALSE.
 export APP_NAME=app1
 
 ###
