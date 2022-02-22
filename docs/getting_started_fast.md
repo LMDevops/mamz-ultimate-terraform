@@ -55,8 +55,8 @@ Additionally, the group names can be altered by editing the names in the `0-prep
 ## Update 0-deploy.sh then run the script
 This will set the app credentials required to execute:
 ```bash
-nano 0-deploy.sh 
-./0-deploy.sh
+nano 0-prep.sh 
+./0-prep.sh
 ```
 
 ## Authenticate to Google
