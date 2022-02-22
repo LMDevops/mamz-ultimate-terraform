@@ -46,7 +46,7 @@ def main():
     # print("####################", creds['token'])
 
     groups = ['grp-gcp-it-org-billing-admins', 'grp-gcp-it-org-network-admins', 'grp-gcp-it-org-organization-admins',
-              'grp-gcp-it-org-auditors', 'grp-gcp-it-org-security-admins', 'grp-gcp-it-org-support-admins']
+              'grp-gcp-it-org-auditors', 'grp-gcp-it-org-security-admins', 'grp-gcp-it-org-support-admins', 'grp-gcp-it-prj-app1-admins', 'grp-gcp-it-prj-app1-developers', 'grp-gcp-it-prj-app1-devops', 'grp-gcp-it-prj-app1-admins']
     for i in range(0, len(groups)):
 
         data = {
