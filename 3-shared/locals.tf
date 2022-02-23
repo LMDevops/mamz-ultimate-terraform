@@ -42,6 +42,7 @@ locals {
     "servicenetworking.googleapis.com",
     "serviceusage.googleapis.com",
     "storage-api.googleapis.com",
+    "ids.googleapis.com",
   ]
   flow_log_bucket_id        = "bkt-s-${local.business_code}-log-mon-vpcflow"
   vpc_type                  = "shared"
