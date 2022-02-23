@@ -4,15 +4,16 @@
 ## 0-prep
 ######
 
-# Update these variables per your environment
-export DOMAIN="CHANGE_ME"
-export BILLING_ACCT="CHANGE_ME"
-export ORGANIZATION="CHANGE_ME"
-export REGION=US-WEST1     # Region to deploy the initial subnets
+# Update these variables per your GCP environment
+export DOMAIN="CHANGE_ME"       # Your User verified Domain for GCP
+export BILLING_ACCT="CHANGE_ME" # Your GCP BILLING ID (SADA Sub-Account or Direct ID);
+export ORGANIZATION="CHANGE_ME" # Your GCP ORG ID
+export REGION=US-WEST1          # Region to deploy the initial subnets
+#
+export USE_BUS_CODE="TRUE"      # Set to FALSE to remove the Business Code requirement
+export BUS_CODE=zzzz            # The Department code or cost center associated with this Foudnation ; Leave like this if you've set USE_BUS_CODE to FALSE ; 
+export APP_NAME=app1            # Short name of your workload
 
-export USE_BUS_CODE="TRUE" # Set to FALSE to remove the Business Code requirement
-export BUS_CODE=zzzz       # Leave like this if USE_BUS_CODE is set to FALSE
-export APP_NAME=app1
 
 ###
 # Build some variables
