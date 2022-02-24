@@ -7,15 +7,13 @@
 
 # Pre-Requisites
 
-- Make sure the **GCP User** who runs the script has the following roles:
+- Make sure the **GCP User** who runs the script has the following roles at the org level:
   - BILLING ACCOUNT ADMIN
   - ORG ADMIN
   - Folder Admin
   - ORG POLICY ADMIN
+  - Project creator
 - Make sure the **GCP User** is in all the default mandatory groups:
-  - gcp-admins@$DOMAIN
-  - gcp-developers@$DOMAIN
-  - gcp-devops@$DOMAIN
   - gcp-organization-admins@$DOMAIN
   - gcp-network-admins@$DOMAIN
   - gcp-billing-admins@$DOMAIN
