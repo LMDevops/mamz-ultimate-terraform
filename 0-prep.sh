@@ -104,7 +104,7 @@ echo "*** Building .tfvars files"
 cat <<EOF > ./1-bootstrap/terraform.tfvars
 billing_account = "$BILLING_ACCT"
 organization_id = "$ORGANIZATION"
-users           = ["group:$ADMINS"]
+users           = ["group:$O_ADMINS"]
 EOF
 
 
