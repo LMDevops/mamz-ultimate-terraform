@@ -62,19 +62,44 @@ echo
 echo  "Press a key when ready. Next steps will not be idempotent"
 read  -n 1
 
+###
+# Determine architecture of execution context
+###
+echo "*** Checking system"
 
+if [[ $(uname -a | grep Linux) ]]
+then
+  echo "Linux machine detected"
+  export MAC_OS="FALSE"
+elif [[ $(uname -a | grep Darwin) ]]
+then
+  echo "Macintosh machine detected"
+  export MAC_OS="TRUE"
+else
+  echo "*** Could not determine system architecture. Scripts will use Linux variants in this case."
+fi
 ###
 # Replace default values
 ###
 echo "*** Replacing Business Code"
 if [[ $USE_BUS_CODE == "TRUE" ]]
 then
-  egrep -lRZ 'bc-change_me' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/bc-change_me/$BUS_CODE_L/g"
+  if [ MAC_OS="TRUE" ]; then
+    egrep -lRZ 'bc-change_me' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs sed -i -e "s/bc-change_me/$BUS_CODE_L/g"
+  else
+    egrep -lRZ 'bc-change_me' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/bc-change_me/$BUS_CODE_L/g"
+  fi
 elif [[ $USE_BUS_CODE == "FALSE" ]]
 then
-  egrep -lRZ '\$\{local.business_code}-' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . |  xargs -r -0 -l sed -i -e 's/${local.business_code}-//g'
-  egrep -lRZ '\$\{local.business_code}_' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . |  xargs -r -0 -l sed -i -e 's/${local.business_code}_//g'
-  sed -i -e 's/${local.resource_base_name}-//g' modules/bootstrap_setup/locals.tf
+  if [ MAC_OS="TRUE" ]
+  then
+    egrep -lRZ '\$\{local.business_code}-' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . |  xargs sed -i -e 's/${local.business_code}-//g'
+    egrep -lRZ '\$\{local.business_code}_' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . |  xargs sed -i -e 's/${local.business_code}_//g'
+  else
+    egrep -lRZ '\$\{local.business_code}-' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . |  xargs -r -0 -l sed -i -e 's/${local.business_code}-//g'
+    egrep -lRZ '\$\{local.business_code}_' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . |  xargs -r -0 -l sed -i -e 's/${local.business_code}_//g'
+    sed -i -e 's/${local.resource_base_name}-//g' modules/bootstrap_setup/locals.tf
+  fi
 else
   echo
   echo ":( Invalid Business Code Usage value, exiting."
