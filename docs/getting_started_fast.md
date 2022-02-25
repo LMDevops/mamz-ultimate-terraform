@@ -13,13 +13,6 @@
   - Folder Admin
   - ORG POLICY ADMIN
   - Project creator
-- Make sure the **GCP User** is in all the default mandatory groups:
-  - gcp-organization-admins@$DOMAIN
-  - gcp-network-admins@$DOMAIN
-  - gcp-billing-admins@$DOMAIN
-  - gcp-security-admins@$DOMAIN
-  - gcp-support-admins@$DOMAIN
-  - gcp-auditors@$DOMAIN
 
 # Terraform.tfvars
 
