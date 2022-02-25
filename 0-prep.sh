@@ -65,11 +65,11 @@ echo "*** Checking system"
 
 if [[ $(uname -a | grep Linux) ]]
 then
-  echo "Linux machine detected"
+  echo "** Linux machine detected"
   export MAC_OS="FALSE"
 elif [[ $(uname -a | grep Darwin) ]]
 then
-  echo "Macintosh machine detected"
+  echo "** Macintosh machine detected"
   export MAC_OS="TRUE"
 else
   echo "*** Could not determine system architecture. Scripts will use Linux variants in this case."
@@ -104,16 +104,34 @@ else
 fi
 
 
-echo "*** App Name"
-egrep -lRZ 'app-change_me' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/app-change_me/$APP_NAME_L/g"
+echo "*** Replacing App Name"
+if [ MAC_OS="TRUE" ]
+then
+  egrep -lRZ 'app-change_me' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs sed -i -e "s/app-change_me/$APP_NAME_L/g"
+else
+  egrep -lRZ 'app-change_me' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/app-change_me/$APP_NAME_L/g"
+fi
 
 echo "*** Replacing Domain and Org"
-egrep -lRZ 'example.com' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/example\.com/$DOMAIN/g"
-egrep -lRZ '000000000000' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/000000000000/$ORGANIZATION/g"
+if [ MAC_OS="TRUE" ]
+then
+  egrep -lRZ 'example.com' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | LC_ALL=C xargs sed -i "" -e "s/example\.com/$DOMAIN/g"
+  egrep -lRZ '000000000000' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | LC_ALL=C xargs sed -i "" -e "s/000000000000/$ORGANIZATION/g"
+else
+  egrep -lRZ 'example.com' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/example\.com/$DOMAIN/g"
+  egrep -lRZ '000000000000' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/000000000000/$ORGANIZATION/g"
+fi
+
 
 echo "*** Replacing Region"
-egrep -lRZ 'US-WEST1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/US-WEST1/$REGION/g"
-egrep -lRZ 'us-west1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/us-west1/$REGION_L/g"
+if [ MAC_OS="TRUE" ]
+then
+  egrep -lRZ 'US-WEST1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs sed -i -e "s/US-WEST1/$REGION/g" #does not throw error
+  egrep -lRZ 'us-west1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | LC_ALL=C xargs sed -i "" -e "s/us-west1/$REGION_L/g" #throws error
+else
+  egrep -lRZ 'US-WEST1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/US-WEST1/$REGION/g"
+  egrep -lRZ 'us-west1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/us-west1/$REGION_L/g"
+fi
 
 
 echo "*** Building .tfvars files"
