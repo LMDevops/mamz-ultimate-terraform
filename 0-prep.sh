@@ -36,18 +36,14 @@ export O_ADMINS="gcp-organization-admins@$DOMAIN"
 export N_ADMINS="gcp-network-admins@$DOMAIN"
 export B_ADMINS="gcp-billing-admins@$DOMAIN"
 export SEC_ADMINS="gcp-security-admins@$DOMAIN"
-
 export SUP_ADMINS="gcp-support-admins@$DOMAIN"
 export AUDITORS="gcp-auditors@$DOMAIN"
 
 
 
-
 echo 
 echo ... Make sure the following groups already exist
-echo $ADMINS
-echo $DEVELOPERS
-echo $DEV_OPS
+
 echo
 echo $B_ADMINS
 echo $O_ADMINS
