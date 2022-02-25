@@ -2,13 +2,14 @@ variable "org_id" {
 
 }
 variable "domain" {}
-variable "billing_admin_group" {}
-variable "org_admin_group" {}
-variable "security_admin_group" {}
-variable "network_admin_group" {}
-variable "auditor_group" {}
-variable "support_admin_group" {
 
+variable "billing_admin_group" { default = "" }
+variable "org_admin_group" { default = "" }
+variable "security_admin_group" { default = "" }
+variable "network_admin_group" { default = "" }
+variable "auditor_group" { default = "" }
+variable "support_admin_group" {
+  default = "" 
 }
 variable "billing_admin_roles" {
   description = "A list of roles to give billing admins"
