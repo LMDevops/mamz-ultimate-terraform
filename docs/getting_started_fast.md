@@ -45,45 +45,54 @@ export APP_NAME=app1
 
 The specific changes can be found in (the section below)[#customize-parameters]
 
-Additionally, the group names can be altered by editing the names in the `0-prep.sh` script. 
-
+Additionally, the group names can be altered by editing the names in the `0-prep.sh` script.
 
 # Execution
 
-## Update 0-deploy.sh then run the script
+## Update 0-prep.sh then run the auto_deploy.sh script
+
 This will set the app credentials required to execute:
+
 ```bash
-nano 0-prep.sh 
+nano 0-prep.sh
 ./0-prep.sh
 ```
 
 ## Authenticate to Google
+
 This will set the app credentials required to execute:
+
 ```bash
 gcloud auth application-default login
 ```
 
 ## Deploy
+
 To start the deployment:
+
 ```bash
 ./auto_deploy.sh
 ```
 
-The menu will allow for selection of what to deploy.  The runtime is around 20 minutes if you select ALL.
+The menu will allow for selection of what to deploy. The runtime is around 20 minutes if you select ALL.
 
 ## Add code to Cloud Source Repository
+
 ```bash
 gcloud config set project PROJECT_ID
 csr/add_to_csr.sh
 ```
 
 ## Destroy
+
 To destroy everything that was deployed.
+
 ```bash
 ./destroy.sh
 ```
 
 To destroy from a specific step
+
 ```bash
 ./destroy.sh [Step Number]
 ```
