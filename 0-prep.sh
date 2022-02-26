@@ -9,89 +9,11 @@ export DOMAIN="CHANGE_ME"       # Your User verified Domain for GCP
 export BILLING_ACCT="CHANGE_ME" # Your GCP BILLING ID (SADA Sub-Account or Direct ID);
 export ORGANIZATION="CHANGE_ME" # Your GCP ORG ID
 export REGION=US-WEST1          # Region to deploy the initial subnets
-export ADMIN_PROJECT_ID="CHANGE_ME"
-#
+
 export USE_BUS_CODE="TRUE"      # Set to FALSE to remove the Business Code requirement
 export BUS_CODE=zzzz            # The Department code or cost center associated with this Foudnation ; Leave like this if you've set USE_BUS_CODE to FALSE ; 
 export APP_NAME=app1            # Short name of your workload
 
-
-###
-# Create the project that will be used to make Workspace Admin API calls.
-###
-
-gcloud projects create $ADMIN_PROJECT_ID --organization=$ORGANIZATION;
-
-if [ $? != 0 ]; then
-  echo "####Error creating admin project####"
-  exit 1
-else
-  echo "####Project deployed...####"
-fi
-
-sleep 20;
-
-FAILCOUNT=0
-###
-# Enable neccessary api's
-###
-for i in 1 2 3
-do
-  gcloud services enable admin.googleapis.com --project=$ADMIN_PROJECT_ID;
-
-  if [ $? != 0 ]; then
-    echo "####Failed####"
-    FAILCOUNT+= 1;
-    if [ FAILCOUNT > 3 ]; then
-      echo "####Error enabling admin API####"
-      exit 1
-    else
-      sleep 30
-    fi
-  else
-    echo "API enabled"
-    break
-  fi
-done
-
-for i in 1 2 3
-do
-  gcloud services enable iap.googleapis.com --project=$ADMIN_PROJECT_ID;
-
-  if [ $? != 0 ]; then
-    echo "####Failed####"
-    FAILCOUNT+= 1;
-    if [ FAILCOUNT > 3 ]; then
-      echo "####Error enabling IAP API####"
-      exit 1
-    else
-      sleep 30
-    fi
-  else
-    echo "IAP API enabled"
-    break
-  fi
-done
-
-###
-# Create ouath brand
-###
-gcloud alpha iap oauth-brands create --application_title="admin-sdk-app" --support_email=$ADMIN_EMAIL --project=$ADMIN_PROJECT_ID
-
-if [ $? != 0 ]; then
-  echo "####Error creating brand ####"
-  exit 1
-else
-  echo "####Brand created####"
-fi
-
-###
-# Create oauth creds WIP
-###
-
-BRAND=$(gcloud alpha iap oauth-brands list --project=$ADMIN_PROJECT_ID | grep name) 
-
-gcloud alpha iap oauth-clients create $BRAND --display_name="Testing" --project=$ADMIN_PROJECT_ID
 
 
 ###
@@ -144,11 +66,11 @@ echo "*** Checking system"
 
 if [[ $(uname -a | grep Linux) ]]
 then
-  echo "** Linux machine detected"
+  echo "*** Linux machine detected"
   export MAC_OS="FALSE"
 elif [[ $(uname -a | grep Darwin) ]]
 then
-  echo "** Macintosh machine detected"
+  echo "*** Macintosh machine detected"
   export MAC_OS="TRUE"
 else
   echo "*** Could not determine system architecture. Scripts will use Linux variants in this case."
