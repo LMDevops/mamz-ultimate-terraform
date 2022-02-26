@@ -12,11 +12,12 @@ from googleapiclient.discovery import build
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/admin.directory.group']
 
+domain = "CHANGE_ME"
+
 
 def main():
     """Create groups required for foundation deployment"""
     creds = None
-    print('main called')
     # The file token.json stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
     # time.
@@ -28,7 +29,7 @@ def main():
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                'desktop-creds.json', SCOPES)
+                'creds.json', SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
         with open('token.json', 'w') as token:
@@ -51,7 +52,7 @@ def main():
     for i in range(0, len(groups)):
 
         data = {
-            "email": groups[i] + "@cf-0003.sadaess.com",
+            "email": groups[i] + domain,
             "name": groups[i],
             "aliases": [
             ],
