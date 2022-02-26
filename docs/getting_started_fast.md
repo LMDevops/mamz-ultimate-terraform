@@ -15,6 +15,8 @@
   - ORG POLICY ADMIN
   - Project creator
 
+** Head to the Execution section if you want to skip explanation of the scripts **
+
 # Terraform.tfvars
 
 In each section (1-7) there is a **terraform.tfvars.example** file that needs to be copied to **terraform.tfvars** and filled-in with all the required information.
@@ -32,7 +34,7 @@ There are 3 scripts to help you get started.
 The Domain, BILLING and ORG informations can get gathered on screen for you if you run the `get-gcp-infos.sh` script.
 
 ```bash
-# Update these variables IN THE PREP SCRIPT per your environment. Lines 30-37 are just an example.
+# Update these variables IN THE PREP SCRIPTS per your environment. Lines 38-46 are just an example.
 export DOMAIN="CHANGE_ME"
 export BILLING_ACCT="CHANGE_ME"
 export ORGANIZATION="CHANGE_ME"
@@ -49,6 +51,34 @@ The specific changes can be found in (the section below)[#customize-parameters]
 Additionally, the group names can be altered by editing the names in the `0-prep.sh` script.
 
 # Execution
+
+## Update groups-prep.sh and run it
+
+This will establish a project with the admin API enabled and a brand to which your oauth client can authenticate against.
+
+```bash
+nano groups-prep.sh # Update top of file.
+./groups-prep.sh
+```
+
+## Create desktop app credentials to use with the create_groups.py script
+
+This is a required manual step. Go to the credentials page of the project that the groups-prep.sh script created. It's found at the following URL:
+
+```
+https://console.cloud.google.com/apis/credentials?project=[ADMIN_PROJECT_ID]
+```
+
+Click "Create Credentials" and select OAuth client ID from the menu. The application type is "Desktop App". Use whatever you want for a name. Download the json file that gets created. Rename it "creds.json".
+
+## Update the create_groups.py script with your domain and run it
+
+```bash
+nano create_groups.py
+python ./create_groups.py
+```
+
+The initial groups should now exist in google admin.
 
 ## Update 0-prep.sh then run it
 
