@@ -8,12 +8,17 @@
 
 # Pre-Requisites
 
-- Make sure the **GCP User** who runs the script has the following roles at the org level:
-  - BILLING ACCOUNT ADMIN
-  - ORG ADMIN
-  - Folder Admin
-  - ORG POLICY ADMIN
-  - Project creator
+1. Permissions
+   Make sure the **GCP User** who runs the script has the following roles at the org level:
+
+- BILLING ACCOUNT ADMIN
+- ORG ADMIN
+- Folder Admin
+- ORG POLICY ADMIN
+- Project creator
+
+2. Groups
+   Step 1 will attempt to create IAM bindings for groups in the GCP organization. These groups MUST exist prior to running step 1. The `0-prep.sh` script should automate these steps.
 
 ** Head to the Execution section if you want to skip explanation of the scripts **
 
@@ -21,13 +26,7 @@
 
 In each section (1-7) there is a **terraform.tfvars.example** file that needs to be copied to **terraform.tfvars** and filled-in with all the required information.
 
-There are 3 scripts to help you get started.
-
-1. The `groups-prep.sh` script will set up the dependencies for creating groups via the create_groups.py script. Open this script and edit the top section.
-
-2. the `create_groups.py` script will establish org level groups to which IAM bindings will be applied.
-
-3. The `0-prep.sh` script consolidates all the changes needed in the Terraform code into one script. Open this script as well and edit the top section.
+- The `0-prep.sh` script consolidates all the changes needed in the Terraform code into one script. Open this script as well and edit the top section.
 
 **NOTE**: It is recommended to commit the changes after editing the `groups-prep.sh` & `0-prep.sh` files and **before** executing the `auto_deploy.sh` script below. This allows for easy rollback if needed.
 
@@ -52,37 +51,9 @@ Additionally, the group names can be altered by editing the names in the `0-prep
 
 # Execution
 
-## Update groups-prep.sh and run it
-
-This will establish a project with the admin API enabled and a brand to which your oauth client can authenticate against.
-
-```bash
-nano groups-prep.sh # Update top of file.
-./groups-prep.sh
-```
-
-## Create desktop app credentials to use with the create_groups.py script
-
-This is a required manual step. Go to the credentials page of the project that the groups-prep.sh script created. It's found at the following URL:
-
-```
-https://console.cloud.google.com/apis/credentials?project=[ADMIN_PROJECT_ID]
-```
-
-Click "Create Credentials" and select OAuth client ID from the menu. The application type is "Desktop App". Use whatever you want for a name. Download the json file that gets created. Rename it "creds.json".
-
-## Update the create_groups.py script with your domain and run it
-
-```bash
-nano create_groups.py
-python ./create_groups.py
-```
-
-The initial groups should now exist in google admin.
-
 ## Update 0-prep.sh then run it
 
-This will replace variables across the TF code.
+This will create an Admin API project, credentials for access, organization level groups and replace variables across the TF code.
 
 ```bash
 nano 0-prep.sh
