@@ -12,6 +12,10 @@ The TL;DR Pre-Requisites, customization and execution instructions can be found 
 
 This repo contains several distinct Terraform scripts each within their own directory that must be applied separately, but in sequence. The prereqs must be completed before any Terraform is run in the environment. Each of these Terraform scripts are to be layered on top of each other, running in the following order.
 
+### [0. Prereqs](0-prep.sh)
+
+This script will perform all the neccessary steps to prep the environment for applying the Terraform. Make sure the values at the top of the prep script are changed to align with your specific environment.
+
 ### [1. bootstrap](./1-bootstrap/)
 
 This stage executes the Bootstrap module which bootstraps an existing GCP organization.

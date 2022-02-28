@@ -52,7 +52,7 @@ def main():
     for i in range(0, len(groups)):
 
         data = {
-            "email": groups[i] + domain,
+            "email": groups[i] + "@" + domain,
             "name": groups[i],
             "aliases": [
             ],
