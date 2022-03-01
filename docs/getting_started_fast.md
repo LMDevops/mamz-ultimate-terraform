@@ -39,10 +39,8 @@ export BILLING_ACCT="CHANGE_ME" # Your GCP BILLING ID (SADA Sub-Account or Direc
 export ORGANIZATION="CHANGE_ME" # Your GCP ORG ID
 export REGION=US-WEST1          # Region to deploy the initial subnets
 export ADMIN_PROJECT_ID="CHANGE_ME" # The project ID of the project that will be authorized to make workspace API calls
-## May not need admin email if using DWD with SA
 export ADMIN_EMAIL="CHANGE_ME" # The email address of the user deploying the foundation
-## This replaces the admin email
-export ADMIN_SA="CHANGE_ME"
+export ADMIN_SA="CHANGE_ME"    # Service account that will perform group creation
 export USE_BUS_CODE="TRUE"      # Set to FALSE to remove the Business Code requirement in naming resources
 export BUS_CODE=zzzz            # The Department code or cost center associated with this Foudnation ; Leave like this if you've set USE_BUS_CODE to FALSE ;
 export APP_NAME=app1            # Short name of your workload
