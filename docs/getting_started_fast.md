@@ -18,7 +18,7 @@
 - Project creator
 
 2. Groups
-   Step 1 will attempt to create IAM bindings for groups in the GCP organization. These groups MUST exist prior to running step 1. The `0-prep.sh` script should automate these steps.
+   Step 1-bootstrap will attempt to create IAM bindings for groups in the GCP organization. These groups MUST exist prior to running step 1. The `0-prep.sh` and `0.5-prep.sh` scripts should help automate most of these steps.
 
 ** Head to the Execution section if you want to skip explanation of the scripts **
 
@@ -34,15 +34,18 @@ The Domain, BILLING and ORG informations can get gathered on screen for you if y
 
 ```bash
 # Update these variables IN THE PREP SCRIPTS per your environment. Lines 38-46 are just an example.
-export DOMAIN="CHANGE_ME"
-export BILLING_ACCT="CHANGE_ME"
-export ORGANIZATION="CHANGE_ME"
-export REGION=US-WEST1     # Region to deploy the initial subnets
-export ADMIN_PROJECT_ID="CHANGE_ME" # Used for group creation
-
-export USE_BUS_CODE="TRUE" # Set to FALSE to remove the Business Code requirement
-export BUS_CODE=zzzz       # Leave like this if USE_BUS_CODE is set to FALSE
-export APP_NAME=app1
+export DOMAIN="CHANGE_ME"       # Your User verified Domain for GCP
+export BILLING_ACCT="CHANGE_ME" # Your GCP BILLING ID (SADA Sub-Account or Direct ID);
+export ORGANIZATION="CHANGE_ME" # Your GCP ORG ID
+export REGION=US-WEST1          # Region to deploy the initial subnets
+export ADMIN_PROJECT_ID="CHANGE_ME" # The project ID of the project that will be authorized to make workspace API calls
+## May not need admin email if using DWD with SA
+export ADMIN_EMAIL="CHANGE_ME" # The email address of the user deploying the foundation
+## This replaces the admin email
+export ADMIN_SA="CHANGE_ME"
+export USE_BUS_CODE="TRUE"      # Set to FALSE to remove the Business Code requirement in naming resources
+export BUS_CODE=zzzz            # The Department code or cost center associated with this Foudnation ; Leave like this if you've set USE_BUS_CODE to FALSE ;
+export APP_NAME=app1            # Short name of your workload
 ```
 
 The specific changes can be found in (the section below)[#customize-parameters]
@@ -53,11 +56,22 @@ Additionally, the group names can be altered by editing the names in the `0-prep
 
 ## Update 0-prep.sh then run it
 
-This will create an Admin API project, credentials for access, organization level groups and replace variables across the TF code.
+This will create an Admin API project, a service account and keys.
 
 ```bash
 nano 0-prep.sh
 ./0-prep.sh
+```
+
+## Enable domain wide delegation
+
+You will need to enable domain wide delegation for the service account created in 0-prep.sh so it can create groups for us.
+
+## Update 0.5-prep.sh then run it
+
+```bash
+nano 0.5-prep.sh
+./0.5-prep.sh
 ```
 
 ## Authenticate to Google
