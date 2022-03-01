@@ -12,7 +12,7 @@ SERVICE_ACCOUNT_EMAIL = os.environ['ADMIN_SA']+'@' + \
 
 
 # Path to the Service Account's Private Key file
-SERVICE_ACCOUNT_PKCS12_FILE_PATH = './sada-cf-test.p12'
+SERVICE_ACCOUNT_PKCS12_FILE_PATH = './'+os.environ['ADMIN_SA']+'.p12'
 
 
 def create_directory_service(user_email):
@@ -21,8 +21,6 @@ def create_directory_service(user_email):
 
     Args:
       user_email: The email of the user. Needs permissions to access the Admin APIs.
-    Returns:
-      Admin SDK directory service object.
     """
 
     credentials = ServiceAccountCredentials.from_p12_keyfile(
@@ -33,26 +31,35 @@ def create_directory_service(user_email):
 
     credentials = credentials.create_delegated(user_email)
     service = build('admin', 'directory_v1', credentials=credentials)
-    result = service.groups().list(customer='my_customer').execute()
     # print(result)
-    group = {  # JSON template for Group resource in Directory API.
-        "nonEditableAliases": [  # List of non editable aliases (Read-only)
-            "A String",
-        ],
-        "kind": "admin#directory#group",  # Kind of resource this is.
-        "description": "A String",  # Description of the group
-        "name": "A String",  # Group name
-        # Is the group created by admin (Read-only) *
-        "adminCreated": True,
-        "directMembersCount": "5",  # Group direct members count
 
-        "email": "test4@cf-0003.sadaess.com",  # Email of Group
-        "aliases": [  # List of aliases (Read-only)
-            "A String",
-        ],
-    }
-    group_add = service.groups().insert(body=group).execute()
-    print(group_add)
+    groups = [
+        'gcp-billing-admins',
+        'gcp-network-admins',
+        'gcp-organization-admins',
+        'gcp-auditors',
+        'gcp-security-admins',
+        'gcp-support-admins'
+    ]
+
+    for i in range(len(groups)):
+
+        group = {  # JSON template for Group resource in Directory API.
+            "nonEditableAliases": [  # List of non editable aliases (Read-only)
+            ],
+            "kind": "admin#directory#group",  # Kind of resource this is.
+            "description": "A String",  # Description of the group
+            "name": groups[i],  # Group name
+            # Is the group created by admin (Read-only) *
+            "adminCreated": True,
+            "directMembersCount": "5",  # Group direct members count
+
+            "email": groups[i]+"@"+os.environ['DOMAIN'],  # Email of Group
+            "aliases": [  # List of aliases (Read-only)
+            ],
+        }
+        group_add = service.groups().insert(body=group).execute()
+        print(group_add)
 
     # return build('admin', 'directory_v1', credentials=credentials)
 
