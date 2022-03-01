@@ -20,7 +20,7 @@ export APP_NAME=app1            # Short name of your workload
 
 
 
-echo "Attempting to create groups via the python script."
+echo "** Attempting to create groups via the python script."
 
 python ./create_groups.py
 
