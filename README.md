@@ -14,7 +14,13 @@ This repo contains several distinct Terraform scripts each within their own dire
 
 ### [0. Prereqs](0-prep.sh)
 
-This script will perform all the neccessary steps to prep the environment for applying the Terraform. Make sure the values at the top of the prep script are changed to align with your specific environment.
+**THIS REQUIRES MANUAL STEPS!!**
+Currently, GCP offers absolutely no possible means of fully automating group creation end to end in Google workspace. The two options you are left with for automating group creation as much as possible are:
+
+- Creating app credentials for the group creation script and authorizing it in the browser
+- Enabling domain wide delegation for a service account in the google admin console (this is the method we'll use)
+
+The 0-prep.sh & 0.5-prep.sh scripts will perform all the neccessary steps to prep the environment for applying the Terraform. Make sure the values at the top of the prep scripts are changed to align with your specific environment.
 
 ### [1. bootstrap](./1-bootstrap/)
 
@@ -68,12 +74,12 @@ example-organization
 
 #### Logging
 
-- The logging strategy of this foundation is around VPC Flow Logs.  Each VPC's and Subnets under the Shared VPCs project send their logs in a Sync hosted in a bucket in the log-mon shared project.
+- The logging strategy of this foundation is around VPC Flow Logs. Each VPC's and Subnets under the Shared VPCs project send their logs in a Sync hosted in a bucket in the log-mon shared project.
 
 #### Monitoring
 
 - Under each environment folder, a project is created per environment (`dev`, `prod`, `uat` & `qa`).
-Please note that creating the [workspace and linking projects](https://cloud.google.com/monitoring/workspaces/create) can currently only be completed through the Cloud Console.
+  Please note that creating the [workspace and linking projects](https://cloud.google.com/monitoring/workspaces/create) can currently only be completed through the Cloud Console.
 
 - If you have strong IAM requirements for these monitoring workspaces, it is worth considering creating these at a more granular level, such as per business unit or per application.
 
@@ -87,7 +93,7 @@ Please note that creating the [workspace and linking projects](https://cloud.goo
 
 ### Secrets and KMS
 
-- There is nothing put in place regarding Secrats Management and KMS in this foundation beside a host project dedicated to this task.  Both APIs are enabled at project creation.
+- There is nothing put in place regarding Secrats Management and KMS in this foundation beside a host project dedicated to this task. Both APIs are enabled at project creation.
 
 ### [4. dev](./4-dev/)
 

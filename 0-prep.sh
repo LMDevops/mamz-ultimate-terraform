@@ -9,229 +9,170 @@ export DOMAIN="CHANGE_ME"       # Your User verified Domain for GCP
 export BILLING_ACCT="CHANGE_ME" # Your GCP BILLING ID (SADA Sub-Account or Direct ID);
 export ORGANIZATION="CHANGE_ME" # Your GCP ORG ID
 export REGION=US-WEST1          # Region to deploy the initial subnets
-#
+export ADMIN_PROJECT_ID="CHANGE_ME" # The project ID of the project that will be authorized to make workspace API calls
+## May not need admin email if using DWD with SA
+export ADMIN_EMAIL="CHANGE_ME" # The email address of the user deploying the foundation 
+## This replaces the admin email
+export ADMIN_SA="CHANGE_ME"
 export USE_BUS_CODE="TRUE"      # Set to FALSE to remove the Business Code requirement
 export BUS_CODE=zzzz            # The Department code or cost center associated with this Foudnation ; Leave like this if you've set USE_BUS_CODE to FALSE ; 
 export APP_NAME=app1            # Short name of your workload
 
+##
+# Create the project that will be used to make Workspace Admin API calls.
+##
 
-###
-# Build some variables
-# NOTE: These groups should already exist!
-###
-export BUS_CODE_L=$(echo "$BUS_CODE" | tr '[:upper:]' '[:lower:]')
-export APP_NAME_L=$(echo "$APP_NAME" | tr '[:upper:]' '[:lower:]')
-export REGION_L=$(echo "$REGION" | tr '[:upper:]' '[:lower:]')
+gcloud projects create $ADMIN_PROJECT_ID --organization=$ORGANIZATION;
 
-
-# Example: grp-gcp-t101-prj-term-admins@cyberdyne.com
-export ADMINS="gcp-admins@$DOMAIN"
-#export DEVELOPERS="grp-gcp-$BUS_CODE_L-prj-$APP_NAME_L-developers@$DOMAIN"
-export DEVELOPERS="gcp-developers@$DOMAIN"
-export DEV_OPS="gcp-devops@$DOMAIN"
-#
-export O_ADMINS="gcp-organization-admins@$DOMAIN"
-export N_ADMINS="gcp-network-admins@$DOMAIN"
-export B_ADMINS="gcp-billing-admins@$DOMAIN"
-export SEC_ADMINS="gcp-security-admins@$DOMAIN"
-export SUP_ADMINS="gcp-support-admins@$DOMAIN"
-export AUDITORS="gcp-auditors@$DOMAIN"
-
-
-echo 
-echo ... Make sure the following groups already exist
-echo
-echo $B_ADMINS
-echo $O_ADMINS
-echo $N_ADMINS
-echo $SUP_ADMINS
-echo $AUDITORS
-echo $SEC_ADMINS
-echo
-echo ...
-echo 
-echo  "Press a key when ready. Next steps will not be idempotent"
-read  -n 1
-
-
-###
-# Determine architecture of execution context
-###
-echo "*** Checking system"
-
-if [[ $(uname -a | grep Linux) ]]
-then
-  echo "*** Linux machine detected"
-  echo
-  export MAC_OS="FALSE"
-elif [[ $(uname -a | grep Darwin) ]]
-then
-  echo "*** Macintosh machine detected"
-  echo
-  export MAC_OS="TRUE"
+if [ $? != 0 ]; then
+  echo "*** Error creating admin project"
+  exit 1
 else
-  echo "*** Could not determine system architecture. Scripts will use Linux variants in this case."
+  echo "*** Project deployed"
 fi
 
+echo "*** Waiting for project to be ready..."
+sleep 10;
+
+FAILCOUNT=0
 
 ###
-# Replace default values
+# Enable the neccessary API's
 ###
-echo "*** Replacing Business Code"
-echo
-if [[ $USE_BUS_CODE == "TRUE" ]]
-then
-  if [ $MAC_OS == "TRUE" ]; then
-    egrep -lRZ 'bc-change_me' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs sed -i -e "s/bc-change_me/$BUS_CODE_L/g"
+
+for i in 1 2 3
+do
+  gcloud services enable admin.googleapis.com --project=$ADMIN_PROJECT_ID;
+
+  if [ $? != 0 ]; then
+    echo "*** Failed enabling Admin API, will try again up to 3 times."
+    FAILCOUNT+= 1;
+    if [ FAILCOUNT > 3 ]; then
+      echo "*** Error enabling Admin API"
+      exit 1
+    else
+      sleep 30
+    fi
   else
-    egrep -lRZ 'bc-change_me' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/bc-change_me/$BUS_CODE_L/g"    
+    echo "*** Admin API enabled"
+    break
   fi
-elif [[ $USE_BUS_CODE == "FALSE" ]]
-then
-  if [ $MAC_OS == "TRUE" ]
-  then
-    egrep -lRZ '\$\{local.business_code}-' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . |  xargs sed -i -e 's/${local.business_code}-//g'
-    egrep -lRZ '\$\{local.business_code}_' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . |  xargs sed -i -e 's/${local.business_code}_//g'
+done
+
+## May not be needed anymore.
+# for i in 1 2 3
+# do
+#   gcloud services enable iap.googleapis.com --project=$ADMIN_PROJECT_ID;
+
+#   if [ $? != 0 ]; then
+#     echo "*** Failed enabling IAP API, will try again up to 3 times."
+#     FAILCOUNT+= 1;
+#     if [ FAILCOUNT > 3 ]; then
+#       echo "####Error enabling IAP API####"
+#       exit 1
+#     else
+#       sleep 30
+#     fi
+#   else
+#     echo "IAP API enabled"
+#     break
+#   fi
+# done
+
+for i in 1 2 3
+do
+  gcloud services enable iam.googleapis.com --project=$ADMIN_PROJECT_ID;
+
+  if [ $? != 0 ]; then
+    echo "*** Failed enabling IAM API, will try again up to 3 times."
+    FAILCOUNT+= 1;
+    if [ FAILCOUNT > 3 ]; then
+      echo "####Error enabling IAM API####"
+      exit 1
+    else
+      sleep 30
+    fi
   else
-    egrep -lRZ '\$\{local.business_code}-' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . |  xargs -r -0 -l sed -i -e 's/${local.business_code}-//g'
-    egrep -lRZ '\$\{local.business_code}_' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . |  xargs -r -0 -l sed -i -e 's/${local.business_code}_//g'    
-    sed -i -e 's/${local.resource_base_name}-//g' modules/bootstrap_setup/locals.tf
+    echo "IAM API enabled"
+    break
   fi
+done
+
+##
+# Create the service account that will perform Admin API calls
+##
+
+# gcloud iam service-accounts create $ADMIN_SA --description="Used for making Workspace admin API calls" --display-name="workspace-admin-api-caller" --project=$ADMIN_PROJECT_ID 
+
+if [ $? != 0 ]; then
+  echo "*** Error creating admin service account"
+  exit 1
 else
-  echo
-  echo ":( Invalid Business Code Usage value, exiting."
-  echo
-  exit 0;
+  echo "*** Service account created"
 fi
 
+# gcloud iam service-accounts keys create ./sada-cf-admin --iam-account=$ADMIN_SA@$ADMIN_PROJECT_ID.iam.gserviceaccount.com
 
-echo "*** Replacing App Name"
-echo
-if [ $MAC_OS == "TRUE" ]
-then
-  egrep -lRZ 'app-change_me' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs sed -i -e "s/app-change_me/$APP_NAME_L/g"
+if [ $? != 0 ]; then
+  echo "*** Error creating service account keys"
+  exit 1
 else
-  egrep -lRZ 'app-change_me' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/app-change_me/$APP_NAME_L/g"
+  echo "*** Service account keys created"
 fi
 
+printf "The script has completed successfully. In order to finish provisioning the environment, please follow the instructions at: \n\nhttps://docs.google.com/document/d/12t9TsbVwGFIUc0D0I263NqgT3m_pch1PiproqfWCo0M \n"
 
-echo "*** Replacing Domain and Org"
-echo
-if [ $MAC_OS == "TRUE" ]
-then
-  egrep -lRZ 'example.com' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | LC_ALL=C xargs sed -i "" -e "s/example\.com/$DOMAIN/g"
-  egrep -lRZ '000000000000' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | LC_ALL=C xargs sed -i "" -e "s/000000000000/$ORGANIZATION/g"
-else
-  egrep -lRZ 'example.com' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/example\.com/$DOMAIN/g"
-  egrep -lRZ '000000000000' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/000000000000/$ORGANIZATION/g"
-fi
+exit 0
 
+# ##
+# Create the oauth app so that we can generate credentials for admin API calls
+# ##
+# gcloud alpha iap oauth-brands create --application_title="admin-sdk-app" --support_email=$ADMIN_EMAIL --project=$ADMIN_PROJECT_ID
 
-echo "*** Replacing Region"
-echo
-if [ $MAC_OS == "TRUE" ]
-then
-  egrep -lRZ 'US-WEST1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs sed -i -e "s/US-WEST1/$REGION/g" #does not throw error
-  egrep -lRZ 'us-west1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | LC_ALL=C xargs sed -i "" -e "s/us-west1/$REGION_L/g" #throws error
-else
-  egrep -lRZ 'US-WEST1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/US-WEST1/$REGION/g"
-  egrep -lRZ 'us-west1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/us-west1/$REGION_L/g"
-fi
+# if [ $? != 0 ]; then
+#   echo "*** Error creating brand"
+#   exit 1
+# else
+#   echo "*** Brand created"
+# fi
 
+# # printf "*** Script ran successfully. \n\n\nPlease manually create 'desktop app' credentials for the create_groups.py script by going to: \n\nhttps://console.cloud.google.com/apis/credentials?project=$ADMIN_PROJECT_ID&supportedpurview=project \n\nand clicking 'Create credentials and selecting OAuth client ID'\n\n"
+# printf "*** Attempting to create oauth client ID \n"
 
-echo "*** Building .tfvars files"
-echo
-######
-## 1-bootstrap
-######
-cat <<EOF > ./1-bootstrap/terraform.tfvars
-billing_account = "$BILLING_ACCT"
-organization_id = "$ORGANIZATION"
-users           = ["group:$O_ADMINS"]
-EOF
+# # Commented out for now but will be used for future automated steps
+# var=$(gcloud alpha iap oauth-brands list --project=$ADMIN_PROJECT_ID | grep name) 
 
+# BRAND=$(echo ${var##*/})
 
-######
-## 2-organization
-######
-cat <<EOF > ./2-organization/terraform.tfvars
-domain = "$DOMAIN"
-organization_id = "$ORGANIZATION"
-billing_admin_group  = "$B_ADMINS"
-org_admin_group      = "$O_ADMINS"
-network_admin_group  = "$N_ADMINS"
-support_admin_group  = "$SUP_ADMINS"
-auditor_group        = "$AUDITORS"
-security_admin_group = "$SEC_ADMINS"
-EOF
+# # echo $BRAND
 
+# gcloud beta iap oauth-clients create $BRAND --display_name="automatedGroup" --project=$ADMIN_PROJECT_ID
 
-######
-## 3-shared
-######
-cat <<EOF > ./3-shared/terraform.tfvars
-billing_account = "$BILLING_ACCT"
+# if [ $? != 0 ]; then
+#   echo "*** Error creating OAuth client"
+#   exit 1
+# else
+#   echo "*** OAuth client created"
+# fi
 
-##Groups are created in Google admin and must exist prior to deploying this step.###
-billing_admin_group_email = "$B_ADMINS"
-network_user_groups = [
-  "$N_ADMINS",
-  "$DEVELOPERS"
-]
-EOF
+# var=$(gcloud beta iap oauth-clients list $BRAND --project=$ADMIN_PROJECT_ID --filter="displayName: automatedGroup" | grep name)
 
+# NAME=$(echo ${var##*/})
 
-######
-## 4-dev
-######
-cat <<EOF > ./4-dev/terraform.tfvars
-billing_account = "$BILLING_ACCT"
+# # echo $NAME
 
-##Groups are created in Google admin and must exist prior to deploying this step.###
-admin_group_name     = "$ADMINS"
-developer_group_name = "$DEVELOPERS"
-devops_group_name    = "$DEV_OPS"
-EOF
+# var=$(gcloud beta iap oauth-clients list $BRAND --project=$ADMIN_PROJECT_ID --filter="displayName: automatedGroup" | grep secret)
 
+# SECRET=$(echo ${var##*:})
 
-######
-## 5-qa
-######
-cat <<EOF > ./5-qa/terraform.tfvars
-billing_account = "$BILLING_ACCT"
+# # echo $SECRET
 
-##Groups are created in Google admin and must exist prior to deploying this step.###
-admin_group_name     = "$ADMINS"
-developer_group_name = "$DEVELOPERS"
-devops_group_name    = "$DEV_OPS"
-EOF
+# echo "Setting client_id and client secret in creds.json"
 
+# cat <<EOF >./creds.json
+# {"installed":{"client_id":"$NAME","project_id":"$ADMIN_PROJECT_ID","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"$SECRET","redirect_uris":["urn:ietf:wg:oauth:2.0:oob",""]}}
+# EOF
 
-######
-## 6-uat
-######
-cat <<EOF > ./6-uat/terraform.tfvars
-billing_account = "$BILLING_ACCT"
-
-##Groups are created in Google admin and must exist prior to deploying this step.###
-admin_group_name     = "$ADMINS"
-developer_group_name = "$DEVELOPERS"
-devops_group_name    = "$DEV_OPS"
-EOF
-
-
-######
-## 7-prod
-######
-cat <<EOF > ./7-prod/terraform.tfvars
-billing_account ="$BILLING_ACCT"
-
-##Groups are created in Google admin and must exist prior to deploying this step.###
-admin_group_name     = "$ADMINS"
-developer_group_name = "$DEVELOPERS"
-devops_group_name    = "$DEV_OPS"
-EOF
-
-
-echo "Done..."
-echo
+# cat <<EOF >./creds.json
+# {"web":{"client_id":"1013927195558-gn6ub008aogvpeb41dgas70cmj7qp2u4.apps.googleusercontent.com","project_id":"sada-cf-admin-prj-003","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"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","redirect_uris":["http://localhost"],"javascript_origins":["http://localhost"]}}
+# EOF

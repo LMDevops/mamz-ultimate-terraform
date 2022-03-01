@@ -1,71 +1,60 @@
-from __future__ import print_function
-
-import os.path
-import requests
 import json
+import requests
 import os
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
+from oauth2client.service_account import ServiceAccountCredentials
 
-# If modifying these scopes, delete the file token.json.
-SCOPES = ['https://www.googleapis.com/auth/admin.directory.group']
-
-domain = os.environ['DOMAIN']  # Your User verified Domain for GCP
-
-
-def main():
-    """Create groups required for foundation deployment"""
-    creds = None
-    # The file token.json stores the user's access and refresh tokens, and is
-    # created automatically when the authorization flow completes for the first
-    # time.
-    if os.path.exists('token.json'):
-        creds = Credentials.from_authorized_user_file('token.json', SCOPES)
-    # If there are no (valid) credentials available, let the user log in.
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                'creds.json', SCOPES)
-            creds = flow.run_local_server(port=0)
-        # Save the credentials for the next run
-        with open('token.json', 'w') as token:
-            token.write(creds.to_json())
-
-    # service = build('admin', 'directory_v1', credentials=creds)
-
-    # Call the Admin SDK Directory API
-    creds = creds.to_json()
-    creds = json.loads(creds)
-
-    groups = [
-        'gcp-billing-admins',
-        'gcp-network-admins',
-        'gcp-organization-admins',
-        'gcp-auditors',
-        'gcp-security-admins',
-        'gcp-support-admins'
-    ]
-    for i in range(0, len(groups)):
-
-        data = {
-            "email": groups[i] + "@" + domain,
-            "name": groups[i],
-            "aliases": [
-            ],
-            "nonEditableAliases": [
-            ]
-        }
-        headers = {"Authorization": "Bearer " + creds['token']}
-        result = requests.post(
-            'https://admin.googleapis.com/admin/directory/v1/groups', json=data, headers=headers)
-
-        result = json.loads(result.text)
-        print(result)
+# Email of the Service Account
+# SERVICE_ACCOUNT_EMAIL = '<some-id>@developer.gserviceaccount.com'
+# SERVICE_ACCOUNT_EMAIL = 'testing@sada-cf-admin-prj-003.iam.gserviceaccount.com'
+SERVICE_ACCOUNT_EMAIL = os.environ['ADMIN_SA']+'@' + \
+    os.environ['ADMIN_PROJECT_ID'] + '.iam.gserviceaccount.com'
 
 
-if __name__ == '__main__':
-    main()
+# Path to the Service Account's Private Key file
+SERVICE_ACCOUNT_PKCS12_FILE_PATH = './sada-cf-test.p12'
+
+
+def create_directory_service(user_email):
+    """Build and returns an Admin SDK Directory service object authorized with the service accounts
+    that act on behalf of the given user.
+
+    Args:
+      user_email: The email of the user. Needs permissions to access the Admin APIs.
+    Returns:
+      Admin SDK directory service object.
+    """
+
+    credentials = ServiceAccountCredentials.from_p12_keyfile(
+        SERVICE_ACCOUNT_EMAIL,
+        SERVICE_ACCOUNT_PKCS12_FILE_PATH,
+        'notasecret',
+        scopes=['https://www.googleapis.com/auth/admin.directory.group'])
+
+    credentials = credentials.create_delegated(user_email)
+    service = build('admin', 'directory_v1', credentials=credentials)
+    result = service.groups().list(customer='my_customer').execute()
+    # print(result)
+    group = {  # JSON template for Group resource in Directory API.
+        "nonEditableAliases": [  # List of non editable aliases (Read-only)
+            "A String",
+        ],
+        "kind": "admin#directory#group",  # Kind of resource this is.
+        "description": "A String",  # Description of the group
+        "name": "A String",  # Group name
+        # Is the group created by admin (Read-only) *
+        "adminCreated": True,
+        "directMembersCount": "5",  # Group direct members count
+
+        "email": "test4@cf-0003.sadaess.com",  # Email of Group
+        "aliases": [  # List of aliases (Read-only)
+            "A String",
+        ],
+    }
+    group_add = service.groups().insert(body=group).execute()
+    print(group_add)
+
+    # return build('admin', 'directory_v1', credentials=credentials)
+
+
+create_directory_service(os.environ['ADMIN_EMAIL'])
