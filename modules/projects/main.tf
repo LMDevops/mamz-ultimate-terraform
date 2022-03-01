@@ -11,6 +11,9 @@ resource "google_compute_shared_vpc_service_project" "service_project" {
   count           = var.is_service_project ? 1 : 0
   host_project    = var.host_project_id
   service_project = google_project.main.project_id
+  depends_on = [
+    resource.google_compute_shared_vpc_host_project.host
+  ]
 }
 
 resource "google_compute_shared_vpc_host_project" "host" {
