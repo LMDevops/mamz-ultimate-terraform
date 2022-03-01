@@ -3,6 +3,9 @@
 [[ ! -f sada-foundation.tgz ]] || rm sada-foundation.tgz
 [[ -d sada-foundation ]] || mkdir sada-foundation
 #
+echo
+echo Preparing......
+echo
 cp -R 1-bootstrap ./sada-foundation/
 cp -R 2-organization ./sada-foundation/
 cp -R 3-shared ./sada-foundation/
@@ -21,7 +24,16 @@ cp destroy.sh ./sada-foundation/
 cp get-gcp-infos.sh ./sada-foundation/
 cp README.md ./sada-foundation/
 #
-tar czf sada-foundation.tgz sada-foundation
+echo Packaging......
+echo
+tar czf ../sada-foundation.tgz sada-foundation
+rm -rf sada-foundation
 #
-echo Packaged!
+export c_dir=$(pwd)
+export p_dir="$(dirname "$c_dir")"
+echo "Foundation Packaged And Ready For Customer!"
+echo
+echo "Package Location: $p_dir"
+echo "Package Name: sada-foundation.tgz"
+echo
 #

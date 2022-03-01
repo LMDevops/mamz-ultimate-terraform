@@ -1,17 +1,26 @@
 # terraform-sada-foundation
 
-This is an example repo showing how SADA can use Terraform modules to build a secure GCP foundation, based on the [Google Cloud security foundations guide](https://services.google.com/fh/files/misc/google-cloud-security-foundations-guide.pdf) and combined with SADA best practice.
+This is repo shows how SADA can use shell scripts & Terraform modules to build a GCP foundation, based on the [Google Cloud security foundations guide](https://services.google.com/fh/files/misc/google-cloud-security-foundations-guide.pdf) and combined with SADA best practice.
 
 The supplied structure and code is intended to form a starting point for building your own foundation with pragmatic defaults you can customize to meet your own requirements.
 
-## Getting Started Fast
+## Getting Started Fast/Prereqs
 
 The TL;DR Pre-Requisites, customization and execution instructions can be found [here](docs/getting_started_fast.md).
 
 ## Overview
 
-This repo contains several distinct Terraform projects each within their own directory that must be applied separately, but in sequence.
-Each of these Terraform projects are to be layered on top of each other, running in the following order.
+This repo contains several distinct Terraform scripts each within their own directory that must be applied separately, but in sequence. The prereqs must be completed before any Terraform is run in the environment. Each of these Terraform scripts are to be layered on top of each other, running in the following order.
+
+### [0. Prereqs](0-prep.sh)
+
+**THIS REQUIRES MANUAL STEPS!!**
+Currently, GCP offers absolutely no possible means of fully automating group creation end to end in Google workspace. The two options you are left with for automating group creation as much as possible are:
+
+- Creating app credentials for the group creation script and authorizing it in the browser
+- Enabling domain wide delegation for a service account in the google admin console (this is the method we'll use)
+
+The 0-prep.sh & 0.5-prep.sh scripts will perform all the neccessary steps to prep the environment for applying the Terraform. Make sure the values at the top of the prep scripts are changed to align with your specific environment.
 
 ### [1. bootstrap](./1-bootstrap/)
 
@@ -63,6 +72,29 @@ example-organization
 
 - For billing data, a BigQuery dataset is created with permissions attached, however you will need to configure a billing export [manually](https://cloud.google.com/billing/docs/how-to/export-data-bigquery), as there is no easy way to automate this at the moment.
 
+#### Logging
+
+- The logging strategy of this foundation is around VPC Flow Logs. Each VPC's and Subnets under the Shared VPCs project send their logs in a Sync hosted in a bucket in the log-mon shared project.
+
+#### Monitoring
+
+- Under each environment folder, a project is created per environment (`dev`, `prod`, `uat` & `qa`).
+  Please note that creating the [workspace and linking projects](https://cloud.google.com/monitoring/workspaces/create) can currently only be completed through the Cloud Console.
+
+- If you have strong IAM requirements for these monitoring workspaces, it is worth considering creating these at a more granular level, such as per business unit or per application.
+
+#### Networking
+
+- Under the shared folder one project is created which contains 4 vpc networks, one per environment (`dev`, `prod`, `qa` & `uat`) which is intended to be used as a [Shared VPC Host project](https://cloud.google.com/vpc/docs/shared-vpc) for all projects in the foundation. The underlying TF modules for creating the networking are complex and thus configuration should be done using the json schema's provided in the "config" folder under shared/networking.
+
+### Networks
+
+- VPC networks are deployed per environment with baseline firewall rules and cloud NAT'ing in place. Each network has it's configuration stored in a json schema which can be updated and the terraform re-deployed to customize the network attributes.
+
+### Secrets and KMS
+
+- There is nothing put in place regarding Secrats Management and KMS in this foundation beside a host project dedicated to this task. Both APIs are enabled at project creation.
+
 ### [4. dev](./4-dev/)
 
 The purpose of this stage is to set up the environment projects which contain the resources for individual business units.
@@ -80,21 +112,6 @@ example-organization
 └── fldr-uat
     └── prj-zzzz-u-app1
 ```
-
-#### Monitoring
-
-Under each environment folder, a project is created per environment (`dev`, `prod`, `uat` & `qa`).
-Please note that creating the [workspace and linking projects](https://cloud.google.com/monitoring/workspaces/create) can currently only be completed through the Cloud Console.
-
-If you have strong IAM requirements for these monitoring workspaces, it is worth considering creating these at a more granular level, such as per business unit or per application.
-
-#### Networking
-
-Under the shared folder one project is created which contains 4 vpc networks, one per environment (`dev`, `prod`, `qa` & `uat`) which is intended to be used as a [Shared VPC Host project](https://cloud.google.com/vpc/docs/shared-vpc) for all projects in the foundation. The underlying TF modules for creating the networking are complex and thus configuration should be done using the json schema's provided in the "config" folder under shared/networking.
-
-### Networks
-
-VPC networks are deployed per environment with baseline firewall rules and cloud NAT'ing in place. Each network has it's configuration stored in a json schema which can be updated and the terraform re-deployed to customize the network attributes.
 
 ### Final View
 
@@ -125,4 +142,3 @@ The foundations repo was meant to be built upon, cut a branch, make an improveme
 ### Locals vs. tfvars
 
 locals used to deploy the steps have default values, whereas tfvars files do not. Check tfvars files **before deployment** and ensure that it aligns with your needs.
-
