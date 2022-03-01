@@ -16,6 +16,8 @@
 - Folder Admin
 - ORG POLICY ADMIN
 - Project creator
+- Compute shared VPC admin
+- Logging admin
 
 2. Groups
    Step 1-bootstrap will attempt to create IAM bindings for groups in the GCP organization. These groups MUST exist prior to running step 1. The `0-prep.sh` and `0.5-prep.sh` scripts should help automate most of these steps.
