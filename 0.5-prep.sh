@@ -42,10 +42,10 @@ export REGION_L=$(echo "$REGION" | tr '[:upper:]' '[:lower:]')
 
 
 # Example: grp-gcp-t101-prj-term-admins@cyberdyne.com
-export ADMINS="gcp-admins@$DOMAIN"
+export ADMINS="gcp-$APP_NAME-admins@$DOMAIN"
 #export DEVELOPERS="grp-gcp-$BUS_CODE_L-prj-$APP_NAME_L-developers@$DOMAIN"
-export DEVELOPERS="gcp-developers@$DOMAIN"
-export DEV_OPS="gcp-devops@$DOMAIN"
+export DEVELOPERS="gcp-$APP_NAME-developers@$DOMAIN"
+export DEV_OPS="gcp-$APP_NAME-devops@$DOMAIN"
 #
 export O_ADMINS="gcp-organization-admins@$DOMAIN"
 export N_ADMINS="gcp-network-admins@$DOMAIN"
@@ -58,6 +58,9 @@ export AUDITORS="gcp-auditors@$DOMAIN"
 echo 
 echo ... Make sure the following groups already exist
 echo
+echo $ADMINS
+echo $DEVELOPERS
+echo $DEV_OPS
 echo $B_ADMINS
 echo $O_ADMINS
 echo $N_ADMINS

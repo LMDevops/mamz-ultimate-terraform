@@ -39,7 +39,10 @@ def create_directory_service(user_email):
         'gcp-organization-admins',
         'gcp-auditors',
         'gcp-security-admins',
-        'gcp-support-admins'
+        'gcp-support-admins',
+        'gcp-' + os.environ['APP_NAME'] + '-admins',
+        'gcp-' + os.environ['APP_NAME'] + '-developers',
+        'gcp-' + os.environ['APP_NAME'] + '-devops'
     ]
 
     for i in range(len(groups)):
