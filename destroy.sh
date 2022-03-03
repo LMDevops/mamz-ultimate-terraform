@@ -151,3 +151,20 @@ fi
 if [ $1 == 1 ]; then
   destroy_step_1
 fi
+
+
+# Destroy the Workspace project
+if [[ $(uname -a | grep -i 'Linux cs') ]]
+then
+  echo "*** CloudShell detected"
+  GCP_WS_PROJECT_ID=$(gcloud projects list | grep foundation-workspace | grep PROJECT_ID | awk 'NR==1 {print $2}')
+else
+  echo "*** Not running in CloudShell"
+  GCP_WS_PROJECT_ID=$(gcloud projects list | grep foundation-workspace | awk 'NR==1 {print $1}')  
+fi
+#
+echo
+echo Deleting Workspace Foundation project
+echo
+gcloud projects delete $GCP_WS_PROJECT_ID
+#
