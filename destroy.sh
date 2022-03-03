@@ -166,5 +166,5 @@ fi
 echo
 echo Deleting Workspace Foundation project
 echo
-gcloud projects delete $GCP_WS_PROJECT_ID
+gcloud projects delete $GCP_WS_PROJECT_ID --quiet
 #
