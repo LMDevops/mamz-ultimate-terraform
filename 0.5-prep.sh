@@ -4,11 +4,28 @@
 ## 0-prep
 ######
 
-# The project ID of the project that will be authorized to make workspace API calls
-GCP_WS_PROJECT_ID=$(gcloud projects list | grep foundation-workspace | awk 'NR==1 {print $1}')
+# Getting the Project ID of the project that is authorized to make Workspace API calls
+#
+# Determine architecture CloudShell or raw Linux
+#
+echo "*** Checking system"
+
+if [[ $(uname -a | grep -i 'Linux cs') ]]
+then
+  echo "*** CloudShell detected"
+  echo
+  GCP_WS_PROJECT_ID=$(gcloud projects list | grep foundation-workspace | grep PROJECT_ID | awk 'NR==1 {print $2}')
+else
+  echo "*** Not running in CloudShell"
+  echo
+  GCP_WS_PROJECT_ID=$(gcloud projects list | grep foundation-workspace | awk 'NR==1 {print $1}')  
+fi
+#
 export ADMIN_PROJECT_ID=$GCP_WS_PROJECT_ID
+#
 ## This replaces the admin email
 export ADMIN_SA="sa-admin-caller"
+#
 ## May not need admin email if using DWD with SA
 export ADMIN_EMAIL="CHANGE_ME" # The email address of the user deploying the foundation 
 

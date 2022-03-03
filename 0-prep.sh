@@ -9,6 +9,7 @@ export RANDOM_ID=$RANDOM
 export ADMIN_PROJECT_ID=foundation-workspace-$RANDOM_ID
 ## This replaces the admin email
 export ADMIN_SA="sa-admin-caller"
+#
 # Your GCP ORG ID
 export ORGANIZATION="CHANGE_ME" # Your GCP ORG ID
 ## May not need admin email if using DWD with SA
@@ -19,7 +20,7 @@ export ADMIN_EMAIL="CHANGE_ME" # The email address of the user deploying the fou
 # Create the project that will be used to make Workspace Admin API calls.
 ##
 
-gcloud projects create $ADMIN_PROJECT_ID --organization=$ORGANIZATION;
+gcloud projects create $ADMIN_PROJECT_ID --organization=$ORGANIZATION --labels=type=foundation;
 
 if [ $? != 0 ]; then
   echo "*** Error creating admin project"
