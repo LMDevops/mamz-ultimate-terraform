@@ -97,7 +97,6 @@ destroy_step_2() {
 }
 
 destroy_step_1() {
-
   echo "" > ./1-bootstrap/provider.tf;
 
   terraform -chdir=1-bootstrap init -force-copy;
@@ -118,9 +117,26 @@ destroy_step_1() {
     echo "Bootstrap resources destroyed. ";
     rm -rf ./1-bootstrap/.terraform*;
     rm -f ./1-bootstrap/terraform.tfstate*;
-    exit 0
   fi
+  destroy_step_0;
+}
 
+destroy_step_0() {
+  # Destroy the Workspace project
+  if [[ $(uname -a | grep -i 'Linux cs') ]]
+  then
+    echo "*** CloudShell detected"
+    GCP_WS_PROJECT_ID=$(gcloud projects list | grep foundation-workspace | grep PROJECT_ID | awk 'NR==1 {print $2}')
+  else
+    echo "*** Not running in CloudShell"
+    GCP_WS_PROJECT_ID=$(gcloud projects list | grep foundation-workspace | awk 'NR==1 {print $1}')  
+  fi
+  #
+  echo
+  echo Deleting Workspace Foundation project
+  echo
+  gcloud projects delete $GCP_WS_PROJECT_ID --quiet
+  #
 }
 
 # Determine which step to destroy from
@@ -152,19 +168,6 @@ if [ $1 == 1 ]; then
   destroy_step_1
 fi
 
-
-# Destroy the Workspace project
-if [[ $(uname -a | grep -i 'Linux cs') ]]
-then
-  echo "*** CloudShell detected"
-  GCP_WS_PROJECT_ID=$(gcloud projects list | grep foundation-workspace | grep PROJECT_ID | awk 'NR==1 {print $2}')
-else
-  echo "*** Not running in CloudShell"
-  GCP_WS_PROJECT_ID=$(gcloud projects list | grep foundation-workspace | awk 'NR==1 {print $1}')  
+if [ $1 == 0 ]; then
+  destroy_step_0
 fi
-#
-echo
-echo Deleting Workspace Foundation project
-echo
-gcloud projects delete $GCP_WS_PROJECT_ID --quiet
-#
