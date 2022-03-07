@@ -7,7 +7,7 @@ export RANDOM_ID=$RANDOM
 
 # The project ID of the project that will be authorized to make workspace API calls
 export ADMIN_PROJECT_ID=foundation-workspace-$RANDOM_ID
-## This replaces the admin email
+## IF YOU CHANGE THIS, YOU MUST ALSO CHANGE IT IN THE DESTROY SCRIPT. 
 export ADMIN_SA="sa-admin-caller"
 #
 # Your GCP ORG ID
