@@ -4,25 +4,66 @@
 ## 0-prep
 ######
 
+# Getting the Project ID of the project that is authorized to make Workspace API calls
+#
+# Determine architecture CloudShell or raw Linux
+#
+echo "*** Checking system"
+
+if [[ $(uname -a | grep -i 'Linux cs') ]]
+then
+  echo "*** CloudShell detected"
+  export CLOUD_SHELL="TRUE"
+  echo
+  GCP_WS_PROJECT_ID=$(gcloud projects list | grep foundation-workspace | grep PROJECT_ID | awk 'NR==1 {print $2}')
+else
+  echo "*** Not running in CloudShell"
+  echo
+  GCP_WS_PROJECT_ID=$(gcloud projects list | grep foundation-workspace | awk 'NR==1 {print $1}')  
+fi
+
+#
+export ADMIN_PROJECT_ID=$GCP_WS_PROJECT_ID
+#
+## This replaces the admin email
+export ADMIN_SA="sa-admin-caller"
+#
+## May not need admin email if using DWD with SA
+export ADMIN_EMAIL="CHANGE_ME" # The email address of the user deploying the foundation 
+
 # Update these variables per your GCP environment
 export DOMAIN="CHANGE_ME"       # Your User verified Domain for GCP
 export BILLING_ACCT="CHANGE_ME" # Your GCP BILLING ID (SADA Sub-Account or Direct ID);
 export ORGANIZATION="CHANGE_ME" # Your GCP ORG ID
 export REGION=US-WEST1          # Region to deploy the initial subnets
-export ADMIN_PROJECT_ID="CHANGE_ME" # The project ID of the project that will be authorized to make workspace API calls
-## May not need admin email if using DWD with SA
-export ADMIN_EMAIL="CHANGE_ME" # The email address of the user deploying the foundation 
-## This replaces the admin email
-export ADMIN_SA="CHANGE_ME"
 export USE_BUS_CODE="TRUE"      # Set to FALSE to remove the Business Code requirement
 export BUS_CODE=zzzz            # The Department code or cost center associated with this Foudnation ; Leave like this if you've set USE_BUS_CODE to FALSE ; 
 export APP_NAME=app1            # Short name of your workload
 
+echo "** Checking python version"
+if [ CLOUD_SHELL == "TRUE" ];
+  then export USE_PYTHON3="TRUE"
+fi
+
+if [ CLOUD_SHELL != "TRUE" ];
+then
+  python3 --version
+  if [ $? != 0 ];
+  then 
+    export USE_PYTHON3="TRUE"
+  fi
+fi
+
 
 
 echo "** Attempting to create groups via the python script."
-
-python ./create_groups.py
+echo
+if [ USE_PYTHON3 == "TRUE" ];
+then
+  python3 ./create_groups.py
+else
+  python ./create_groups.py
+fi 
 
 if [ $? != 0 ];
 then
