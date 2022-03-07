@@ -25,14 +25,14 @@ module "project-factory" {
   Create Service Accounts - IAM
 *****************************************/
 locals {
-  service_accounts  = fileset("${path.root}/dev-bu1-project1/dev-bu1-service-accounts", "*")
+  service_accounts = fileset("${path.root}/dev-bu1-project1/dev-bu1-service-accounts", "*")
 }
 
 module "sa_creator_factory" {
-  for_each    = local.service_accounts
-  source = "./../../../modules/service-account-factory"
-  project_id = module.project-factory.project_id
-  environment = "dev"
+  for_each                  = local.service_accounts
+  source                    = "./../../../modules/service-account-factory"
+  project_id                = module.project-factory.project_id
+  environment               = "dev"
   service_account_file_name = "${path.root}/dev-bu1-project1/dev-bu1-service-accounts/${each.key}"
 }
 

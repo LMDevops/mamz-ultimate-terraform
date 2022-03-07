@@ -5,9 +5,9 @@ output "iam_email" {
 }
 
 output "project_roles" {
-  value       = google_project_iam_member.project_roles
+  value = google_project_iam_member.project_roles
 }
 
 output "service_accounts" {
-  value       = google_service_account.service_accounts
+  value = google_service_account.service_accounts
 }

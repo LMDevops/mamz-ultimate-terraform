@@ -6,39 +6,39 @@ locals {
 
 resource "google_compute_disk" "gce_disk_1" {
   project = var.project_id
-  name = "${var.gcp_host_name}-data-disk-1"
-  type = "pd-ssd"
-  size = var.gcp_data_disk_2_size
-  zone = var.gcp_zone
+  name    = "${var.gcp_host_name}-data-disk-1"
+  type    = "pd-ssd"
+  size    = var.gcp_data_disk_2_size
+  zone    = var.gcp_zone
 }
 
 resource "google_compute_disk" "gce_disk_2" {
   project = var.project_id
-  name = "${var.gcp_host_name}-data-disk-2"
-  type = "pd-ssd"
-  size = var.gcp_data_disk_2_size
-  zone = var.gcp_zone
+  name    = "${var.gcp_host_name}-data-disk-2"
+  type    = "pd-ssd"
+  size    = var.gcp_data_disk_2_size
+  zone    = var.gcp_zone
 }
 
 resource "google_compute_attached_disk" "gce_attach_disk_1" {
-  project = var.project_id
-  disk = google_compute_disk.gce_disk_1.name
+  project  = var.project_id
+  disk     = google_compute_disk.gce_disk_1.name
   instance = google_compute_instance.gc_compute_engine.self_link
 }
 
 resource "google_compute_attached_disk" "gce_attach_disk_2" {
-  project = var.project_id
-  disk = google_compute_disk.gce_disk_2.name
+  project  = var.project_id
+  disk     = google_compute_disk.gce_disk_2.name
   instance = google_compute_instance.gc_compute_engine.self_link
 }
 
 resource "google_compute_instance" "gc_compute_engine" {
-  provider        = google
-  name            = var.gcp_host_name
+  provider = google
+  name     = var.gcp_host_name
 
-  project         = var.project_id
-  zone            = var.gcp_zone
-  machine_type    = var.machine_type
+  project      = var.project_id
+  zone         = var.gcp_zone
+  machine_type = var.machine_type
 
   boot_disk {
     initialize_params {

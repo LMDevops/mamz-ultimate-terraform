@@ -10,7 +10,7 @@ output "internal-ip" {
 }
 
 output "gce_self_link" {
-  value = google_compute_instance.gc_compute_engine.self_link  
+  value = google_compute_instance.gc_compute_engine.self_link
 }
 
 output "gce_instance_name" {
