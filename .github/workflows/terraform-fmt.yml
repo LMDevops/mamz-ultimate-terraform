@@ -9,12 +9,12 @@ on:
       - master
 
 jobs:
-  lintv12:
-    name: terraform-fmt-v12
+  tf_lint:
+    name: terraform-fmt
     runs-on: ubuntu-latest
     container:
-      # Using v0.12.24
-      image: hashicorp/terraform@sha256:53fb1c0a78c8bb91c4a855c1b352ea7928f6fa65f8080dc7a845e240dd2a9bee
+      image: hashicorp/terraform:0.15.5
+      # previously used 0.12 hashicorp/terraform@sha256:53fb1c0a78c8bb91c4a855c1b352ea7928f6fa65f8080dc7a845e240dd2a9bee
 
     steps:
     - name: Check out code
