@@ -40,10 +40,30 @@ export USE_BUS_CODE="TRUE"      # Set to FALSE to remove the Business Code requi
 export BUS_CODE=zzzz            # The Department code or cost center associated with this Foudnation ; Leave like this if you've set USE_BUS_CODE to FALSE ; 
 export APP_NAME=app1            # Short name of your workload
 
+echo "** Checking python version"
+if [ CLOUD_SHELL == "TRUE" ];
+  then export USE_PYTHON3="TRUE"
+fi
 
-echo "** Attempting to create groups via the python script. $ADMIN_EMAIL"
+if [ CLOUD_SHELL != "TRUE" ];
+then
+  python3 --version
+  if [ $? != 0 ];
+  then 
+    export USE_PYTHON3="TRUE"
+  fi
+fi
+
+
+
+echo "** Attempting to create groups via the python script."
 echo
-python3 ./create_groups.py
+if [ USE_PYTHON3 == "TRUE" ];
+then
+  python3 ./create_groups.py
+else
+  python ./create_groups.py
+fi 
 
 if [ $? != 0 ];
 then
