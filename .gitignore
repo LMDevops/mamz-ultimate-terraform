@@ -1,7 +1,7 @@
 # Local .terraform directories
 **/.terraform/*
 .terraform
-
+*.p12
 */*.tfvars
 *.tfvars
 # .tfstate files

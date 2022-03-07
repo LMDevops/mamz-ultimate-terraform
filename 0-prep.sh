@@ -4,183 +4,102 @@
 ## 0-prep
 ######
 
-# Update these variables per your environment
-export DOMAIN="CHANGE_ME"
-export BILLING_ACCT="CHANGE_ME"
-export ORGANIZATION="CHANGE_ME"
-export REGION=US-WEST1
+# Update these variables per your GCP environment
+export DOMAIN="CHANGE_ME"       # Your User verified Domain for GCP
+export BILLING_ACCT="CHANGE_ME" # Your GCP BILLING ID (SADA Sub-Account or Direct ID);
+export ORGANIZATION="CHANGE_ME" # Your GCP ORG ID
+export REGION=US-WEST1          # Region to deploy the initial subnets
+export ADMIN_PROJECT_ID="CHANGE_ME" # The project ID of the project that will be authorized to make workspace API calls
+## May not need admin email if using DWD with SA
+export ADMIN_EMAIL="CHANGE_ME" # The email address of the user deploying the foundation 
+## This replaces the admin email
+export ADMIN_SA="CHANGE_ME"
+export USE_BUS_CODE="TRUE"      # Set to FALSE to remove the Business Code requirement
+export BUS_CODE=zzzz            # The Department code or cost center associated with this Foudnation ; Leave like this if you've set USE_BUS_CODE to FALSE ; 
+export APP_NAME=app1            # Short name of your workload
 
-export BUS_CODE=zzzz
-export APP_NAME=app1
+##
+# Create the project that will be used to make Workspace Admin API calls.
+##
 
-###
-# Build some variables
-# NOTE: These groups should already exist!
-###
+gcloud projects create $ADMIN_PROJECT_ID --organization=$ORGANIZATION;
 
-export BUS_CODE_L=$(echo "$BUS_CODE" | tr '[:upper:]' '[:lower:]')
-export APP_NAME_L=$(echo "$APP_NAME" | tr '[:upper:]' '[:lower:]')
-export REGION_L=$(echo "$REGION" | tr '[:upper:]' '[:lower:]')
+if [ $? != 0 ]; then
+  echo "*** Error creating admin project"
+  exit 1
+else
+  echo "*** Project deployed"
+fi
 
+echo "*** Waiting for project to be ready..."
+sleep 10;
 
-
-# Example: grp-gcp-t101-prj-term-admins@cyberdyne.com
-export ADMINS="gcp-admins@$DOMAIN"
-#export DEVELOPERS="grp-gcp-$BUS_CODE_L-prj-$APP_NAME_L-developers@$DOMAIN"
-export DEVELOPERS="gcp-developers@$DOMAIN"
-export DEV_OPS="gcp-devops@$DOMAIN"
-
-export O_ADMINS="gcp-organization-admins@$DOMAIN"
-export N_ADMINS="gcp-network-admins@$DOMAIN"
-export B_ADMINS="gcp-billing-admins@$DOMAIN"
-export SEC_ADMINS="gcp-security-admins@$DOMAIN"
-
-export SUP_ADMINS="gcp-support-admins@$DOMAIN"
-export AUDITORS="gcp-auditors@$DOMAIN"
-
-
-
-
-echo 
-echo ... Make sure the following groups already exist
-echo $ADMINS
-echo $DEVELOPERS
-echo $DEV_OPS
-echo
-echo $B_ADMINS
-echo $O_ADMINS
-echo $N_ADMINS
-echo $SUP_ADMINS
-echo $AUDITORS
-echo $SEC_ADMINS
-
-echo
-echo ...
-echo 
-echo  "Press a key when ready. Next steps will not be idempotent"
-read  -n 1
-
+FAILCOUNT=0
 
 ###
-# Replace default values
+# Enable the neccessary API's
 ###
-echo "*** Replacing Business Code and App Name"
-egrep -lRZ 'bc-change_me' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/bc-change_me/$BUS_CODE_L/g"
-egrep -lRZ 'app-change_me' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/app-change_me/$APP_NAME_L/g"
 
-echo "*** Replacing Domain and Org"
-egrep -lRZ 'example.com' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/example\.com/$DOMAIN/g"
-egrep -lRZ '000000000000' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/000000000000/$ORGANIZATION/g"
+for i in 1 2 3
+do
+  gcloud services enable admin.googleapis.com --project=$ADMIN_PROJECT_ID;
 
-echo "*** Replacing Region"
-egrep -lRZ 'US-WEST1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/US-WEST1/$REGION/g"
-egrep -lRZ 'us-west1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/us-west1/$REGION_L/g"
+  if [ $? != 0 ]; then
+    echo "*** Failed enabling Admin API, will try again up to 3 times."
+    FAILCOUNT+= 1;
+    if [ FAILCOUNT > 3 ]; then
+      echo "*** Error enabling Admin API"
+      exit 1
+    else
+      sleep 30
+    fi
+  else
+    echo "*** Admin API enabled"
+    break
+  fi
+done
 
+for i in 1 2 3
+do
+  gcloud services enable iam.googleapis.com --project=$ADMIN_PROJECT_ID;
 
-echo "*** Building .tfvars files"
-######
-## 1-bootstrap
-######
+  if [ $? != 0 ]; then
+    echo "*** Failed enabling IAM API, will try again up to 3 times."
+    FAILCOUNT+= 1;
+    if [ FAILCOUNT > 3 ]; then
+      echo "####Error enabling IAM API####"
+      exit 1
+    else
+      sleep 30
+    fi
+  else
+    echo "IAM API enabled"
+    break
+  fi
+done
 
+##
+# Create the service account that will perform Admin API calls
+##
 
-cat <<EOF > ./1-bootstrap/terraform.tfvars
-billing_account = "$BILLING_ACCT"
-organization_id = "$ORGANIZATION"
-users           = ["group:$ADMINS"]
-EOF
+gcloud iam service-accounts create $ADMIN_SA --description="Used for making Workspace admin API calls" --display-name="workspace-admin-api-caller" --project=$ADMIN_PROJECT_ID 
 
+if [ $? != 0 ]; then
+  echo "*** Error creating admin service account"
+  exit 1
+else
+  echo "*** Service account created"
+fi
 
-######
-## 2-organization
-######
+gcloud iam service-accounts keys create ./sa-admin-caller.p12 --key-file-type=p12 --iam-account=$ADMIN_SA@$ADMIN_PROJECT_ID.iam.gserviceaccount.com 
 
-cat <<EOF > ./2-organization/terraform.tfvars
-domain = "$DOMAIN"
-organization_id = "$ORGANIZATION"
-billing_admin_group  = "$B_ADMINS"
-org_admin_group      = "$O_ADMINS"
-network_admin_group  = "$N_ADMINS"
-support_admin_group  = "$SUP_ADMINS"
-auditor_group        = "$AUDITORS"
-security_admin_group = "$SEC_ADMINS"
-EOF
+if [ $? != 0 ]; then
+  echo "*** Error creating service account keys"
+  exit 1
+else
+  echo "*** Service account keys created"
+fi
 
+printf "The script has completed successfully. In order to finish provisioning the environment, please follow the instructions at: \n\nhttps://docs.google.com/document/d/12t9TsbVwGFIUc0D0I263NqgT3m_pch1PiproqfWCo0M/edit#heading=h.nfzma1molxm2 \n"
 
-######
-## 3-shared
-######
-
-cat <<EOF > ./3-shared/terraform.tfvars
-billing_account = "$BILLING_ACCT"
-
-##Groups are created in Google admin and must exist prior to deploying this step.###
-billing_admin_group_email = "$B_ADMINS"
-network_user_groups = [
-  "$N_ADMINS",
-  "$DEVELOPERS"
-]
-EOF
-
-
-
-######
-## 4-dev
-######
-
-cat <<EOF > ./4-dev/terraform.tfvars
-billing_account = "$BILLING_ACCT"
-
-##Groups are created in Google admin and must exist prior to deploying this step.###
-admin_group_name     = "$ADMINS"
-developer_group_name = "$DEVELOPERS"
-devops_group_name    = "$DEV_OPS"
-EOF
-
-
-
-######
-## 5-qa
-######
-
-cat <<EOF > ./5-qa/terraform.tfvars
-billing_account = "$BILLING_ACCT"
-
-##Groups are created in Google admin and must exist prior to deploying this step.###
-admin_group_name     = "$ADMINS"
-developer_group_name = "$DEVELOPERS"
-devops_group_name    = "$DEV_OPS"
-EOF
-
-
-
-######
-## 6-uat
-######
-
-cat <<EOF > ./6-uat/terraform.tfvars
-billing_account = "$BILLING_ACCT"
-
-##Groups are created in Google admin and must exist prior to deploying this step.###
-admin_group_name     = "$ADMINS"
-developer_group_name = "$DEVELOPERS"
-devops_group_name    = "$DEV_OPS"
-EOF
-
-
-
-
-######
-## 7-prod
-######
-
-cat <<EOF > ./7-prod/terraform.tfvars
-billing_account ="$BILLING_ACCT"
-
-##Groups are created in Google admin and must exist prior to deploying this step.###
-admin_group_name     = "$ADMINS"
-developer_group_name = "$DEVELOPERS"
-devops_group_name    = "$DEV_OPS"
-EOF
-
-echo "Done..."
-echo 
+exit 0
