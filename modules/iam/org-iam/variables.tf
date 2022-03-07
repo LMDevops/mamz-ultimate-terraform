@@ -9,7 +9,7 @@ variable "security_admin_group" { default = "" }
 variable "network_admin_group" { default = "" }
 variable "auditor_group" { default = "" }
 variable "support_admin_group" {
-  default = "" 
+  default = ""
 }
 variable "billing_admin_roles" {
   description = "A list of roles to give billing admins"

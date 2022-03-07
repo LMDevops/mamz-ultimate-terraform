@@ -1,5 +1,5 @@
 variable "labels" {
-    type    = map
+  type = map(any)
 }
 
 variable "project" {

@@ -13,12 +13,12 @@ locals {
 
 
 resource "google_compute_instance" "gc_compute_engine" {
-  provider        = google
-  name            = var.gcp_host_name
+  provider = google
+  name     = var.gcp_host_name
 
-  project         = var.project_id
-  zone            = var.gcp_zone
-  machine_type    = var.machine_type
+  project      = var.project_id
+  zone         = var.gcp_zone
+  machine_type = var.machine_type
 
   boot_disk {
     initialize_params {

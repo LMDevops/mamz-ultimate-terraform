@@ -3,7 +3,7 @@
 
 
 resource "google_organization_policy" "disable_nested_virtualization_policy" {
-  org_id = data.google_organization.org.org_id
+  org_id     = data.google_organization.org.org_id
   constraint = "compute.disableNestedVirtualization"
   boolean_policy {
     enforced = true

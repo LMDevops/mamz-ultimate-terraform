@@ -1,16 +1,16 @@
-variable network_name {
-  type        = string
-  default     = "gemp-shared-base-vpc"
+variable "network_name" {
+  type    = string
+  default = "gemp-shared-base-vpc"
 }
 
-variable project_name {
-  type        = string
-  default     = "gemp-bu1-project1"
+variable "project_name" {
+  type    = string
+  default = "gemp-bu1-project1"
 }
 
-variable billing_account {
-  type        = string
-  default     = "01C805-AC04C5-836F50"
+variable "billing_account" {
+  type    = string
+  default = "01C805-AC04C5-836F50"
 }
 
 variable "monitoring_admin_roles" {
@@ -23,12 +23,12 @@ variable "monitoring_admin_roles" {
   ]
 }
 
-variable domain_name {
-  type        = string
-  default     = "sadasola.com"
+variable "domain_name" {
+  type    = string
+  default = "sadasola.com"
 }
 
-variable parent_folder {
-  type        = string
-  default     = ""
+variable "parent_folder" {
+  type    = string
+  default = ""
 }
