@@ -13,6 +13,7 @@ echo "*** Checking system"
 if [[ $(uname -a | grep -i 'Linux cs') ]]
 then
   echo "*** CloudShell detected"
+  export CLOUD_SHELL="TRUE"
   echo
   GCP_WS_PROJECT_ID=$(gcloud projects list | grep foundation-workspace | grep PROJECT_ID | awk 'NR==1 {print $2}')
 else
@@ -20,6 +21,7 @@ else
   echo
   GCP_WS_PROJECT_ID=$(gcloud projects list | grep foundation-workspace | awk 'NR==1 {print $1}')  
 fi
+
 #
 export ADMIN_PROJECT_ID=$GCP_WS_PROJECT_ID
 #
