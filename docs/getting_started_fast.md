@@ -8,44 +8,62 @@
 
 # Pre-Requisites
 
-1. Permissions
-   Make sure the **GCP User** who runs the script has the following roles at the org level:
+**1. Permissions**
 
-- BILLING ACCOUNT ADMIN
-- ORG ADMIN
+Make sure the **GCP User** who runs the script has the following roles at the org level:
+
+- Billing Account User
+- Org Admin
 - Folder Admin
-- ORG POLICY ADMIN
-- Project creator
-- Compute shared VPC admin
-- Logging admin
+- Org Policy Admin
+- Project Creator
+- Compute Shared VPC Admin
+- Logging Admin
 
-2. Groups
-   Step 1-bootstrap will attempt to create IAM bindings for groups in the GCP organization. These groups MUST exist prior to running step 1. The `0-prep.sh` and `0.5-prep.sh` scripts should help automate most of these steps.
+**2. Groups**
 
-** Head to the Execution section if you want to skip explanation of the scripts **
+Step 1-bootstrap will attempt to create IAM bindings for groups in the GCP organization. These groups MUST exist prior to running step 1. The **`0-prep.sh`** and **`0.5-prep.sh`** scripts should help automate most of these steps.
+
+**Head to the [Execution](#Execution) section if you want to skip explanation of the scripts**
+
+**0-prep.sh**
+
+```bash
+# The project ID of the project that will be authorized to make workspace API calls
+export ADMIN_PROJECT_ID=foundation-workspace-$RANDOM_ID
+## IF YOU CHANGE THIS, YOU MUST ALSO CHANGE IT IN THE DESTROY SCRIPT.
+export ADMIN_SA="sa-admin-caller"
+#
+# Your GCP ORG ID
+export ORGANIZATION="CHANGE_ME" # Your GCP ORG ID
+## May not need admin email if using DWD with SA
+export ADMIN_EMAIL="CHANGE_ME" # The email address of the user deploying the foundation
+```
 
 # Terraform.tfvars
 
 In each section (1-7) there is a **terraform.tfvars.example** file that needs to be copied to **terraform.tfvars** and filled-in with all the required information.
 
-- The `0-prep.sh` script consolidates all the changes needed in the Terraform code into one script. Open this script as well and edit the top section.
+- The **`0.5-prep.sh`** script consolidates all the changes needed in the Terraform code into one script. Open this script as well and edit the top section.
 
-**NOTE**: It is recommended to commit the changes after editing the `groups-prep.sh` & `0-prep.sh` files and **before** executing the `auto_deploy.sh` script below. This allows for easy rollback if needed.
+**NOTE**: It is recommended to commit the changes after editing the **`0-prep.sh`** & **`0.5-prep.sh`** files and **before** executing the **`auto_deploy.sh`** script below. This allows for easy rollback if needed.
 
-The Domain, BILLING and ORG informations can get gathered on screen for you if you run the `get-gcp-infos.sh` script.
+The Domain, BILLING and ORG informations can get gathered on screen for you if you run the **`get-gcp-infos.sh`** script.
+
+**0.5-prep.sh**
 
 ```bash
-# Update these variables IN THE PREP SCRIPTS per your environment. Lines 38-46 are just an example.
+# Update these variables IN THE PREP SCRIPTS per your environment.
+#
+export ADMIN_EMAIL="CHANGE_ME" # The email address of the user deploying the foundation
 export DOMAIN="CHANGE_ME"       # Your User verified Domain for GCP
 export BILLING_ACCT="CHANGE_ME" # Your GCP BILLING ID (SADA Sub-Account or Direct ID);
 export ORGANIZATION="CHANGE_ME" # Your GCP ORG ID
 export REGION=US-WEST1          # Region to deploy the initial subnets
-export ADMIN_PROJECT_ID="CHANGE_ME" # The project ID of the project that will be authorized to make workspace API calls
-export ADMIN_EMAIL="CHANGE_ME" # The email address of the user deploying the foundation
-export ADMIN_SA="CHANGE_ME"    # Service account that will perform group creation
-export USE_BUS_CODE="TRUE"      # Set to FALSE to remove the Business Code requirement in naming resources
+export USE_BUS_CODE="TRUE"      # Set to FALSE to remove the Business Code requirement
 export BUS_CODE=zzzz            # The Department code or cost center associated with this Foudnation ; Leave like this if you've set USE_BUS_CODE to FALSE ;
 export APP_NAME=app1            # Short name of your workload
+
 ```
 
 The specific changes can be found in (the section below)[#customize-parameters]
@@ -56,7 +74,7 @@ Additionally, the group names can be altered by editing the names in the `0-prep
 
 ## Update 0-prep.sh then run it
 
-This will create an Admin API project, a service account and keys.
+This will the Workspace project that will provision the required groups by the Foundation.
 
 ```bash
 nano 0-prep.sh
@@ -67,7 +85,29 @@ nano 0-prep.sh
 
 You will need to enable domain wide delegation for the service account created in 0-prep.sh so it can create groups for us.
 
+- Go to : https://admin.google.com/ac/owl and scroll to the bottom and click “MANAGE DOMAIN WIDE DELEGATION”.
+
+![](img/dwd_1.png)
+
+- Click “Add new”
+
+![](img/dwd_2.png)
+
+- You can find your OAuth client id on the service accounts page of the project created in the previous step. It’s on the far right.
+
+![](img/dwd_3.png)
+
+- Paste the client ID in the Client ID field in Google admin. The OAuth scope we need is: https://www.googleapis.com/auth/admin.directory.group
+
+![](img/dwd_4.png)
+
+- Click “AUTHORIZE” when you have filled in the client ID and the single auth scope.
+
+- You are now ready to edit and run 0.5-prep.sh
+
 ## Update 0.5-prep.sh then run it
+
+This will create an Admin API project, a service account and keys.
 
 ```bash
 nano 0.5-prep.sh
@@ -133,17 +173,6 @@ To destroy from a specific step
   - 7-prod/locals.tf: business_code = "bc-change_me" # BC_CHANGE_ME - Limit to 4-6 caracters
   - modules/bootstrap_setup/locals.tf: resource_base_name = "bc-change_me" # BC_CHANGE_ME - Limit to 4-6 caracters
 
-- **Quick Search and Replace Example (Recursive):** (The `0-prep.sh` script does this)
-
-```bash
-export BUS_CODE=t100
-export APP_NAME=term
-export BUS_CODE_L=$(echo "$BUS_CODE" | tr '[:upper:]' '[:lower:]')
-export APP_NAME_L=$(echo "$APP_NAME" | tr '[:upper:]' '[:lower:]')
-egrep -lRZ 'bc-change_me' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/bc-change_me/$BUS_CODE_L/g"
-egrep -lRZ 'app-change_me' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/app-change_me/$APP_NAME_L/g"
-```
-
 ## Networking Region
 
 If you need to change the default REGION for the Shared VPC. It's all in the JSON files.
@@ -162,15 +191,6 @@ If you need to change the default REGION for the Shared VPC. It's all in the JSO
   - uat.json: "name" : "sb-p-shared-base-**us-west1**-net1",
   - uat.json: "region": "**US-WEST1**",
   - uat.json: "region": "**US-WEST1**",
-
-- **Quick Search and Replace Example:**
-
-```bash
-export REGION=US-CENTRAL1
-export REGION_L=$(echo "$REGION" | tr '[:upper:]' '[:lower:]')
-egrep -lRZ 'US-WEST1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/US-WEST1/$REGION/g"
-egrep -lRZ 'us-west1' --exclude="*.md" --exclude="*.sh" --exclude="*.example" . | xargs -r -0 -l sed -i -e "s/us-west1/$REGION_L/g"
-```
 
 # Post-Deployment
 
