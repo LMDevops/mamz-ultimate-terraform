@@ -20,7 +20,19 @@ Currently, GCP offers absolutely no possible means of fully automating group cre
 - Creating app credentials for the group creation script and authorizing it in the browser
 - Enabling domain wide delegation for a service account in the google admin console (this is the method we'll use)
 
-The 0-prep.sh & 0.5-prep.sh scripts will perform all the neccessary steps to prep the environment for applying the Terraform. Make sure the values at the top of the prep scripts are changed to align with your specific environment.
+The **0-prep.sh** & **0.5-prep.sh** scripts will perform all the neccessary steps to prep the environment for applying the Terraform. Make sure the values at the top of the prep scripts are changed to align with your specific environment.
+
+**USER PERMISSION**
+
+Make sure the **GCP User** who runs the Foundation scripts has the following roles at the org level:
+
+- Billing Account Admin
+- Org Admin
+- Folder Admin
+- Org Policy Admin
+- Project Creator
+- Compute Shared VPC Admin
+- Logging Admin
 
 ### [1. bootstrap](./1-bootstrap/)
 
