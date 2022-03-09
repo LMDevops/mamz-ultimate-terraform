@@ -26,7 +26,7 @@ The **0-prep.sh** & **0.5-prep.sh** scripts will perform all the neccessary step
 
 Make sure the **GCP User** who runs the Foundation scripts has the following roles at the org level:
 
-- Billing Account Admin
+- Billing Account User
 - Org Admin
 - Folder Admin
 - Org Policy Admin
