@@ -82,17 +82,22 @@ nano 0-prep.sh
 
 You will need to enable domain wide delegation for the service account created in 0-prep.sh so it can create groups for us.
 
-- Go to : https://admin.google.com/ac/owl and scroll to the bottom and click “MANAGE DOMAIN WIDE DELEGATION”. 
+- Go to : https://admin.google.com/ac/owl and scroll to the bottom and click “MANAGE DOMAIN WIDE DELEGATION”.
+
 ![](img/dwd_1.png)
 
 - Click “Add new”
+
 ![](img/dwd_2.png)
 
 - You can find your OAuth client id on the service accounts page of the project created in the previous step. It’s on the far right.
+
 ![](img/dwd_3.png)
 
 - Paste the client ID in the Client ID field in Google admin. The OAuth scope we need is: https://www.googleapis.com/auth/admin.directory.group
+
 ![](img/dwd_4.png)
+
 
 - Click “AUTHORIZE” when you have filled in the client ID and the single auth scope. 
 
