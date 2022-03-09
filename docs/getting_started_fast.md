@@ -11,13 +11,14 @@
 **1. Permissions**
 
 Make sure the **GCP User** who runs the script has the following roles at the org level:
-  - Billing Account Admin
-  - Org Admin
-  - Folder Admin
-  - Org Policy Admin
-  - Project Creator
-  - Compute Shared VPC Admin
-  - Logging Admin
+
+- Billing Account User
+- Org Admin
+- Folder Admin
+- Org Policy Admin
+- Project Creator
+- Compute Shared VPC Admin
+- Logging Admin
 
 **2. Groups**
 
@@ -25,17 +26,18 @@ Step 1-bootstrap will attempt to create IAM bindings for groups in the GCP organ
 
 **Head to the [Execution](#Execution) section if you want to skip explanation of the scripts**
 
-**0-prep.sh** 
+**0-prep.sh**
+
 ```bash
 # The project ID of the project that will be authorized to make workspace API calls
 export ADMIN_PROJECT_ID=foundation-workspace-$RANDOM_ID
-## IF YOU CHANGE THIS, YOU MUST ALSO CHANGE IT IN THE DESTROY SCRIPT. 
+## IF YOU CHANGE THIS, YOU MUST ALSO CHANGE IT IN THE DESTROY SCRIPT.
 export ADMIN_SA="sa-admin-caller"
 #
 # Your GCP ORG ID
 export ORGANIZATION="CHANGE_ME" # Your GCP ORG ID
 ## May not need admin email if using DWD with SA
-export ADMIN_EMAIL="CHANGE_ME" # The email address of the user deploying the foundation 
+export ADMIN_EMAIL="CHANGE_ME" # The email address of the user deploying the foundation
 ```
 
 # Terraform.tfvars
@@ -48,17 +50,18 @@ In each section (1-7) there is a **terraform.tfvars.example** file that needs to
 
 The Domain, BILLING and ORG informations can get gathered on screen for you if you run the **`get-gcp-infos.sh`** script.
 
-**0.5-prep.sh** 
+**0.5-prep.sh**
+
 ```bash
 # Update these variables IN THE PREP SCRIPTS per your environment.
 #
-export ADMIN_EMAIL="CHANGE_ME" # The email address of the user deploying the foundation 
+export ADMIN_EMAIL="CHANGE_ME" # The email address of the user deploying the foundation
 export DOMAIN="CHANGE_ME"       # Your User verified Domain for GCP
 export BILLING_ACCT="CHANGE_ME" # Your GCP BILLING ID (SADA Sub-Account or Direct ID);
 export ORGANIZATION="CHANGE_ME" # Your GCP ORG ID
 export REGION=US-WEST1          # Region to deploy the initial subnets
 export USE_BUS_CODE="TRUE"      # Set to FALSE to remove the Business Code requirement
-export BUS_CODE=zzzz            # The Department code or cost center associated with this Foudnation ; Leave like this if you've set USE_BUS_CODE to FALSE ; 
+export BUS_CODE=zzzz            # The Department code or cost center associated with this Foudnation ; Leave like this if you've set USE_BUS_CODE to FALSE ;
 export APP_NAME=app1            # Short name of your workload
 
 ```
@@ -98,11 +101,9 @@ You will need to enable domain wide delegation for the service account created i
 
 ![](img/dwd_4.png)
 
+- Click “AUTHORIZE” when you have filled in the client ID and the single auth scope.
 
-- Click “AUTHORIZE” when you have filled in the client ID and the single auth scope. 
-
-- You are now ready to edit and run 0.5-prep.sh 
-
+- You are now ready to edit and run 0.5-prep.sh
 
 ## Update 0.5-prep.sh then run it
 
