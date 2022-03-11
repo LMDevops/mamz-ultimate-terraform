@@ -36,8 +36,6 @@ export ADMIN_SA="sa-admin-caller"
 #
 # Your GCP ORG ID
 export ORGANIZATION="CHANGE_ME" # Your GCP ORG ID
-## May not need admin email if using DWD with SA
-export ADMIN_EMAIL="CHANGE_ME" # The email address of the user deploying the foundation
 ```
 
 # Terraform.tfvars
@@ -74,7 +72,7 @@ Additionally, the group names can be altered by editing the names in the `0-prep
 
 ## Update 0-prep.sh then run it
 
-This will the Workspace project that will provision the required groups by the Foundation.
+This will the Workspace project, service account and keys that will provision the required groups by the Foundation.
 
 ```bash
 nano 0-prep.sh
@@ -107,7 +105,7 @@ You will need to enable domain wide delegation for the service account created i
 
 ## Update 0.5-prep.sh then run it
 
-This will create an Admin API project, a service account and keys.
+This will create groups and update your TF values.
 
 ```bash
 nano 0.5-prep.sh
