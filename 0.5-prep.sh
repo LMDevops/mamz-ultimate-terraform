@@ -18,6 +18,7 @@ then
   GCP_WS_PROJECT_ID=$(gcloud projects list | grep foundation-workspace | grep PROJECT_ID | awk 'NR==1 {print $2}')
 else
   echo "*** Not running in CloudShell"
+  export CLOUD_SHELL="FALSE"
   echo
   GCP_WS_PROJECT_ID=$(gcloud projects list | grep foundation-workspace | awk 'NR==1 {print $1}')  
 fi
@@ -41,31 +42,30 @@ export BUS_CODE=zzzz            # The Department code or cost center associated 
 export APP_NAME=app1            # Short name of your workload
 
 echo "** Checking python version"
-if [ CLOUD_SHELL == "TRUE" ];
-  then export USE_PYTHON3="TRUE"
+if [[ $CLOUD_SHELL == "TRUE" ]];
+then 
+  export USE_PYTHON3="TRUE"
 fi
 
-if [ CLOUD_SHELL != "TRUE" ];
+if [[ $CLOUD_SHELL == "FALSE" ]];
 then
-  python3 --version
-  if [ $? != 0 ];
+  py3=$(python3 --version | wc -l);
+  if [[ $py3 -eq 1 ]];
   then 
     export USE_PYTHON3="TRUE"
   fi
 fi
 
-
-
 echo "** Attempting to create groups via the python script."
 echo
-if [ USE_PYTHON3 == "TRUE" ];
+if [[ $USE_PYTHON3 == "TRUE" ]];
 then
   python3 ./create_groups.py
 else
   python ./create_groups.py
 fi 
 
-if [ $? != 0 ];
+if [[ $? != 0 ]];
 then
   echo "** Group creation script failed"
   exit 1

@@ -19,6 +19,7 @@ Make sure the **GCP User** who runs the script has the following roles at the or
 - Project Creator
 - Compute Shared VPC Admin
 - Logging Admin
+- Storage Admin
 
 **2. Groups**
 
