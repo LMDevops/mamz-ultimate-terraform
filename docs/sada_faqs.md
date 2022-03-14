@@ -3,7 +3,7 @@
 ## Walkthrough videos
   - [Part 1 - Structure](https://www.loom.com/share/6e69ea7b03bb42a48fb0219d200d3600?sharedAppSource=team_library) 
   - [Part 2 - Customization](https://www.loom.com/share/de0d92fecfe1480496e6aa4201b10dab?sharedAppSource=team_library)
-  - [Part 3 - Deployment](https://www.loom.com/share/b74e5151c22041adb0abb7c30869b9af?sharedAppSource=team_library)
+  - [Part 3 - Execution](https://www.loom.com/share/b74e5151c22041adb0abb7c30869b9af?sharedAppSource=team_library)
   - [Part 4 - Post-Deployment](https://www.loom.com/share/d5610da0e9e04138800a8461b346002f?sharedAppSource=team_library)
 
 ## Getting started with this Foundation
