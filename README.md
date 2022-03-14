@@ -12,7 +12,7 @@ The TL;DR Pre-Requisites, customization and execution instructions can be found 
 
 This repo contains several distinct Terraform scripts each within their own directory that must be applied separately, but in sequence. The prereqs must be completed before any Terraform is run in the environment. Each of these Terraform scripts are to be layered on top of each other, running in the following order.
 
-### [0. Prereqs](0-prep.sh)
+### [0. Prereqs](0-prep.sh & 0.5-prep.sh)
 
 **THIS REQUIRES MANUAL STEPS!!**
 Currently, GCP offers absolutely no possible means of fully automating group creation end to end in Google workspace. The two options you are left with for automating group creation as much as possible are:
