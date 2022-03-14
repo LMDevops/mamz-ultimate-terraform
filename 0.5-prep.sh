@@ -1,4 +1,5 @@
 #!/bin/bash
+clear
 
 ######
 ## 0.5-prep

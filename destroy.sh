@@ -1,4 +1,5 @@
 #!/bin/bash
+clear
 
 destroy_step_7 () {
   terraform -chdir=7-prod init
@@ -142,24 +143,24 @@ destroy_step_0() {
 }
 
 # Determine which step to destroy from
-if [ $# == 0 ] || [ $1 == 7 ]; then
-  destroy_step_7
+if [ $1 == 0 ] || [ $1 == 7 ]; then
+  destroy_step_7;
 fi
 
 if [ $1 == 6 ]; then
-  destroy_step_6
+  destroy_step_6;
 fi
 
 if [ $1 == 5 ]; then
-  destroy_step_5
+  destroy_step_5;
 fi
 
 if [ $1 == 4 ]; then
-  destroy_step_4
+  destroy_step_4;
 fi
 
 if [ $1 == 3 ]; then
-  destroy_step_3
+  destroy_step_3;
 fi
 
 if [ $1 == 2 ]; then
@@ -167,9 +168,9 @@ if [ $1 == 2 ]; then
 fi
 
 if [ $1 == 1 ]; then
-  destroy_step_1
+  destroy_step_1;
 fi
 
 if [ $1 == 0 ]; then
-  destroy_step_0
+  destroy_step_0;
 fi
