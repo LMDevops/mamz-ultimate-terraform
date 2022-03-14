@@ -1,4 +1,5 @@
 #!/bin/bash
+clear
 export RANDOM_ID=$RANDOM
 
 ######

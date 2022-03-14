@@ -33,6 +33,7 @@ Make sure the **GCP User** who runs the Foundation scripts has the following rol
 - Project Creator
 - Compute Shared VPC Admin
 - Logging Admin
+- Storage Admin
 
 ### [1. bootstrap](./1-bootstrap/)
 

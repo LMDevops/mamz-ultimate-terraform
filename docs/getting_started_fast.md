@@ -19,6 +19,7 @@ Make sure the **GCP User** who runs the script has the following roles at the or
 - Project Creator
 - Compute Shared VPC Admin
 - Logging Admin
+- Storage Admin
 
 **2. Groups**
 
@@ -130,13 +131,6 @@ To start the deployment:
 
 The menu will allow for selection of what to deploy. The runtime is around 20 minutes if you select ALL.
 
-## Add code to Cloud Source Repository
-
-```bash
-gcloud config set project PROJECT_ID
-csr/add_to_csr.sh
-```
-
 ## Destroy
 
 To destroy everything that was deployed.
@@ -191,6 +185,12 @@ If you need to change the default REGION for the Shared VPC. It's all in the JSO
   - uat.json: "region": "**US-WEST1**",
 
 # Post-Deployment
+
+## Add code to Cloud Source Repository
+
+```bash
+csr/add_to_csr.sh
+```
 
 ## Billing Export
 

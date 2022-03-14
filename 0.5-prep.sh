@@ -1,4 +1,5 @@
 #!/bin/bash
+clear
 
 ####
 # **Update these variables
@@ -16,7 +17,7 @@ export BUS_CODE=zzzz            # The Department code or cost center associated 
 export APP_NAME=app1            # Short name of your workload
 
 ######
-## 0-prep
+## 0.5-prep
 ######
 
 # Getting the Project ID of the project that is authorized to make Workspace API calls
@@ -33,6 +34,7 @@ then
   GCP_WS_PROJECT_ID=$(gcloud projects list | grep foundation-workspace | grep PROJECT_ID | awk 'NR==1 {print $2}')
 else
   echo "*** Not running in CloudShell"
+  export CLOUD_SHELL="FALSE"
   echo
   GCP_WS_PROJECT_ID=$(gcloud projects list | grep foundation-workspace | awk 'NR==1 {print $1}')  
 fi
@@ -66,7 +68,7 @@ else
   python ./create_groups.py
 fi 
 
-if [ $? != 0 ];
+if [[ $? != 0 ]];
 then
   echo "** Group creation script failed"
   exit 1
