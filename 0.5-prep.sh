@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ######
-## 0-prep
+## 0.5-prep
 ######
 
 # Getting the Project ID of the project that is authorized to make Workspace API calls
