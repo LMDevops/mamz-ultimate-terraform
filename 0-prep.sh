@@ -13,8 +13,6 @@ export ADMIN_SA="sa-admin-caller"
 #
 # Your GCP ORG ID
 export ORGANIZATION="CHANGE_ME" # Your GCP ORG ID
-## May not need admin email if using DWD with SA
-export ADMIN_EMAIL="CHANGE_ME" # The email address of the user deploying the foundation 
 
 
 ##
