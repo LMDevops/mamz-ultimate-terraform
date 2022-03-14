@@ -1,10 +1,10 @@
 # Frequently encountered scenarios and questions (SADA ONLY)
 
 ## Walkthrough videos
-  - [Part 1 - Structure](https://www.loom.com/share/420c593ef980487295ae9dd0541d57ab?sharedAppSource=team_library) 
-  - [Part 2 - Customization](https://www.loom.com/share/2dd697f57bbe4696934c5a8bdbad6fa3?sharedAppSource=team_library)
-  - [Part 3 - Deployment](https://www.loom.com/share/8f0207d71ec54473b4c9c4e7cba37fee?sharedAppSource=team_library)
-  - [Part 4 - Post-Deployment](https://www.loom.com/share/6b14f576a79a42dba2eadf4cbf619fb5?sharedAppSource=team_library)
+  - [Part 1 - Structure](https://www.loom.com/share/6e69ea7b03bb42a48fb0219d200d3600?sharedAppSource=team_library) 
+  - [Part 2 - Customization](https://www.loom.com/share/de0d92fecfe1480496e6aa4201b10dab?sharedAppSource=team_library)
+  - [Part 3 - Deployment](https://www.loom.com/share/b74e5151c22041adb0abb7c30869b9af?sharedAppSource=team_library)
+  - [Part 4 - Post-Deployment](https://www.loom.com/share/d5610da0e9e04138800a8461b346002f?sharedAppSource=team_library)
 
 ## Getting started with this Foundation
 
