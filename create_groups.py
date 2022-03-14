@@ -1,37 +1,52 @@
 import json
 import requests
 import os
+import sys
+import subprocess
 from googleapiclient.discovery import build
 from oauth2client.service_account import ServiceAccountCredentials
 
 # Email of the Service Account
-# SERVICE_ACCOUNT_EMAIL = '<some-id>@developer.gserviceaccount.com'
-# SERVICE_ACCOUNT_EMAIL = 'testing@sada-cf-admin-prj-003.iam.gserviceaccount.com'
+# SERVICE_ACCOUNT_EMAIL = '<ADMIN_SA>@<PROJECT_ID>.iam.gserviceaccount.com'
 SERVICE_ACCOUNT_EMAIL = os.environ['ADMIN_SA']+'@' + \
     os.environ['ADMIN_PROJECT_ID'] + '.iam.gserviceaccount.com'
-
 
 # Path to the Service Account's Private Key file
 SERVICE_ACCOUNT_PKCS12_FILE_PATH = './'+os.environ['ADMIN_SA']+'.p12'
 
 
 def create_directory_service(user_email):
-    """Build and returns an Admin SDK Directory service object authorized with the service accounts
+    """
+    Build and returns an Admin SDK Directory service object authorized with the service accounts
     that act on behalf of the given user.
-
     Args:
       user_email: The email of the user. Needs permissions to access the Admin APIs.
     """
+    try:
+        print("Getting token...")
+        credentials = ServiceAccountCredentials.from_p12_keyfile(
+            SERVICE_ACCOUNT_EMAIL,
+            SERVICE_ACCOUNT_PKCS12_FILE_PATH,
+            'notasecret',
+            scopes=['https://www.googleapis.com/auth/admin.directory.group'])
+    except NotImplementedError:
+        print("** Looks like you're missing pyOpenSSL. Attempting to install it....")
+        try:
+            subprocess.check_call([sys.executable, '-m', 'pip', 'install',
+                                   'pyOpenSSL'])
+            print("** pyOpenSSL installed. Restarting script")
+            os.system('python3 create_groups.py')
+            exit()
+        except Exception as error:
+            print("THERE WAS AN ERROR TRYING TO INSTALL pyOpenSSL: \n\n ", error,
+                  "Please try installing pyOpenSSL manually by running: \n\n pip3 install pyOpenSSL \n\n or \n\n pip install pyOpenSSL if you're still using python 2\n\n")
+            exit(1)
 
-    credentials = ServiceAccountCredentials.from_p12_keyfile(
-        SERVICE_ACCOUNT_EMAIL,
-        SERVICE_ACCOUNT_PKCS12_FILE_PATH,
-        'notasecret',
-        scopes=['https://www.googleapis.com/auth/admin.directory.group'])
+    except Exception as e:
+        print("Something went wrong, here's the error: \n", e, "\n\n")
 
     credentials = credentials.create_delegated(user_email)
     service = build('admin', 'directory_v1', credentials=credentials)
-    # print(result)
 
     groups = [
         'gcp-billing-admins',
@@ -63,8 +78,6 @@ def create_directory_service(user_email):
         }
         group_add = service.groups().insert(body=group).execute()
         print(group_add)
-
-    # return build('admin', 'directory_v1', credentials=credentials)
 
 
 create_directory_service(os.environ['ADMIN_EMAIL'])
