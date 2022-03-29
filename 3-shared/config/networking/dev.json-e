@@ -1,0 +1,94 @@
+[
+  {
+    "name": "dev",
+    "cloud_nat": {
+      "subnetworks_to_nat": "ALL_PRIMARY_SUBNETWORKS_ALL_SECONDARY_SUBNETWORKS"
+    },
+    "subnetworks": [
+      {
+        "name" : "sb-p-shared-base-us-west1-net1",
+        "region": "US-WEST1",
+        "ip_cidr_range": "10.0.0.0/24",
+        "log_config": {
+          "enabled": true,
+          "aggregation_interval": "INTERVAL_5_SEC",
+          "flow_sampling": 50,
+          "metadata": "INCLUDE_ALL_METADATA",
+          "metadata_fields": []
+        }
+      },
+      {
+        "region": "US-WEST1",
+        "ip_cidr_range": "10.0.1.0/24", 
+        "log_config": {
+          "enabled": true,
+          "aggregation_interval": "INTERVAL_5_SEC",
+          "flow_sampling": 50,
+          "metadata": "INCLUDE_ALL_METADATA",
+          "metadata_fields": []
+        }
+      }
+    ],
+    "routes": [
+      {
+        "destination": "0.0.0.0/0",
+        "priority": 0,
+        "next_hop_type": "INTERNET_GATEWAY"
+      }
+    ],
+    "firewall_rules": [
+      {
+        "id": "allow-http-ingress",
+        "action": "allow",
+        "direction": "INGRESS",
+        "sources": [ ],
+        "targets": [ ],
+        "rules": [
+          {
+            "protocol": "TCP",
+            "ports": [ 80 ]
+          }
+        ]
+      },
+      {
+        "id": "allow-ingress-tag-target",
+        "action": "allow",
+        "direction": "INGRESS",
+        "sources": [ ],
+        "targets": [ "ingress-allow-tag" ],
+        "rules": [
+          {
+            "protocol": "ALL",
+            "ports": [ ]
+          }
+        ]
+      },
+      {
+        "id": "allow-ingress-port-range",
+        "action": "allow",
+        "direction": "INGRESS",
+        "sources": [ ],
+        "targets": [ "ingress-allow-tag" ],
+        "rules": [
+          {
+            "protocol": "TCP",
+            "ports": [ 22, "80-443" ]
+          }
+        ]
+      },
+      {
+        "id": "deny-tags-egress-ranges",
+        "action": "deny",
+        "direction": "EGRESS",
+        "sources": [ "deny-source-alpha", "deny-source-bravo" ],
+        "targets": [ "192.168.0.0/24" , "deny-target-alpha" ],
+        "rules": [
+          {
+            "protocol": "ALL",
+            "ports": [ ]
+          }
+        ]
+      }
+    ]
+  }
+]
