@@ -40,11 +40,11 @@ locals {
   resource_base_name         = "bc-change_me" # BC_CHANGE_ME - Limit to 4-6 caracters
   environment                = "b"
   seed_project_label         = "tfseed"
-  seed_project_display_name  = "prj-${local.resource_base_name}-${local.environment}-${local.seed_project_label}"
-  seed_project_name          = "prj-${local.resource_base_name}-${local.environment}-${local.seed_project_label}"
+  seed_project_display_name  = "prj-${local.environment}-${local.seed_project_label}"
+  seed_project_name          = "prj-${local.environment}-${local.seed_project_label}"
   state_project_label        = "tfstate"
-  state_project_display_name = "prj-${local.resource_base_name}-${local.environment}-${local.state_project_label}"
-  state_project_name         = "prj-${local.resource_base_name}-${local.environment}-${local.state_project_label}"
-  bucket_name                = "bkt-${local.environment}-${local.resource_base_name}-${local.state_project_label}-${random_integer.main.result}"
-  sa_name                    = "sa-${local.environment}-${local.resource_base_name}-${local.seed_project_label}-tf"
+  state_project_display_name = "prj-${local.environment}-${local.state_project_label}"
+  state_project_name         = "prj-${local.environment}-${local.state_project_label}"
+  bucket_name                = "bkt-${local.environment}-${local.state_project_label}-${random_integer.main.result}"
+  sa_name                    = "sa-${local.environment}-${local.seed_project_label}-tf"
 }

@@ -41,8 +41,10 @@
         "id": "allow-http-ingress",
         "action": "allow",
         "direction": "INGRESS",
+        "enableLogging": true,
         "sources": [ ],
         "targets": [ ],
+        "log_config": "INCLUDE_ALL_METADATA",
         "rules": [
           {
             "protocol": "TCP",
@@ -54,8 +56,10 @@
         "id": "allow-ingress-tag-target",
         "action": "allow",
         "direction": "INGRESS",
+        "enableLogging": true,
         "sources": [ ],
         "targets": [ "ingress-allow-tag" ],
+        "log_config": "INCLUDE_ALL_METADATA",
         "rules": [
           {
             "protocol": "ALL",
@@ -67,8 +71,10 @@
         "id": "allow-ingress-port-range",
         "action": "allow",
         "direction": "INGRESS",
+        "enableLogging": true,
         "sources": [ ],
         "targets": [ "ingress-allow-tag" ],
+        "log_config":  "INCLUDE_ALL_METADATA",
         "rules": [
           {
             "protocol": "TCP",
@@ -80,8 +86,10 @@
         "id": "deny-tags-egress-ranges",
         "action": "deny",
         "direction": "EGRESS",
+        "enableLogging": true,
         "sources": [ "deny-source-alpha", "deny-source-bravo" ],
         "targets": [ "192.168.0.0/24" , "deny-target-alpha" ],
+        "log_config": "INCLUDE_ALL_METADATA",
         "rules": [
           {
             "protocol": "ALL",

@@ -44,10 +44,12 @@ locals {
     "storage-api.googleapis.com",
     "ids.googleapis.com",
   ]
-  flow_log_bucket_id        = "bkt-s-${local.business_code}-log-mon-vpcflow"
+  flow_log_bucket_id        = "bkt-s-log-mon-vpcflow"
+  data_access_log_bucket_id = "bkt-s-${local.business_code}-log-mon-data_access"
+  firewall_log_bucket_id    = "bkt-s-${local.business_code}-log-mon-firewall"
   vpc_type                  = "shared"
   environment               = "s"
-  business_code             = "bc-change_me" # BC_CHANGE_ME - Limit to 4-6 caracters
+  business_code             = "78877" # BC_CHANGE_ME - Limit to 4-6 caracters
   svpc_project_label        = "svpc"
   log_mon_project_label     = "log-mon"
   secrets_kms_project_label = "secrets-kms"

@@ -23,10 +23,10 @@ locals {
 # API activation #
 #----------------#
 # resource "google_project_service" "enable_destination_api" {
-#   project            = var.project_id
+#  project            = var.project_id
 #   service            = "storage-component.googleapis.com"
 #   disable_on_destroy = false
-# }
+#}
 
 #----------------#
 # Project cloud logging bucket #
@@ -35,13 +35,13 @@ resource "google_logging_project_bucket_config" "cloud_log_bucket" {
   # count          = var.is_project_level ? 1 : 0
   project        = var.project_id
   location       = local.location
-  retention_days = var.retention_days > 0 ? var.retention_days : 30
+  retention_days = var.retention_days > 0 ? var.retention_days : 184
   bucket_id      = var.bucket_id
 }
 
 # resource "google_logging_organization_bucket_config" "basic" {
 #   count          = var.is_org_level ? 1 : 0
-#   organization   = var.organization
+#   organization   = "150390553932"
 #   location       = local.location
 #   retention_days = var.retention_days > 0 ? var.retention_days : 30
 #   bucket_id      = var.bucket_id
@@ -51,7 +51,7 @@ resource "google_logging_project_bucket_config" "cloud_log_bucket" {
 #--------------------------------#
 # Service account IAM membership #
 #--------------------------------#
-# resource "google_project_iam_binding" "storage_sink_member" {
+#resource "google_project_iam_binding" "storage_sink_member" {
 #   project = var.project_id
 #   #bucket = local.storage_bucket_name
 #   role    = "roles/logging.bucketWriter"
