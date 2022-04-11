@@ -59,7 +59,7 @@ module "org_vpc_flow_log_bucket" {
   project_id               = trimprefix(module.logging_monitoring_project.project_id, "projects/")
   bucket_id                = local.flow_log_bucket_id
   log_sink_writer_identity = module.org_vpc_flow_log_sink.writer_identity
-  retention_days           = 30
+  retention_days           = 183
 
 }
 
@@ -68,7 +68,8 @@ module "org_vpc_flow_log_sink" {
   parent_resource_type = "organization"
   log_sink_name        = "ls-${local.environment}-vpc-flow-sink"
   parent_resource_id   = data.terraform_remote_state.bootstrap.outputs.organization_id
-  filter               = "logName:(\"projects/${trimprefix(module.logging_monitoring_project.project_id, "projects/")}/logs/compute.googleapis.com%2Fvpc_flows\")"
+  filter              = "logName:(\"projects/${trimprefix(module.logging_monitoring_project.project_id, "projects/")}/logs/compute.googleapis.com%2Fvpc_flows\")"
+  #filter               = "logName:(\"projects/prj-s-svpc-3084/logs/compute.googleapis.com%2Fvpc_flows\")"
   destination_uri      = module.org_vpc_flow_log_bucket.destination_uri
 
 }
@@ -98,7 +99,7 @@ module "org_data_access_log_sink" {
   log_sink_name        = "ls-${local.environment}-${local.business_code}-data-access-sink"
   parent_resource_id   = data.terraform_remote_state.bootstrap.outputs.organization_id
   #filter              = "logName=\"projects/prj-83923-s-orbit-8935/logs/cloudaudit.googleapis.com%2Fdata_access\""
-  filter               = "logName:(\"projects/${trimprefix(module.logging_monitoring_project.project_id, "projects/")}/logs/cloudaudit.googleapis.com%2Fdata_access\")"
+  filter               = "protoPayload.@type=\"type.googleapis.com/google.cloud.audit.AuditLog\""
   destination_uri      = module.org_data_access_log_bucket.destination_uri
 
 }
@@ -117,8 +118,7 @@ module "org_firewall_log_sink" {
   parent_resource_type = "organization"
   log_sink_name        = "ls-${local.environment}-${local.business_code}-firewall-rule-sink"
   parent_resource_id   = data.terraform_remote_state.bootstrap.outputs.organization_id
-  #filter               = "resource.type=\"gce_firewall_rule\""
-  filter               = "logName:(\"projects/${trimprefix(module.logging_monitoring_project.project_id, "projects/")}/logs/cloudaudit.googleapis.com%2Ffirewall_rule\")"
+  filter               = "resource.type=\"gce_firewall_rule\""
   destination_uri      = module.org_firewall_log_bucket.destination_uri
 
 }
@@ -137,3 +137,30 @@ TODO: Automate billing alerts?
 /*
 TODO: Restrict the use of prod subnets 
 */
+resource "google_project_iam_binding" "log_sink_member" {
+  project = "prj-s-log-mon-7973"
+  #bucket = local.storage_bucket_name
+  role    = "roles/logging.bucketWriter"
+  members = [module.org_vpc_flow_log_sink.writer_identity, module.org_data_access_log_sink.writer_identity, module.org_firewall_log_sink.writer_identity]
+
+}
+resource "google_storage_bucket_iam_member" "vpc_flow_storage_sink_member" {
+  bucket = local.vpc_flow_storage_bucket_name
+  role   = "roles/storage.objectCreator"
+  member = module.org_vpc_flow_storage_sink.writer_identity
+           
+}
+
+resource "google_storage_bucket_iam_member" "data_access_storage_sink_member" {
+  bucket = local.data_access_storage_bucket_name
+  role   = "roles/storage.objectCreator"
+  member = module.org_data_access_storage_sink.writer_identity
+           
+}
+
+resource "google_storage_bucket_iam_member" "firewall_storage_sink_member" {
+  bucket = local.firewall_storage_bucket_name
+  role   = "roles/storage.objectCreator"
+  member = module.org_firewall_storage_sink.writer_identity
+           
+}

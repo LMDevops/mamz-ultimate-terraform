@@ -1,6 +1,6 @@
 terraform {
   backend "gcs" {
-    bucket = "bkt-b-tfstate-3518"
+    bucket = "bkt-b-tfstate-1623"
     prefix = "tf_state_organization"
   }
 }
@@ -13,7 +13,7 @@ terraform {
 data "terraform_remote_state" "bootstrap" {
   backend = "gcs"
   config = {
-    bucket = "bkt-b-tfstate-3518"
+    bucket = "bkt-b-tfstate-1623"
     prefix = "tf_state_bootstrap"
   }
 }

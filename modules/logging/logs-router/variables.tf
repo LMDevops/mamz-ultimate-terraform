@@ -28,7 +28,7 @@ variable "filter" {
 variable "include_children" {
   description = "Only valid if 'organization' or 'folder' is chosen as var.parent_resource.type. Determines whether or not to include children organizations/folders in the sink export. If true, logs associated with child projects are also exported; otherwise only logs relating to the provided organization/folder are included."
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "log_sink_name" {

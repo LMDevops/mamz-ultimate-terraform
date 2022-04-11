@@ -1,6 +1,6 @@
 terraform {
   backend "gcs" {
-    bucket = "bkt-b-tfstate-3518"
+    bucket = "bkt-b-tfstate-1623"
     prefix = "tf_state_dev"
   }
 }
@@ -13,7 +13,7 @@ terraform {
 data "terraform_remote_state" "bootstrap" {
   backend = "gcs"
   config = {
-    bucket = "bkt-b-tfstate-3518"
+    bucket = "bkt-b-tfstate-1623"
     prefix = "tf_state_bootstrap"
   }
 }
@@ -21,7 +21,7 @@ data "terraform_remote_state" "bootstrap" {
 data "terraform_remote_state" "organization" {
   backend = "gcs"
   config = {
-    bucket = "bkt-b-tfstate-3518"
+    bucket = "bkt-b-tfstate-1623"
     prefix = "tf_state_organization"
   }
 }
@@ -29,7 +29,7 @@ data "terraform_remote_state" "organization" {
 data "terraform_remote_state" "shared" {
   backend = "gcs"
   config = {
-    bucket = "bkt-b-tfstate-3518"
+    bucket = "bkt-b-tfstate-1623"
     prefix = "tf_state_shared"
   }
 }

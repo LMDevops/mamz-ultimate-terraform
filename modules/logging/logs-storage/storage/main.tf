@@ -74,8 +74,8 @@ resource "google_storage_bucket" "bucket" {
 #--------------------------------#
 # Service account IAM membership #
 #--------------------------------#
-resource "google_storage_bucket_iam_member" "storage_sink_member" {
-  bucket = local.storage_bucket_name
-  role   = "roles/storage.objectCreator"
-  member = var.log_sink_writer_identity
-}
+#resource "google_storage_bucket_iam_member" "storage_sink_member" {
+ # bucket = local.storage_bucket_name
+  #role   = "roles/storage.objectCreator"
+  #member = var.log_sink_writer_identity
+#}

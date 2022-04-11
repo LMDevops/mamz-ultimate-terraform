@@ -38,7 +38,7 @@ variable "location" {
 variable "storage_class" {
   description = "The storage class of the storage bucket."
   type        = string
-  default     = "STANDARD"
+  default     = "ARCHIVE"
 }
 
 variable "storage_bucket_labels" {
