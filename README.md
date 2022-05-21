@@ -1,6 +1,6 @@
-# terraform-sada-foundation
+# terraform-gcloud-foundation
 
-This is repo shows how SADA can use shell scripts & Terraform modules to build a GCP foundation, based on the [Google Cloud security foundations guide](https://services.google.com/fh/files/misc/google-cloud-security-foundations-guide.pdf) and combined with SADA best practice.
+This is repo shows how you can use shell scripts & Terraform modules to build a GCP foundation, based on the [Google Cloud security foundations guide](https://services.google.com/fh/files/misc/google-cloud-security-foundations-guide.pdf) and combined with the best practices.
 
 The supplied structure and code is intended to form a starting point for building your own foundation with pragmatic defaults you can customize to meet your own requirements.
 
