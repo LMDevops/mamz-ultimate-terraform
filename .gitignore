@@ -4,6 +4,7 @@
 *.p12
 */*.tfvars
 *.tfvars
+.terraform/*
 # .tfstate files
 *.tfstate
 *.tfstate.*
