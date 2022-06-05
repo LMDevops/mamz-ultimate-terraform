@@ -1,10 +1,10 @@
-import json
-import requests
+import json #pip install jsons
+import requests #pip install requests
 import os
 import sys
-import subprocess
-from googleapiclient.discovery import build
-from oauth2client.service_account import ServiceAccountCredentials
+import subprocess # pip install subprocess.run
+from googleapiclient.discovery import build #pip install build
+from oauth2client.service_account import ServiceAccountCredentials #google_api_v3_helper
 
 # Email of the Service Account
 # SERVICE_ACCOUNT_EMAIL = '<ADMIN_SA>@<PROJECT_ID>.iam.gserviceaccount.com'

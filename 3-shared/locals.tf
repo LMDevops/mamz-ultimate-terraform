@@ -45,11 +45,11 @@ locals {
     "ids.googleapis.com",
   ]
   flow_log_bucket_id        = "bkt-s-log-mon-vpcflow"
-  data_access_log_bucket_id = "bkt-s-${local.business_code}-log-mon-data_access"
-  firewall_log_bucket_id    = "bkt-s-${local.business_code}-log-mon-firewall"
-  vpc_flow_storage_bucket_name   = "bkt-s-${local.business_code}-log-mon-vpcflow_storage"
-  data_access_storage_bucket_name = "bkt-p-${local.business_code}-log-mon-data_access_storage"
-  firewall_storage_bucket_name   = "bkt-p-${local.business_code}-log-mon-firewall_storage"
+  data_access_log_bucket_id = "bkt-s-log-mon-data_access"
+  firewall_log_bucket_id    = "bkt-s-log-mon-firewall"
+  vpc_flow_storage_bucket_name   = "bkt-s-log-mon-vpcflow_storage"
+  data_access_storage_bucket_name = "bkt-p-log-mon-data_access_storage"
+  firewall_storage_bucket_name   = "bkt-p-log-mon-firewall_storage"
   vpc_type                  = "shared"
   environment               = "s"
   business_code             = "78877" # BC_CHANGE_ME - Limit to 4-6 caracters

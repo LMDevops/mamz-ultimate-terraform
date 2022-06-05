@@ -5,12 +5,12 @@ clear
 # **Update these variables
 ####
 
-export ADMIN_EMAIL="mambo@cf-0002.sadaess.com" # The email address of a user with Google Admin access. Typically this is the user deploying the foundation
+export ADMIN_EMAIL="phyllis@phyllmamz.com" # The email address of a user with Google Admin access. Typically this is the user deploying the foundation
 
 # Update these variables per your GCP environment
-export DOMAIN="cf-0002.sadaess.com"       # Your User verified Domain for GCP
-export BILLING_ACCT="01C805-AC04C5-836F50" # Your GCP BILLING ID (SADA Sub-Account or Direct ID);
-export ORGANIZATION="150390553932" # Your GCP ORG ID
+export DOMAIN="phyllmamz.com"       # Your User verified Domain for GCP
+export BILLING_ACCT="01DD3D-FD6B82-1E775D" # Your GCP BILLING ID (SADA Sub-Account or Direct ID);
+export ORGANIZATION="221076086806" # Your GCP ORG ID
 export REGION=US-WEST1          # Region to deploy the initial subnets
 export USE_BUS_CODE="FALSE"      # Set to FALSE to remove the Business Code requirement
 export BUS_CODE=zzzz            # The Department code or cost center associated with this Foudnation ; Leave like this if you've set USE_BUS_CODE to FALSE ; 

@@ -44,7 +44,7 @@ locals {
     "storage-api.googleapis.com",
     "ids.googleapis.com",
   ]
-  flow_log_bucket_id        = "bkt-s-${local.business_code}-log-mon-vpcflow"
+  flow_log_bucket_id        = "bkt-s-log-mon-vpcflow"
   vpc_type                  = "shared"
   environment               = "s"
   business_code             = "bc-change_me" # BC_CHANGE_ME - Limit to 4-6 caracters

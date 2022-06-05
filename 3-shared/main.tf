@@ -96,7 +96,7 @@ module "org_data_access_log_bucket" {
 module "org_data_access_log_sink" {
   source               = "../modules/logging/logs-router"
   parent_resource_type = "organization"
-  log_sink_name        = "ls-${local.environment}-${local.business_code}-data-access-sink"
+  log_sink_name        = "ls-${local.environment}-data-access-sink"
   parent_resource_id   = data.terraform_remote_state.bootstrap.outputs.organization_id
   #filter              = "logName=\"projects/prj-83923-s-orbit-8935/logs/cloudaudit.googleapis.com%2Fdata_access\""
   filter               = "protoPayload.@type=\"type.googleapis.com/google.cloud.audit.AuditLog\""
@@ -116,7 +116,7 @@ module "org_firewall_log_bucket" {
 module "org_firewall_log_sink" {
   source               = "../modules/logging/logs-router"
   parent_resource_type = "organization"
-  log_sink_name        = "ls-${local.environment}-${local.business_code}-firewall-rule-sink"
+  log_sink_name        = "ls-${local.environment}-firewall-rule-sink"
   parent_resource_id   = data.terraform_remote_state.bootstrap.outputs.organization_id
   filter               = "resource.type=\"gce_firewall_rule\""
   destination_uri      = module.org_firewall_log_bucket.destination_uri
